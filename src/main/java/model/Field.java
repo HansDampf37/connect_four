@@ -7,7 +7,7 @@ public class Field {
     /**
      * the field's value
      */
-    Identifier value = Identifier.EMPTY;
+    private Identifier value = Identifier.EMPTY;
 
     /**
      * getter for the player

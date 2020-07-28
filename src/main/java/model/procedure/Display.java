@@ -16,8 +16,6 @@ public class Display {
 
     public Display() {
         frame = new JFrame("4 - gewinnt");
-        height = (Board.HEIGHT) * GRIDSIZE + 1;
-        width = (Board.WIDTH) * GRIDSIZE + 1;
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null);

@@ -1,4 +1,4 @@
-package bot;
+package model.procedure;
 
 public class ConsoleOutput {
     public static boolean botInitiation = false;

@@ -7,11 +7,14 @@ import model.procedure.Display;
 import java.awt.Color;
 
 public class Board {
-    public static final int HEIGHT = 6;
-    public static final int WIDTH = 7;
-    private Field[][] fields = new Field[WIDTH][HEIGHT];
+    public final int HEIGHT;
+    public final int WIDTH;
+    private Field[][] fields;
 
-    public Board() {
+    public Board(int width, int height) {
+        HEIGHT = height;
+        WIDTH = width;
+        fields = new Field[WIDTH][HEIGHT];
         for (int j = 0; j < HEIGHT; j++) for (int i = 0; i < WIDTH; i++) fields[i][j] = new Field();
     }
 
@@ -25,14 +28,12 @@ public class Board {
         return false;
     }
 
-    public boolean removeOfColumn(int x) {
+    public void removeOfColumn(int x) {
         for (int y = HEIGHT - 1; y >= 0; y--){
             if (!fields[x][y].isEmpty()) {
                 fields[x][y].setPlayer(Identifier.EMPTY);
-                return true;
             }
         }
-        return false;
     }
 
     public Identifier getWinner() {
@@ -125,8 +126,8 @@ public class Board {
         return false;
     }
 
-    public Field[][] getFields() {
-        return fields.clone();
+    public Field get(int x, int y) {
+        return fields[x][y];
     }
 
     public void render(Graphics g) {

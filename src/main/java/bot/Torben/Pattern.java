@@ -6,28 +6,15 @@ import model.*;
  * a pattern represents a special situation on the board
  */
 public class Pattern {
-    public static int ME = 1;
-    public static int NULL = 2;
-    public static int EMPTY = 0;
-    public static int NOT_EMPTY = -1;
+    private static int ME = 1;
+    private static int NULL = 2;
+    private static int EMPTY = 0;
+    private static int NOT_EMPTY = -1;
     private int[][] pattern;
     private int width;
     private int height;
 
-    public Pattern(int[][] pattern) {
-        init(pattern);
-    }
-
-    private void init(int[][] pattern) {
-        int maxY = pattern[0].length;
-        for (int x = 0; x < pattern.length; x++) if (pattern[x].length != maxY) throw new IllegalArgumentException("this Pattern is not squared");
-        this.pattern = pattern;
-        width = pattern.length;
-        height = pattern[0].length;
-        addFloor();
-    }
-
-    public Pattern(String[] lines) {
+    Pattern(String[] lines) {
         if (lines == null) throw new IllegalArgumentException("Empty input in pattern constructor");
         int[][] res = new int[lines[0].length()][lines.length];
         for (int y = 0; y < lines.length; y++) {
@@ -55,15 +42,22 @@ public class Pattern {
         init(res);
     }
 
+    private void init(int[][] pattern) {
+        int maxY = pattern[0].length;
+        for (int x = 0; x < pattern.length; x++) if (pattern[x].length != maxY) throw new IllegalArgumentException("this Pattern is not squared");
+        this.pattern = pattern;
+        width = pattern.length;
+        height = pattern[0].length;
+        addFloor();
+    }
+
     private void addFloor() {
         int[][] copy;
         for (int x = 0; x < width; x++) {
             if (pattern[x][0] == ME || pattern[x][0] == EMPTY) {
                 copy = new int[width][height + 1];
                 for(int xVal = 0; xVal < width; xVal++) {
-                    for (int yVal = 0; yVal < height; yVal++) {
-                        copy[xVal][yVal + 1] = pattern[xVal][yVal];
-                    }
+                    if (height >= 0) System.arraycopy(pattern[xVal], 0, copy[xVal], 1, height);
                 }
                 for(int xVal = 0; xVal < width; xVal++) copy[xVal][0] = NOT_EMPTY;
                 height++;
@@ -72,25 +66,25 @@ public class Pattern {
         }
     }
 
-    public int amountOfTimesThisPatternIsOnBoard(Field[][] fields, Identifier player) {
+    public int amountOfTimesThisPatternIsOnBoard(Board board, Identifier player) {
         int amounts = 0;
-        for (int xOffs = 0; xOffs <= Board.WIDTH - width; xOffs++) {
-            for (int yOffs = -1; yOffs <= Board.HEIGHT - height; yOffs++) {
-                if (searchWithOffset(xOffs, yOffs, fields, player)) amounts++;
+        for (int xOffs = 0; xOffs <= board.WIDTH - width; xOffs++) {
+            for (int yOffs = -1; yOffs <= board.HEIGHT - height; yOffs++) {
+                if (searchWithOffset(xOffs, yOffs, board, player)) amounts++;
             }
         }
 
         return amounts;
     }
 
-    private boolean searchWithOffset(int xOffset, int yOffset, Field[][] fields, Identifier player) {
+    private boolean searchWithOffset(int xOffset, int yOffset, Board board, Identifier player) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (y + yOffset < 0) {
                     if (pattern[x][y] != NOT_EMPTY) return false;
                 } else {
                     if (pattern[x][y] != NULL) {
-                        Identifier boardValue = fields[x + xOffset][y + yOffset].getPlayer();
+                        Identifier boardValue = board.get(x + xOffset, y + yOffset).getPlayer();
                         int patternValue = pattern[x][y];
                         if (patternValue == ME) {
                             if (boardValue != player) return false;

@@ -1,16 +1,12 @@
 package bot;
 
-import bot.tree.Node;
-import bot.tree.Tree;
 import  model.*;
-
-import model.procedure.PlayerType;
 
 /**
  * Ruediger is analyzing the board. He wants to maximize the amount of rows columns and diagonals that he can use to finish
  * and minimize the amount of rows columns and diagonals that the opponent can use to finish.
  */
-public class RuedigerDerBot extends PlayerType {
+public class RuedigerDerBot extends PonderingBot {
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by this player
@@ -21,10 +17,6 @@ public class RuedigerDerBot extends PlayerType {
      * in order to win the game and that are already occupied by the opponent
      */
     private int[][] opponentPressureMap;
-    /**
-     * The amount of moves this bot plans ahead
-     */
-    private int forecast;
     /**
      * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
      * to see those predicaments the bot always plays perfectly and wins the game. But there are situations where
@@ -50,8 +42,8 @@ public class RuedigerDerBot extends PlayerType {
 
     private RuedigerDerBot(Identifier side, Board board) {
         super(side, board);
-        ownPressureMap = new int[Board.WIDTH][Board.HEIGHT];
-        opponentPressureMap = new int[Board.WIDTH][Board.HEIGHT];
+        ownPressureMap = new int[board.WIDTH][board.HEIGHT];
+        opponentPressureMap = new int[board.WIDTH][board.HEIGHT];
     }
 
     RuedigerDerBot(Identifier player2, Board board, int forecast) {
@@ -59,28 +51,11 @@ public class RuedigerDerBot extends PlayerType {
         this.forecast = forecast;
 	}
 
-	@Override
-    public int getColumnOfNextMove() {
-        // builds a tree
-        Tree states = new Tree(forecast);
-        // makes the tree represent the games states
-        traverse(forecast, 0, states.getRoot(), side);
-        // gets the best following state
-        int i = states.getRoot().indexOfNodeWithBestExpectationOfHighValue();
-        board.throwInColumn(i, side);
-        buildPressureMatrix(side);
-        buildPressureMatrix(side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
-        System.out.println(mapToString());
-        board.removeOfColumn(i);
-        return i;
-    }
-
     private void buildPressureMatrix(Identifier player) {
-        Field[][] fields = board.getFields();
-        for (int y = 0; y < Board.HEIGHT; y++) {
-            for (int x = 0; x < Board.WIDTH; x++) {
+        for (int y = 0; y < board.HEIGHT; y++) {
+            for (int x = 0; x < board.WIDTH; x++) {
                 int maximumForThisField = 0;
-                if (fields[x][y].getPlayer() == Identifier.EMPTY) {
+                if (board.get(x, y).getPlayer() == Identifier.EMPTY) {
                     int currentValueForField;
                     //horizontally
                     for (int offset = -3; offset <= 0; offset++) {
@@ -91,7 +66,7 @@ public class RuedigerDerBot extends PlayerType {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = fields[curX][y].getPlayer();
+                            Identifier currentPlayer = board.get(curX, y).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
@@ -112,7 +87,7 @@ public class RuedigerDerBot extends PlayerType {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = fields[curX][curY].getPlayer();
+                            Identifier currentPlayer = board.get(curX, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
@@ -133,7 +108,7 @@ public class RuedigerDerBot extends PlayerType {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = fields[curX][curY].getPlayer();
+                            Identifier currentPlayer = board.get(curX, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
@@ -154,7 +129,7 @@ public class RuedigerDerBot extends PlayerType {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = fields[x][curY].getPlayer();
+                            Identifier currentPlayer = board.get(x, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
@@ -177,11 +152,11 @@ public class RuedigerDerBot extends PlayerType {
     }
 
     private boolean outOfBoardX(int x) {
-        return x < 0 || x >= Board.WIDTH;
+        return x < 0 || x >= board.WIDTH;
     }
 
     private boolean outOfBoardY(int y) {
-        return y < 0 || y >= Board.HEIGHT;
+        return y < 0 || y >= board.HEIGHT;
     }
 
     private int sum(int[][] mtx) {
@@ -194,40 +169,8 @@ public class RuedigerDerBot extends PlayerType {
         return result;
     }
 
-    /**
-     * Recursive method that lets a {@link Tree} represent the game's states. Every
-     * leave's value is set to the according state's rating
-     *
-     * @param forecast    amount of moves the algorithm is planning ahead
-     * @param lvl         the current level
-     * @param currentNode the current node
-     */
-    private void traverse(int forecast, int lvl, Node currentNode, Identifier player) {
-        Identifier winner = board.getWinner();
-        if (winner != Identifier.EMPTY) {
-            currentNode.makeLeave();
-            if (winner == side) {
-                currentNode.setValue(Integer.MAX_VALUE);
-            } else {
-                currentNode.setValue(Integer.MIN_VALUE);
-            }
-        } else if (lvl == forecast) {
-            currentNode.makeLeave();
-            currentNode.setValue(rateState());
-        } else {
-            for (int i = 0; i < Board.WIDTH; i++) {
-                if (board.throwInColumn(i, player)) {
-                    traverse(forecast, lvl + 1, currentNode.getChild(i),
-                            player == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
-                    board.removeOfColumn(i);
-                } else {
-                    currentNode.getChild(i).setInvisible();
-                }
-            }
-        }
-    }
-
-    private int rateState() {
+    @Override
+    protected int rateState() {
         int rating;
         buildPressureMatrix(side);
         buildPressureMatrix(side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
@@ -243,13 +186,12 @@ public class RuedigerDerBot extends PlayerType {
     }
 
     private void searchForPredicaments() {
-        Field[][] fields = board.getFields();
-        for (int x = 0; x < Board.WIDTH; x++) {
+        for (int x = 0; x < board.WIDTH; x++) {
             boolean oppPredicamentPossible = true;
             boolean ownPredicamentPossible = true;
             int base = 0;
-            for (int y = Board.HEIGHT - 1; y >= 0; y--) {
-                if (fields[x][y].isEmpty()) {
+            for (int y = board.HEIGHT - 1; y >= 0; y--) {
+                if (board.get(x, y).isEmpty()) {
                     // if the opponent has a threat underneath a predicament it doesn't count since one cant use it
                     if (opponentPressureMap[x][y] == 3) ownPredicamentPossible = false;
                     if (ownPressureMap[x][y] == 3) oppPredicamentPossible = false;
@@ -276,21 +218,26 @@ public class RuedigerDerBot extends PlayerType {
         }
     }
 
-    public String mapToString() {
+    private String mapToString() {
         StringBuilder str = new StringBuilder().append("|");
-        for (int y = Board.HEIGHT - 1; y >= 0; y--) {
-            for (int x = 0; x < Board.WIDTH; x++) {
+        for (int y = board.HEIGHT - 1; y >= 0; y--) {
+            for (int x = 0; x < board.WIDTH; x++) {
                 str.append(ownPressureMap[x][y]).append(",").append(opponentPressureMap[x][y]).append("|");
             }
             if (y != 0) str.append("\n|");
         }
         str.append("\n");
-        for (int x = 0; x < Board.WIDTH; x++) str.append("--");
+        for (int x = 0; x < board.WIDTH; x++) str.append("--");
         return str.append("-").toString();
     }
 
     @Override
     public void goodbye(Identifier winner) {
         if (winner == side) System.out.println("Rüdiger: Reckt by Rüdiger");
+    }
+
+    @Override
+    public String getName() {
+        return "Ruediger";
     }
 }

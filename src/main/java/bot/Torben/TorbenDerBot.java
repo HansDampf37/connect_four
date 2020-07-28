@@ -6,11 +6,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import bot.ConsoleOutput;
+import model.procedure.ConsoleOutput;
+import bot.PonderingBot;
 import bot.tree.Tree;
-import bot.tree.Node;
 import model.*;
-import model.procedure.*;
 
 /**
  * This Bot analyzes the board and recognizes given patterns (for example 3 in a
@@ -21,15 +20,15 @@ import model.procedure.*;
  * get increased. The In/Decrease itself is anti-proportional to the amount of
  * times theses patterns were used.
  */
-public class TorbenDerBot extends PlayerType {
+public class TorbenDerBot extends PonderingBot {
     /**
      * Array containing ratings for patterns
      */
-    public int[] ratings;
+    private int[] ratings;
     /**
      * Contains a set of hardcoded patterns
      */
-    private final PatternChecker checker = new PatternChecker();
+    private final PatternSet checker = new PatternSet();
     /**
      * Element i represents the amount of times that pattern i has been used in
      * this game
@@ -49,7 +48,7 @@ public class TorbenDerBot extends PlayerType {
      * Element i represents the amount of times that pattern i is currently used on
      * the board
      */
-    private int[] opCurrentPatternUsage;
+    private int[] oppCurrentPatternUsage;
     /**
      * how many moves should the bot calculate in advance
      */
@@ -62,7 +61,7 @@ public class TorbenDerBot extends PlayerType {
 
     /**
      * Constructor
-     * 
+     *
      * @param side  Player_1 or Player_2
      * @param board the board
      */
@@ -74,7 +73,7 @@ public class TorbenDerBot extends PlayerType {
         ownOverallPatternUsage = new int[checker.getPatternAmount()];
         ownCurrentPatternUsage = new int[checker.getPatternAmount()];
         opOverallPatternUsage = new int[checker.getPatternAmount()];
-        opCurrentPatternUsage = new int[checker.getPatternAmount()];
+        oppCurrentPatternUsage = new int[checker.getPatternAmount()];
     }
 
     /**
@@ -92,7 +91,6 @@ public class TorbenDerBot extends PlayerType {
         }
     }
 
-    @Override
     public int getColumnOfNextMove() {
         // checks which patterns have been used in the opponents last move
         updateOpponentsOverallPatternUsage();
@@ -101,7 +99,7 @@ public class TorbenDerBot extends PlayerType {
         checkOwnCurrentPatternUsage();
 
         // builds a tree
-        Tree states = new Tree(forecast);
+        Tree states = new Tree(forecast, board.WIDTH);
         // makes the tree represent the games states
         traverse(forecast, 0, states.getRoot(), side);
         // gets the best following state
@@ -117,44 +115,11 @@ public class TorbenDerBot extends PlayerType {
     }
 
     /**
-     * Recursive method that lets a {@link Tree} represent the game's states. Every
-     * leave's value is set to the according state's rating
-     * 
-     * @param forecast    amount of moves the algorithm is planning ahead
-     * @param lvl         the current level
-     * @param currentNode the current node
-     */
-    private void traverse(int forecast, int lvl, Node currentNode, Identifier player) {
-        Identifier winner = board.getWinner();
-        if (winner != Identifier.EMPTY) {
-            currentNode.makeLeave();
-            if (winner == side) {
-                currentNode.setValue(Integer.MAX_VALUE);
-            } else {
-                currentNode.setValue(Integer.MIN_VALUE);
-            }
-        } else if (lvl == forecast) {
-            currentNode.makeLeave();
-            currentNode.setValue(rateState());
-        } else {
-            for (int i = 0; i < Board.WIDTH; i++) {
-                if (board.throwInColumn(i, player)) {
-                    traverse(forecast, lvl + 1, currentNode.getChild(i),
-                            player == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
-                    board.removeOfColumn(i);
-                } else {
-                    currentNode.getChild(i).setInvisible();
-                }
-            }
-        }
-    }
-
-    /**
      * checks which patterns are used by the opponent at the moment
      */
     private void checkOpponentsCurrentPatternUsage() {
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            ownCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(),
+            oppCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
                     side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
         }
     }
@@ -164,7 +129,7 @@ public class TorbenDerBot extends PlayerType {
      */
     private void checkOwnCurrentPatternUsage() {
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            ownCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(),
+            ownCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
                     side);
         }
     }
@@ -178,16 +143,16 @@ public class TorbenDerBot extends PlayerType {
         if (ConsoleOutput.patternRecognition)
             System.out.println("Opponent");
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            int occurence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(),
+            int occurrence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
                     side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
             if (ConsoleOutput.patternRecognition)
-                if (occurence > 0)
-                    System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurence
+                if (occurrence > 0)
+                    System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurrence
                             + "\n---------------\n---------------");
-            if (occurence > opCurrentPatternUsage[i]) {
-                opOverallPatternUsage[i] += occurence - opCurrentPatternUsage[i];
+            if (occurrence > oppCurrentPatternUsage[i]) {
+                opOverallPatternUsage[i] += occurrence - oppCurrentPatternUsage[i];
             }
-            ownCurrentPatternUsage[i] = occurence;
+            ownCurrentPatternUsage[i] = occurrence;
         }
     }
 
@@ -200,7 +165,7 @@ public class TorbenDerBot extends PlayerType {
         if (ConsoleOutput.patternRecognition)
             System.out.println("Torben");
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            int occurence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(), side);
+            int occurence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side);
             if (ConsoleOutput.patternRecognition)
                 if (occurence > 0)
                     System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurence
@@ -213,16 +178,16 @@ public class TorbenDerBot extends PlayerType {
 
     /**
      * Rates the current board's state
-     * 
+     *
      * @return rating
      */
-    private int rateState() {
+    protected int rateState() {
         int rating = 0;
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(), side);
+            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side);
         }
         for (int i = 0; i < checker.getPatternAmount(); i++) {
-            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board.getFields(),
+            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
                     side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
         }
         return rating;
@@ -255,6 +220,11 @@ public class TorbenDerBot extends PlayerType {
         writeRatings();
     }
 
+    @Override
+    public String getName() {
+        return "Torben";
+    }
+
     /**
      * get data input
      */
@@ -282,7 +252,7 @@ public class TorbenDerBot extends PlayerType {
     /**
      * get data output
      */
-    public void writeRatings() {
+    private void writeRatings() {
         final StringBuilder str = new StringBuilder();
         for (int i = 0; i < ratings.length - 1; i++) str.append(ratings[i]).append(",");
         str.append(ratings[ratings.length - 1]);

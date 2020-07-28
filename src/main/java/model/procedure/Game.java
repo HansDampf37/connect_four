@@ -3,17 +3,15 @@ package model.procedure;
 import model.*;
 import java.awt.image.BufferStrategy;
 
-import bot.ConsoleOutput;
-
 import java.awt.Graphics;
 
 public abstract class Game  {
     private Display display;
     private BufferStrategy bs;
     private Graphics g;
-    protected Board board = new Board();
-    protected PlayerType[] players;
-    protected int curPlayerInd;
+    protected Board board = new Board(7, 6);
+    protected Player[] players;
+    private int curPlayerInd;
     
     public Game() {
         definePlayers();
@@ -23,8 +21,8 @@ public abstract class Game  {
 
     protected abstract void definePlayers();
 
-    protected void throwInColumn(int x) {
-        if (board.throwInColumn(x, players[curPlayerInd].side)) {
+    private void throwInColumn(int x) {
+        if (board.throwInColumn(x, players[curPlayerInd].getSide())) {
             curPlayerInd = curPlayerInd == players.length - 1 ? 0 : curPlayerInd + 1;
         }
     }
@@ -48,7 +46,7 @@ public abstract class Game  {
             else System.out.println("Its a draw");
             System.out.println(board);
         }
-        for (PlayerType player : players) player.goodbye(winner);
+        for (Player player : players) player.goodbye(winner);
         reset();
     }
 
@@ -65,7 +63,7 @@ public abstract class Game  {
     }
 
     protected void reset() {
-        board = new Board();
+        board = new Board(7, 6);
         curPlayerInd = (int)(Math.random() * players.length);
         definePlayers();
     }

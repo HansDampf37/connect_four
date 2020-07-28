@@ -1,6 +1,6 @@
 package bot.tree;
 
-import bot.ConsoleOutput;
+import model.procedure.ConsoleOutput;
 
 import java.util.ArrayList;
 import java.util.List;

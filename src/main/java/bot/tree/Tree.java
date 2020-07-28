@@ -3,8 +3,7 @@ package bot.tree;
 import java.util.ArrayList;
 import java.util.List;
 
-import bot.ConsoleOutput;
-import model.Board;
+import model.procedure.ConsoleOutput;
 
 /**
  * Utilized to represent a states of a 4-gewinnt-match. Node A is the child of node B <-> it exists a move that you can do in state B that brings you to state A
@@ -24,18 +23,10 @@ public class Tree {
      * @param depth amount of levels
      * @param spread amount of children per node
      */
-    private Tree(int depth, int spread) {
+    public Tree(int depth, int spread) {
         start = new Node(this);
         addChildNodesToTree(start, spread, depth, 0);
         if (ConsoleOutput.treeInitiation) System.out.println(this);
-    }
-
-    /**
-     * Constructor generates a tree with a given depth and a spread of Board.WIDTH
-     * @param depth the amount of levels
-     */
-    public Tree(int depth) {
-        this(depth, Board.WIDTH);
     }
 
     /**

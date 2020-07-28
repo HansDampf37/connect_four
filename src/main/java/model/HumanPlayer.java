@@ -1,12 +1,14 @@
-package model.procedure;
+package model;
 
 import model.Board;
 import model.Identifier;
+import model.Player;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class HumanPlayer extends PlayerType {
+public class HumanPlayer extends Player {
 
     public HumanPlayer(Identifier side, Board board) {
         super(side, board);
@@ -28,5 +30,10 @@ public class HumanPlayer extends PlayerType {
     @Override
     public void goodbye(Identifier winner) {
         System.out.println(winner == side ? "Die Krone der Schöpfung zieht sich zurück." : "Nicht schlecht");
+    }
+
+    @Override
+    public String getName() {
+        return "Human";
     }
 }

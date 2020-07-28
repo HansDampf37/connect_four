@@ -3,10 +3,10 @@ package bot.Torben;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PatternChecker {
-    private List<Pattern> patterns = new ArrayList<Pattern>();
+public class PatternSet {
+    private List<Pattern> patterns = new ArrayList<>();
     
-    public PatternChecker() {
+    public PatternSet() {
         init();
     }
     

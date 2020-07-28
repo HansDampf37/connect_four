@@ -1,8 +1,8 @@
-package model.procedure;
+package model;
 
 import model.*;
 
-public abstract class PlayerType {
+public abstract class Player {
     /**
      * Player_1 or Player_2
      */
@@ -15,7 +15,7 @@ public abstract class PlayerType {
     /**
      * Constructor
      */
-    public PlayerType(Identifier side, Board board) {
+    public Player(Identifier side, Board board) {
         this.side = side;
         this.board = board;
     }
@@ -33,4 +33,10 @@ public abstract class PlayerType {
      * @param winner the games winner
      */
     public abstract void goodbye(Identifier winner);
+
+    public abstract String getName();
+
+    public Identifier getSide() {
+        return side;
+    }
 }
