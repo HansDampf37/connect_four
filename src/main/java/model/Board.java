@@ -1,11 +1,5 @@
 package model;
 
-import java.awt.Graphics;
-
-import model.procedure.Display;
-
-import java.awt.Color;
-
 public class Board {
     public final int HEIGHT;
     public final int WIDTH;
@@ -128,28 +122,5 @@ public class Board {
 
     public Field get(int x, int y) {
         return fields[x][y];
-    }
-
-    public void render(Graphics g) {
-        g.setColor(Color.white);
-        for (int x = 0; x < WIDTH + 1; x++) {
-            g.drawLine(x * Display.GRIDSIZE, 0, x * Display.GRIDSIZE, (HEIGHT + 1) * Display.GRIDSIZE);
-        }
-        for (int y = 0; y < HEIGHT + 1; y++) {
-            g.drawLine(0, y * Display.GRIDSIZE, (WIDTH + 1) * Display.GRIDSIZE, y * Display.GRIDSIZE);
-        }
-        int margin = 10;
-        int radius = Display.GRIDSIZE/2 - margin;
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                if (fields[x][y].getPlayer() == Identifier.PLAYER_1) {
-                    g.setColor(new Color(40, 160, 40));
-                    g.fillOval(x * Display.GRIDSIZE + margin, -(y + 1) * Display.GRIDSIZE + margin + HEIGHT * Display.GRIDSIZE, 2 * radius, 2 * radius);
-                } else if (fields[x][y].getPlayer() == Identifier.PLAYER_2) {
-                    g.setColor(new Color(160, 40, 40));
-                    g.fillOval(x * Display.GRIDSIZE + margin, -(y + 1) * Display.GRIDSIZE + margin + HEIGHT * Display.GRIDSIZE, 2 * radius, 2 * radius);
-                }
-            }
-        }
     }
 }
