@@ -5,6 +5,7 @@ import bot.tree.Tree;
 import model.Board;
 import model.Identifier;
 import model.Player;
+import model.procedure.ConsoleOutput;
 
 public abstract class PonderingBot extends Player {
     /**
@@ -18,12 +19,14 @@ public abstract class PonderingBot extends Player {
 
     @Override
     public int getColumnOfNextMove() {
-        // builds a tree
         Tree states = new Tree(forecast, board.WIDTH);
-        // makes the tree represent the games states
         traverse(forecast, 0, states.getRoot(), side);
-        // gets the best following state
-        return states.getRoot().indexOfNodeWithBestExpectationOfHighValue();
+        int result = states.getRoot().indexOfNodeWithBestExpectationOfHighValue();
+        int rating = states.getRoot().getValue();
+        if (rating > Integer.MAX_VALUE - 20) System.out.println("Win inevitable");
+        if (rating < Integer.MIN_VALUE + 20) System.out.println("Loss inevitable");
+        System.out.println("Rating: " + rating);
+        return result;
     }
 
     /**
@@ -38,6 +41,7 @@ public abstract class PonderingBot extends Player {
         Identifier winner = board.getWinner();
         if (winner != Identifier.EMPTY) {
             currentNode.makeLeave();
+            if (lvl < 3) System.out.println(winner + " can finish \n" + board);
             if (winner == side) {
                 currentNode.setValue(Integer.MAX_VALUE);
             } else {
@@ -59,5 +63,9 @@ public abstract class PonderingBot extends Player {
         }
     }
 
+    /**
+     * evaluates the state of the current board
+     * @return high return values are associated with a good rating
+     */
     protected abstract int rateState();
 }

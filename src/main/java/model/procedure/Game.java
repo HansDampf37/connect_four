@@ -4,6 +4,8 @@ import model.*;
 import java.awt.image.BufferStrategy;
 
 import java.awt.Graphics;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 public abstract class Game  {
     protected Board board = new Board(7, 6);
@@ -24,17 +26,18 @@ public abstract class Game  {
     }
     
     public void play() {
-        Identifier winner = Identifier.EMPTY;
-        for (; winner == Identifier.EMPTY; winner = board.getWinner()){
+        System.out.println(players[0].getName() + " vs " + players[1].getName());
+        Identifier winner;
+        for (winner = Identifier.EMPTY; winner == Identifier.EMPTY; winner = board.getWinner()){
             if (ConsoleOutput.printBoard) System.out.println(board);
             throwInColumn(players[curPlayerInd].getColumnOfNextMove());
             if (!board.stillSpace()) break;
         }
-        if (ConsoleOutput.printBoard) System.out.println(board);
+        //if (ConsoleOutput.printBoard) System.out.println(board);
         if (ConsoleOutput.gameResult) {
-            if (winner == Identifier.PLAYER_1) System.out.println("P 1 (X) won");
-            else if(winner == Identifier.PLAYER_2) System.out.println("P 2 (O) won");
-            else System.out.println("Its a draw");
+            Identifier finalWinner = winner;
+            Arrays.stream(players).filter(p -> p.getSide() == finalWinner).forEach(p -> System.out.println(p.getName() + " won"));
+            if (Arrays.stream(players).noneMatch(p -> p.getSide() == finalWinner)) System.out.println("Its a draw");
             System.out.println(board);
         }
         for (Player player : players) player.goodbye(winner);

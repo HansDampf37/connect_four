@@ -1,5 +1,6 @@
 package bot;
 
+import bot.tree.Tree;
 import  model.*;
 
 /**
@@ -46,8 +47,8 @@ public class RuedigerDerBot extends PonderingBot {
         opponentPressureMap = new int[board.WIDTH][board.HEIGHT];
     }
 
-    RuedigerDerBot(Identifier player2, Board board, int forecast) {
-        this(player2, board);
+    RuedigerDerBot(Identifier player, Board board, int forecast) {
+        this(player, board);
         this.forecast = forecast;
 	}
 
@@ -176,16 +177,29 @@ public class RuedigerDerBot extends PonderingBot {
         buildPressureMatrix(side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
         searchForPredicaments();
         //if this bot created a predicament and the opponent didn't, he won
-        if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) rating = Integer.MAX_VALUE - ownPredicamentHeight;
+        if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
+            rating = Integer.MAX_VALUE - ownPredicamentHeight;
+            System.out.println("Own predicament\n" + board + "\n" + mapToString());
+        }
         //if the opponent created a predicament and this bot didn't, he lost
-        else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) rating = Integer.MIN_VALUE + oppPredicamentHeight;
+        else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) {
+            rating = Integer.MIN_VALUE + oppPredicamentHeight;
+            System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
+        }
         //if both players created a predicament the player with the less moves to use his predicament wins
         else if (ownPredicamentInLine != -1) rating = ownPredicamentHeight <= oppPredicamentHeight ? Integer.MAX_VALUE - ownPredicamentHeight: Integer.MIN_VALUE + oppPredicamentHeight;
         else rating = sum(ownPressureMap) - sum(opponentPressureMap);
         return rating;
     }
 
+    /**
+     * Searches for a column with predicaments. Read {@link #ownPredicamentInLine}
+     */
     private void searchForPredicaments() {
+        ownPredicamentHeight = -1;
+        oppPredicamentHeight = -1;
+        ownPredicamentInLine = -1;
+        opponentPredicamentInLine = -1;
         for (int x = 0; x < board.WIDTH; x++) {
             boolean oppPredicamentPossible = true;
             boolean ownPredicamentPossible = true;
@@ -195,6 +209,7 @@ public class RuedigerDerBot extends PonderingBot {
                     // if the opponent has a threat underneath a predicament it doesn't count since one cant use it
                     if (opponentPressureMap[x][y] == 3) ownPredicamentPossible = false;
                     if (ownPressureMap[x][y] == 3) oppPredicamentPossible = false;
+                    if (!ownPredicamentPossible && !oppPredicamentPossible) break;
                     if (ownPredicamentPossible && ownPressureMap[x][y] == 3 && !outOfBoardY(y + 1) && ownPressureMap[x][y + 1] == 3) {
                         //Predicament found
                         ownPredicamentInLine = x;

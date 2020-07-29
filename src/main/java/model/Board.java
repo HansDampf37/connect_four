@@ -26,6 +26,7 @@ public class Board {
         for (int y = HEIGHT - 1; y >= 0; y--){
             if (!fields[x][y].isEmpty()) {
                 fields[x][y].setPlayer(Identifier.EMPTY);
+                return;
             }
         }
     }

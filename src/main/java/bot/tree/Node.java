@@ -82,7 +82,7 @@ public class Node {
     /**
      * return the value
      */
-    int getValue() {
+    public int getValue() {
         return val;
     }
 
@@ -151,6 +151,7 @@ public class Node {
                 }
             }
         }
+        val = bestValue;
         return bestIndices.get((int)(Math.random() * bestIndices.size()));
     }
 
@@ -158,7 +159,7 @@ public class Node {
      * return true if this node has children, false otherwise
      * @return true if this node has children, false otherwise
      */
-    public boolean hasChildren() {
+    private boolean hasChildren() {
         return !children.isEmpty();
     }
 
