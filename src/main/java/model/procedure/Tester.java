@@ -1,5 +1,6 @@
-package bot;
+package model.procedure;
 
+import bot.RuedigerDerBot;
 import model.Identifier;
 import model.procedure.ConsoleOutput;
 import model.procedure.Game;
@@ -12,8 +13,8 @@ public class Tester extends Game {
     protected void definePlayers() {
         ConsoleOutput.setAll(true, true, false, false, false, false, true, true);
         players = new Player[2];
-        players[0] = new HumanPlayer(Identifier.PLAYER_1, board);
-        players[1] = new RuedigerDerBot(Identifier.PLAYER_2, board, 5);
+        players[1] = new RuedigerDerBot(Identifier.PLAYER_1, board, 4);
+        players[0] = new RuedigerDerBot(Identifier.PLAYER_2, board, 6);
     }
 
 }

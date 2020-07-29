@@ -40,7 +40,6 @@ public abstract class Game  {
             if (Arrays.stream(players).noneMatch(p -> p.getSide() == finalWinner)) System.out.println("Its a draw");
             System.out.println(board);
         }
-        for (Player player : players) player.goodbye(winner);
         reset();
     }
 

@@ -1,4 +1,4 @@
-import bot.Tester;
+import model.procedure.Tester;
 import model.procedure.Game;
 
 public class App {

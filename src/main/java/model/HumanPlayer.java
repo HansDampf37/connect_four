@@ -1,9 +1,5 @@
 package model;
 
-import model.Board;
-import model.Identifier;
-import model.Player;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -25,11 +21,6 @@ public class HumanPlayer extends Player {
                 e.printStackTrace();
             }
         }
-    }
-
-    @Override
-    public void goodbye(Identifier winner) {
-        System.out.println(winner == side ? "Die Krone der Schöpfung zieht sich zurück." : "Nicht schlecht");
     }
 
     @Override

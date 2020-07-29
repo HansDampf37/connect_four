@@ -1,6 +1,5 @@
 package bot;
 
-
 import model.*;
 import model.Player;
 
@@ -13,11 +12,6 @@ public class Bogo extends Player {
     @Override
     public int getColumnOfNextMove() {
         return (int)(Math.random() * board.WIDTH);
-    }
-
-    @Override
-    public void goodbye(Identifier winner) {
-        System.out.println("Ciao");
     }
 
     @Override

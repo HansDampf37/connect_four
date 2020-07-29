@@ -111,7 +111,7 @@ public class Board {
             if (y != 0) str.append("\n|");
         }
         str.append("\n");
-        for (int x = 0; x < WIDTH; x++) str.append("--");
+        for (int x = 0; x < WIDTH; x++) str.append("-").append(x + 1);
         return str.append("-").toString();
     }
 

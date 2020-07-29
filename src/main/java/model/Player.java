@@ -1,7 +1,5 @@
 package model;
 
-import model.*;
-
 public abstract class Player {
     /**
      * Player_1 or Player_2
@@ -26,13 +24,6 @@ public abstract class Player {
      * @return the columns index
      */
     public abstract int getColumnOfNextMove();
-
-    /**
-     * Optional method that gets invoked after the game has finished
-     * 
-     * @param winner the games winner
-     */
-    public abstract void goodbye(Identifier winner);
 
     public abstract String getName();
 

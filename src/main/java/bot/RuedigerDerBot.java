@@ -1,6 +1,5 @@
 package bot;
 
-import bot.tree.Tree;
 import  model.*;
 
 /**
@@ -47,7 +46,7 @@ public class RuedigerDerBot extends PonderingBot {
         opponentPressureMap = new int[board.WIDTH][board.HEIGHT];
     }
 
-    RuedigerDerBot(Identifier player, Board board, int forecast) {
+    public RuedigerDerBot(Identifier player, Board board, int forecast) {
         this(player, board);
         this.forecast = forecast;
 	}
@@ -242,17 +241,12 @@ public class RuedigerDerBot extends PonderingBot {
             if (y != 0) str.append("\n|");
         }
         str.append("\n");
-        for (int x = 0; x < board.WIDTH; x++) str.append("--");
+        for (int x = 0; x < board.WIDTH; x++) str.append("-").append(x + 1);
         return str.append("-").toString();
     }
 
     @Override
-    public void goodbye(Identifier winner) {
-        if (winner == side) System.out.println("Rüdiger: Reckt by Rüdiger");
-    }
-
-    @Override
     public String getName() {
-        return "Ruediger";
+        return "Ruediger (" + forecast + ")";
     }
 }

@@ -111,7 +111,32 @@ public class TorbenDerBot extends PonderingBot {
         updateOwnOverallPatternUsage();
         checkOpponentsCurrentPatternUsage();
         board.removeOfColumn(bestColumn);
+        int rating = states.getRoot().getValue();
+        if (rating > Integer.MAX_VALUE - board.HEIGHT) {
+            adapt(true);
+        } else if (rating < Integer.MIN_VALUE + board.HEIGHT) {
+            adapt(false);
+        }
         return bestColumn;
+    }
+
+    private void adapt(boolean won) {
+        if (won) {
+            for (int i = 0; i < checker.getPatternAmount(); i++) {
+                if (ownOverallPatternUsage[i] != 0)
+                    ratings[i] += (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
+                if (opOverallPatternUsage[i] != 0)
+                    ratings[i] -= (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
+            }
+        } else {
+            for (int i = 0; i < checker.getPatternAmount(); i++) {
+                if (ownOverallPatternUsage[i] != 0)
+                    ratings[i] -= (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
+                if (opOverallPatternUsage[i] != 0)
+                    ratings[i] += (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
+            }
+        }
+        writeRatings();
     }
 
     /**
@@ -191,33 +216,6 @@ public class TorbenDerBot extends PonderingBot {
                     side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
         }
         return rating;
-    }
-
-    /**
-     * adapts ratings for patterns relative to winning or losing the game
-     */
-    @Override
-    public void goodbye(final Identifier winner) {
-        if (winner == side) {
-            for (int i = 0; i < checker.getPatternAmount(); i++) {
-                if (ownOverallPatternUsage[i] != 0)
-                    ratings[i] += (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
-                if (opOverallPatternUsage[i] != 0)
-                    ratings[i] -= (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
-            }
-            if (ConsoleOutput.playerGreetings)
-                System.out.println("Torben: GG eZ");
-        } else if (winner == (side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1)) {
-            for (int i = 0; i < checker.getPatternAmount(); i++) {
-                if (ownOverallPatternUsage[i] != 0)
-                    ratings[i] -= (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
-                if (opOverallPatternUsage[i] != 0)
-                    ratings[i] += (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
-            }
-            if (ConsoleOutput.playerGreetings)
-                System.out.println("Torben: that won't happen again");
-        }
-        writeRatings();
     }
 
     @Override
