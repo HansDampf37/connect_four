@@ -2,32 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_oracle_java_jre_unknown.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_oracle_java_jre_unknown.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/game.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/Bogo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/Bogo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/Tester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Player.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/procedure/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/procedure/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Bogo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Bogo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Tester.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Player.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/DefaultGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/DefaultGame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/game.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/game-1.0.0.jar" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -43,19 +25,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/model/Player.java">
+        <entry file="file://$PROJECT_DIR$/pom.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="662">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+            <state relative-caret-position="-769">
+              <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
+        <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Tester.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="621">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
+            <state relative-caret-position="324">
+              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -87,6 +69,8 @@
       <find>inevitable</find>
       <find>die</find>
       <find>own pre</find>
+      <find>org.apache.maven.plugins</find>
+      <find>maven-jar-plugin</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -121,9 +105,9 @@
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Game.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Board.java" />
-        <option value="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Bogo.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" />
       </list>
     </option>
   </component>
@@ -229,7 +213,7 @@
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
@@ -288,18 +272,18 @@
       <workItem from="1595949830800" duration="1236000" />
       <workItem from="1595968039897" duration="3403000" />
       <workItem from="1595971478564" duration="13725000" />
-      <workItem from="1596029149388" duration="4695000" />
+      <workItem from="1596029149388" duration="5116000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="32934000" />
+    <option name="totallyTimeSpent" value="33355000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-1" width="1924" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -309,7 +293,7 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299595" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.4868421" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39979756" />
+      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39979756" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -559,13 +543,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Tester.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/Bogo.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="27">
@@ -583,17 +560,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.classpath">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="662">
+        <state relative-caret-position="676">
           <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/game.iml">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        <state relative-caret-position="-769">
+          <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Tester.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -688,6 +678,7 @@
   </component>
   <component name="mavenExecuteGoalHistory">
     <option value="$PROJECT_DIR$" />
+    <option value="clean install" />
     <option value="package" />
   </component>
 </project>

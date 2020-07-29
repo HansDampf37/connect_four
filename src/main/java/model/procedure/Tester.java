@@ -13,8 +13,9 @@ public class Tester extends Game {
     protected void definePlayers() {
         ConsoleOutput.setAll(true, true, false, false, false, false, true, true);
         players = new Player[2];
-        players[1] = new RuedigerDerBot(Identifier.PLAYER_1, board, 4);
-        players[0] = new RuedigerDerBot(Identifier.PLAYER_2, board, 6);
+        int index = (int)Math.round(Math.random());
+        players[index] = new HumanPlayer(Identifier.PLAYER_1, board);
+        players[index == 0 ? 1 : 0] = new RuedigerDerBot(Identifier.PLAYER_2, board, 4);
     }
 
 }
