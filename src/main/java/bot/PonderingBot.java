@@ -41,7 +41,7 @@ public abstract class PonderingBot extends Player {
         Identifier winner = board.getWinner();
         if (winner != Identifier.EMPTY) {
             currentNode.makeLeave();
-            if (lvl < 3) System.out.println(winner + " can finish \n" + board);
+            // if (lvl < 3) System.out.println(winner + " can finish \n" + board);
             if (winner == side) {
                 currentNode.setValue(Integer.MAX_VALUE);
             } else {

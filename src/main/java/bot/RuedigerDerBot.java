@@ -179,12 +179,12 @@ public class RuedigerDerBot extends PonderingBot {
         //if this bot created a predicament and the opponent didn't, he won
         if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
             rating = Integer.MAX_VALUE - ownPredicamentHeight;
-            System.out.println("Own predicament\n" + board + "\n" + mapToString());
+            //System.out.println("Own predicament\n" + board + "\n" + mapToString());
         }
         //if the opponent created a predicament and this bot didn't, he lost
         else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) {
             rating = Integer.MIN_VALUE + oppPredicamentHeight;
-            System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
+            //System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
         }
         //if both players created a predicament the player with the less moves to use his predicament wins
         else if (ownPredicamentInLine != -1) rating = ownPredicamentHeight <= oppPredicamentHeight ? Integer.MAX_VALUE - ownPredicamentHeight: Integer.MIN_VALUE + oppPredicamentHeight;
