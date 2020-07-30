@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -22,7 +18,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="297">
@@ -39,7 +35,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="384">
+            <state relative-caret-position="649">
               <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
               <folding>
                 <element signature="e#2353#2354#0" expanded="true" />
@@ -53,15 +49,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar:///usr/lib/jvm/jdk-12.0.1/lib/src.zip!/java.base/java/util/Objects.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="231">
-              <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
-              <folding>
-                <element signature="e#13877#13878#0" expanded="true" />
-                <element signature="e#13945#13946#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="459">
+              <caret line="209" column="53" selection-start-line="209" selection-start-column="53" selection-end-line="209" selection-end-column="53" />
             </state>
           </provider>
         </entry>
@@ -69,8 +61,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1">
-              <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
+            <state relative-caret-position="190">
+              <caret line="43" column="33" lean-forward="true" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
             </state>
           </provider>
         </entry>
@@ -147,12 +139,10 @@
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/PatternSet.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/Pattern.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Tester.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/DefaultGame.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Game.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Bogo.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" />
@@ -167,6 +157,8 @@
         <option value="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" />
         <option value="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" />
       </list>
     </option>
   </component>
@@ -446,7 +438,7 @@
       <workItem from="1595971478564" duration="13725000" />
       <workItem from="1596029149388" duration="8294000" />
       <workItem from="1596053888702" duration="1778000" />
-      <workItem from="1596111561535" duration="7364000" />
+      <workItem from="1596111561535" duration="8475000" />
     </task>
     <task id="LOCAL-00001" summary="version für matze">
       <created>1596034411144</created>
@@ -491,13 +483,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="45675000" />
+    <option name="totallyTimeSpent" value="46786000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-1" width="1924" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -588,16 +580,6 @@
     <option name="LAST_COMMIT_MESSAGE" value="version für matze" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java</url>
-          <line>118</line>
-          <properties />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="leaves.get(leaves.size() - 1)" language="JAVA" />
@@ -702,17 +684,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
           <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="132">
-          <caret line="243" column="53" selection-start-line="243" selection-start-column="53" selection-end-line="243" selection-end-column="53" />
-          <folding>
-            <element signature="e#11695#11696#0" expanded="true" />
-            <element signature="e#11743#11744#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -850,24 +821,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar:///usr/lib/jvm/jdk-12.0.1/lib/src.zip!/java.base/java/util/Objects.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
-          <folding>
-            <element signature="e#13877#13878#0" expanded="true" />
-            <element signature="e#13945#13946#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1">
-          <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Node.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="635">
@@ -884,9 +837,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#152#153#0" expanded="true" />
+            <element signature="e#189#190#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="43" column="33" lean-forward="true" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk-12.0.1/lib/src.zip!/java.base/java/util/Objects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
+          <folding>
+            <element signature="e#13877#13878#0" expanded="true" />
+            <element signature="e#13945#13946#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
+        <state relative-caret-position="649">
           <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
           <folding>
             <element signature="e#2353#2354#0" expanded="true" />
@@ -899,15 +882,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#152#153#0" expanded="true" />
-            <element signature="e#189#190#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="459">
+          <caret line="209" column="53" selection-start-line="209" selection-start-column="53" selection-end-line="209" selection-end-column="53" />
         </state>
       </provider>
     </entry>

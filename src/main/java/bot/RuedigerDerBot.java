@@ -206,8 +206,8 @@ public class RuedigerDerBot extends PonderingBot {
             for (int y = board.HEIGHT - 1; y >= 0; y--) {
                 if (board.get(x, y).isEmpty()) {
                     // if the opponent has a threat underneath a predicament it doesn't count since one cant use it
-                    if (opponentPressureMap[x][y] == 3) ownPredicamentPossible = false;
-                    if (ownPressureMap[x][y] == 3) oppPredicamentPossible = false;
+                    if (opponentPressureMap[x][y] == 3 && board.get(x, y).isEmpty()) ownPredicamentPossible = false;
+                    if (ownPressureMap[x][y] == 3 && board.get(x, y).isEmpty()) oppPredicamentPossible = false;
                     if (!ownPredicamentPossible && !oppPredicamentPossible) break;
                     if (ownPredicamentPossible && ownPressureMap[x][y] == 3 && !outOfBoardY(y + 1) && ownPressureMap[x][y + 1] == 3) {
                         //Predicament found
