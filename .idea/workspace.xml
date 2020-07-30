@@ -2,14 +2,34 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/Maven__com_oracle_java_jre_unknown.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/model/BoardTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/game.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/game.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/game-1.0.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Board.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/model/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/FieldTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/Trainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Trainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Board.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Field.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Field.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/Identifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Identifier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/model/AppTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -23,26 +43,68 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-769">
-              <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Tester.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="271">
+                  <caret line="145" column="56" selection-start-line="145" selection-start-column="56" selection-end-line="145" selection-end-column="56" />
+                  <folding>
+                    <element signature="method#checkFor4RowOnField#0;class#Board#0" />
+                    <element signature="e#4281#4282#0" expanded="true" />
+                    <element signature="e#4308#4309#0" expanded="true" />
+                    <element signature="e#4464#4465#0" expanded="true" />
+                    <element signature="e#4508#4509#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/test/java/model/BoardTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="533">
+                  <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
+                  <folding>
+                    <element signature="e#183#184#0" expanded="true" />
+                    <element signature="e#214#215#0" expanded="true" />
+                    <element signature="e#1039#1040#0" expanded="true" />
+                    <element signature="e#1098#1099#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/test/java/model/FieldTest.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="108">
+                  <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="594">
+                  <caret line="126" selection-start-line="126" selection-end-line="126" />
+                  <folding>
+                    <element signature="method#checkFor4RowOnField#0;class#Board#0" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -71,6 +133,7 @@
       <find>own pre</find>
       <find>org.apache.maven.plugins</find>
       <find>maven-jar-plugin</find>
+      <find>get</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -99,15 +162,18 @@
         <option value="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Player.java" />
-        <option value="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/DefaultGame.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Game.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/RuedigerDerBot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/model/Board.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Bogo.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Tester.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" />
+        <option value="$PROJECT_DIR$/src/test/java/model/AppTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/model/FieldTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/model/Board.java" />
+        <option value="$PROJECT_DIR$/src/test/java/model/BoardTest.java" />
       </list>
     </option>
   </component>
@@ -141,6 +207,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -172,31 +240,33 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bot" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
               <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="procedure" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -214,7 +284,7 @@
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
@@ -244,7 +314,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.BoardTest.testRemoveOfColumn">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="App" />
       <module name="game" />
@@ -252,8 +322,74 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.BoardTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.testFull" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.BoardTest" />
+      <option name="METHOD_NAME" value="testFull" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BoardTest.testRemoveOfColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.BoardTest" />
+      <option name="METHOD_NAME" value="testRemoveOfColumn" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="FieldTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="model" />
+      <option name="MAIN_CLASS_NAME" value="model.FieldTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BoardTest.testRemoveOfColumn" />
+        <item itemvalue="JUnit.BoardTest" />
+        <item itemvalue="JUnit.BoardTest.testFull" />
+        <item itemvalue="JUnit.FieldTest" />
         <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
@@ -272,18 +408,60 @@
       <workItem from="1595949830800" duration="1236000" />
       <workItem from="1595968039897" duration="3403000" />
       <workItem from="1595971478564" duration="13725000" />
-      <workItem from="1596029149388" duration="5116000" />
+      <workItem from="1596029149388" duration="8294000" />
+      <workItem from="1596053888702" duration="1778000" />
+      <workItem from="1596111561535" duration="2587000" />
     </task>
+    <task id="LOCAL-00001" summary="version für matze">
+      <created>1596034411144</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1596034411144</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TestHistory">
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 43m 40s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 44m 36s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 46m 33s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 23s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 27s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 54s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 57s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 56m 24s.xml">
+      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest - 2020.07.30 at 14h 56m 32s.xml">
+      <configuration name="BoardTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BoardTest_testRemoveOfColumn - 2020.07.30 at 15h 01m 01s.xml">
+      <configuration name="BoardTest.testRemoveOfColumn" configurationId="JUnit" />
+    </history-entry>
+  </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="33355000" />
+    <option name="totallyTimeSpent" value="40898000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-1" width="1924" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.2609375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -292,8 +470,8 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299595" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.4868421" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" visible="true" weight="0.39979756" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2540486" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39979756" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -369,6 +547,10 @@
       </map>
     </option>
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="version für matze" />
+    <option name="LAST_COMMIT_MESSAGE" value="version für matze" />
+  </component>
   <component name="XDebuggerManager">
     <watches-manager>
       <configuration name="Application">
@@ -411,13 +593,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Leave.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/Torben.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/TreeStrategie.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/model/Field.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Display.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
@@ -472,16 +647,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/model/HumanPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="621">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="163">
@@ -525,17 +690,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="568">
-          <caret line="113" column="28" selection-start-line="113" selection-start-column="28" selection-end-line="113" selection-end-column="28" />
-          <folding>
-            <element signature="method#checkFor4RowOnField#0;class#Board#0" />
-            <element signature="method#stillSpace#0;class#Board#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Game.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="135">
@@ -563,27 +717,78 @@
     <entry file="file://$PROJECT_DIR$/.classpath">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/model/Player.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="676">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/game.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-769">
+        <state relative-caret-position="1323">
           <caret line="49" column="24" selection-start-line="49" selection-start-column="24" selection-end-line="49" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/HumanPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="18" column="23" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Field.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/procedure/Tester.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="17" column="31" selection-start-line="17" selection-start-column="31" selection-end-line="17" selection-end-column="31" />
+        <state relative-caret-position="270">
+          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Player.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="703">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/model/FieldTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="108">
+          <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="145" column="56" selection-start-line="145" selection-start-column="56" selection-end-line="145" selection-end-column="56" />
+          <folding>
+            <element signature="method#checkFor4RowOnField#0;class#Board#0" />
+            <element signature="e#4281#4282#0" expanded="true" />
+            <element signature="e#4308#4309#0" expanded="true" />
+            <element signature="e#4464#4465#0" expanded="true" />
+            <element signature="e#4508#4509#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/model/BoardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
+          <folding>
+            <element signature="e#183#184#0" expanded="true" />
+            <element signature="e#214#215#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+            <element signature="e#1098#1099#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -644,7 +849,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

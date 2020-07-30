@@ -16,7 +16,7 @@ public class HumanPlayer extends Player {
         while (true) {
             try {
                 String s = br.readLine();
-                if (s.matches("[1-7]")) return Integer.valueOf(s) - 1;
+                if (s != null && s.matches("[1-" + board.WIDTH + "]")) return Integer.valueOf(s) - 1;
             } catch (IOException e) {
                 e.printStackTrace();
             }

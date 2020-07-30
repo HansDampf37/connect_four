@@ -1,11 +1,14 @@
 package model;
 
-public class Board {
+import java.util.Iterator;
+
+public class Board implements Iterable<Field> {
     public final int HEIGHT;
     public final int WIDTH;
     private Field[][] fields;
 
     public Board(int width, int height) {
+        if (width <= 0 || height <= 0) throw new IllegalArgumentException("height and with must be natural numbers");
         HEIGHT = height;
         WIDTH = width;
         fields = new Field[WIDTH][HEIGHT];
@@ -123,5 +126,26 @@ public class Board {
 
     public Field get(int x, int y) {
         return fields[x][y];
+    }
+
+    @Override
+    public Iterator<Field> iterator() {
+        return new BoardIterator();
+    }
+
+    class BoardIterator implements Iterator<Field> {
+        private int pointer = 0;
+
+        @Override
+        public boolean hasNext() {
+            return pointer < HEIGHT * WIDTH;
+        }
+
+        @Override
+        public Field next() {
+            Field res = fields[pointer % WIDTH][pointer / WIDTH];
+            pointer++;
+            return res;
+        }
     }
 }
