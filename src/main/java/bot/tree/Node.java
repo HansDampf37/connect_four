@@ -207,4 +207,12 @@ public class Node {
     private boolean isVisible() {
         return !invisible;
     }
+
+    boolean isLeave() {
+        return children.size() == 0;
+    }
+
+    int getAmountOfChildren() {
+        return children.size();
+    }
 }

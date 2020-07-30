@@ -2,34 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/model/BoardTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/Board.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/Board.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/HumanPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/model/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/model/FieldTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/RuedigerDerBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/Trainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Trainer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Board.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Field.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Field.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Identifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Identifier.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-model.AppTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/model.AppTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/model/AppTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -43,68 +21,79 @@
     <option name="isMigrated" value="true" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="271">
-                  <caret line="145" column="56" selection-start-line="145" selection-start-column="56" selection-end-line="145" selection-end-column="56" />
-                  <folding>
-                    <element signature="method#checkFor4RowOnField#0;class#Board#0" />
-                    <element signature="e#4281#4282#0" expanded="true" />
-                    <element signature="e#4308#4309#0" expanded="true" />
-                    <element signature="e#4464#4465#0" expanded="true" />
-                    <element signature="e#4508#4509#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/test/java/model/BoardTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="533">
-                  <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
-                  <folding>
-                    <element signature="e#183#184#0" expanded="true" />
-                    <element signature="e#214#215#0" expanded="true" />
-                    <element signature="e#1039#1040#0" expanded="true" />
-                    <element signature="e#1098#1099#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/test/java/model/FieldTest.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="108">
-                  <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="594">
-                  <caret line="126" selection-start-line="126" selection-end-line="126" />
-                  <folding>
-                    <element signature="method#checkFor4RowOnField#0;class#Board#0" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="297">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#152#153#0" expanded="true" />
+                <element signature="e#189#190#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="384">
+              <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+              <folding>
+                <element signature="e#2353#2354#0" expanded="true" />
+                <element signature="e#2393#2394#0" expanded="true" />
+                <element signature="e#2700#2701#0" expanded="true" />
+                <element signature="e#2731#2732#0" expanded="true" />
+                <element signature="e#3067#3068#0" expanded="true" />
+                <element signature="e#3155#3156#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar:///usr/lib/jvm/jdk-12.0.1/lib/src.zip!/java.base/java/util/Objects.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
+              <folding>
+                <element signature="e#13877#13878#0" expanded="true" />
+                <element signature="e#13945#13946#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1">
+              <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Node.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="635">
+              <caret line="214" column="4" selection-start-line="214" selection-start-column="4" selection-end-line="214" selection-end-column="4" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1586#1587#0" expanded="true" />
+                <element signature="e#1628#1629#0" expanded="true" />
+                <element signature="e#6507#6508#0" expanded="true" />
+                <element signature="e#6550#6551#0" expanded="true" />
+                <element signature="e#6590#6591#0" expanded="true" />
+                <element signature="e#6614#6615#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -153,13 +142,11 @@
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Field.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/Display.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/procedure/ConsoleOutput.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/PatternChecker.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/PatternSet.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/Pattern.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Tester.java" />
-        <option value="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Player.java" />
         <option value="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" />
@@ -174,6 +161,12 @@
         <option value="$PROJECT_DIR$/src/test/java/model/FieldTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Board.java" />
         <option value="$PROJECT_DIR$/src/test/java/model/BoardTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/bot/tree/NodeTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/tree/Visitor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/tree/DFS.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" />
+        <option value="$PROJECT_DIR$/src/main/java/bot/tree/Tree.java" />
+        <option value="$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java" />
       </list>
     </option>
   </component>
@@ -240,6 +233,23 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+              <item name="tree" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -254,6 +264,23 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
+              <item name="vierGewinnt" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="bot" type="462c0819:PsiDirectoryNode" />
+              <item name="tree" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="vierGewinnt" type="b2602c69:ProjectViewProjectNode" />
@@ -314,14 +341,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.BoardTest.testRemoveOfColumn">
-    <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="App" />
-      <module name="game" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+  <component name="RunManager" selected="JUnit.TreeTest">
     <configuration name="BoardTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="game" />
       <extension name="coverage">
@@ -369,28 +389,44 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FieldTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="TreeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="game" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="model.*" />
+          <option name="PATTERN" value="bot.tree.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.FieldTest" />
+      <option name="PACKAGE_NAME" value="bot.tree" />
+      <option name="MAIN_CLASS_NAME" value="bot.tree.TreeTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TreeTest.test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="game" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="bot.tree.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="bot.tree" />
+      <option name="MAIN_CLASS_NAME" value="bot.tree.TreeTest" />
+      <option name="METHOD_NAME" value="test" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.TreeTest" />
+        <item itemvalue="JUnit.TreeTest.test" />
         <item itemvalue="JUnit.BoardTest.testRemoveOfColumn" />
         <item itemvalue="JUnit.BoardTest" />
         <item itemvalue="JUnit.BoardTest.testFull" />
-        <item itemvalue="JUnit.FieldTest" />
-        <item itemvalue="Application.App" />
       </list>
     </recent_temporary>
   </component>
@@ -410,7 +446,7 @@
       <workItem from="1595971478564" duration="13725000" />
       <workItem from="1596029149388" duration="8294000" />
       <workItem from="1596053888702" duration="1778000" />
-      <workItem from="1596111561535" duration="2587000" />
+      <workItem from="1596111561535" duration="7364000" />
     </task>
     <task id="LOCAL-00001" summary="version für matze">
       <created>1596034411144</created>
@@ -423,45 +459,45 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 43m 40s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 10m 20s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 44m 36s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 10m 43s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 46m 33s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 14m 19s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 23s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 17m 00s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 27s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 17m 03s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 54s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 17m 41s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 47m 57s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 20m 05s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testFull - 2020.07.30 at 14h 56m 24s.xml">
-      <configuration name="BoardTest.testFull" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 20m 43s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest - 2020.07.30 at 14h 56m 32s.xml">
-      <configuration name="BoardTest" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 21m 01s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="BoardTest_testRemoveOfColumn - 2020.07.30 at 15h 01m 01s.xml">
-      <configuration name="BoardTest.testRemoveOfColumn" configurationId="JUnit" />
+    <history-entry file="TreeTest - 2020.07.30 at 16h 21m 10s.xml">
+      <configuration name="TreeTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="40898000" />
+    <option name="totallyTimeSpent" value="45675000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-1" width="1924" height="1055" extended-state="4" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.2609375" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2609375" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -470,7 +506,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3299595" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2540486" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.37955466" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39979756" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -552,7 +588,20 @@
     <option name="LAST_COMMIT_MESSAGE" value="version für matze" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java</url>
+          <line>118</line>
+          <properties />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
+      <configuration name="JUnit">
+        <watch expression="leaves.get(leaves.size() - 1)" language="JAVA" />
+      </configuration>
       <configuration name="Application">
         <watch expression="board.hashCode()" language="JAVA" />
       </configuration>
@@ -560,6 +609,11 @@
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="evaluateCodeFragment">
+      <expression>
+        <expression-string>leaves.get(leaves.size() - 1)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>CODE_FRAGMENT</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>board</expression-string>
         <language-id>JAVA</language-id>
@@ -582,6 +636,11 @@
       </expression>
     </expressions>
     <expressions id="watch">
+      <expression>
+        <expression-string>leaves.get(leaves.size() - 1)</expression-string>
+        <language-id>JAVA</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
       <expression>
         <expression-string>board.hashCode()</expression-string>
         <language-id>JAVA</language-id>
@@ -621,36 +680,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="999">
-          <caret line="40" column="17" selection-start-line="40" selection-start-column="17" selection-end-line="40" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4779">
-          <caret line="192" column="19" selection-start-line="192" selection-start-column="19" selection-end-line="192" selection-end-column="19" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1586#1587#0" expanded="true" />
-            <element signature="e#1628#1629#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/Identifier.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="54">
           <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="163">
-          <caret line="49" column="37" selection-start-line="49" selection-start-column="37" selection-end-line="49" selection-end-column="37" />
         </state>
       </provider>
     </entry>
@@ -765,9 +798,36 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/model/BoardTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="676">
+          <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
+          <folding>
+            <element signature="e#183#184#0" expanded="true" />
+            <element signature="e#214#215#0" expanded="true" />
+            <element signature="e#1039#1040#0" expanded="true" />
+            <element signature="e#1098#1099#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/DFS.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="162">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Visitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="2" column="26" lean-forward="true" selection-start-line="2" selection-start-column="26" selection-end-line="2" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/model/Board.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="271">
+        <state relative-caret-position="622">
           <caret line="145" column="56" selection-start-line="145" selection-start-column="56" selection-end-line="145" selection-end-column="56" />
           <folding>
             <element signature="method#checkFor4RowOnField#0;class#Board#0" />
@@ -779,15 +839,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/model/BoardTest.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/junit/junit/4.11/junit-4.11-sources.jar!/org/junit/Assert.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="59" column="40" selection-start-line="59" selection-start-column="40" selection-end-line="59" selection-end-column="40" />
+        <state relative-caret-position="231">
+          <caret line="540" column="23" selection-start-line="540" selection-start-column="23" selection-end-line="540" selection-end-column="23" />
           <folding>
-            <element signature="e#183#184#0" expanded="true" />
-            <element signature="e#214#215#0" expanded="true" />
-            <element signature="e#1039#1040#0" expanded="true" />
-            <element signature="e#1098#1099#0" expanded="true" />
+            <element signature="e#20185#20186#0" expanded="true" />
+            <element signature="e#20237#20238#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/jdk-12.0.1/lib/src.zip!/java.base/java/util/Objects.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="371" column="29" selection-start-line="371" selection-start-column="29" selection-end-line="371" selection-end-column="29" />
+          <folding>
+            <element signature="e#13877#13878#0" expanded="true" />
+            <element signature="e#13945#13946#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1">
+          <caret line="36" column="43" lean-forward="true" selection-start-line="36" selection-start-column="43" selection-end-line="36" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="635">
+          <caret line="214" column="4" selection-start-line="214" selection-start-column="4" selection-end-line="214" selection-end-column="4" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1586#1587#0" expanded="true" />
+            <element signature="e#1628#1629#0" expanded="true" />
+            <element signature="e#6507#6508#0" expanded="true" />
+            <element signature="e#6550#6551#0" expanded="true" />
+            <element signature="e#6590#6591#0" expanded="true" />
+            <element signature="e#6614#6615#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/bot/tree/Tree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="137" column="30" selection-start-line="137" selection-start-column="30" selection-end-line="137" selection-end-column="30" />
+          <folding>
+            <element signature="e#2353#2354#0" expanded="true" />
+            <element signature="e#2393#2394#0" expanded="true" />
+            <element signature="e#2700#2701#0" expanded="true" />
+            <element signature="e#2731#2732#0" expanded="true" />
+            <element signature="e#3067#3068#0" expanded="true" />
+            <element signature="e#3155#3156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/bot/tree/TreeTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#152#153#0" expanded="true" />
+            <element signature="e#189#190#0" expanded="true" />
           </folding>
         </state>
       </provider>
