@@ -19,16 +19,16 @@ public class FieldTest {
     @Test
     public void testSet() {
         f = new Field();
-        assertEquals(f.getPlayer(), Identifier.EMPTY);
+        assertEquals(f.getPlayer(), Token.EMPTY);
         assertTrue(f.isEmpty());
-        f.setPlayer(Identifier.PLAYER_1);
-        assertEquals(f.getPlayer(), Identifier.PLAYER_1);
+        f.setPlayer(Token.PLAYER_1);
+        assertEquals(f.getPlayer(), Token.PLAYER_1);
         assertFalse(f.isEmpty());
-        f.setPlayer(Identifier.PLAYER_2);
-        assertEquals(f.getPlayer(), Identifier.PLAYER_2);
+        f.setPlayer(Token.PLAYER_2);
+        assertEquals(f.getPlayer(), Token.PLAYER_2);
         assertFalse(f.isEmpty());
-        f.setPlayer(Identifier.EMPTY);
-        assertEquals(f.getPlayer(), Identifier.EMPTY);
+        f.setPlayer(Token.EMPTY);
+        assertEquals(f.getPlayer(), Token.EMPTY);
         assertTrue(f.isEmpty());
     }
 

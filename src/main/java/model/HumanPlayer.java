@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class HumanPlayer extends Player {
 
-    public HumanPlayer(Identifier side, Board board) {
+    public HumanPlayer(Token side, Board board) {
         super(side, board);
     }
 

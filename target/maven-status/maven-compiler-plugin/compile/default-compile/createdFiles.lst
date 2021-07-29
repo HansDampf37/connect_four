@@ -1,3 +1,4 @@
+bot/tree/Tree$1.class
 model/procedure/Tester.class
 model/procedure/DefaultGame.class
 bot/Torben/PatternSet.class
@@ -10,11 +11,13 @@ App.class
 bot/Torben/Pattern.class
 model/Player.class
 bot/RuedigerDerBot.class
+bot/tree/Tree$DFS.class
 model/HumanPlayer.class
 model/procedure/Display.class
 bot/Torben/TorbenDerBot.class
 model/Identifier.class
 bot/Bogo.class
 model/Field.class
+model/Board$BoardIterator.class
 bot/PonderingBot.class
 bot/tree/Node.class

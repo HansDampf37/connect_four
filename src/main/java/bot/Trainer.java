@@ -1,7 +1,7 @@
 package bot;
 
 import bot.Torben.TorbenDerBot;
-import model.Identifier;
+import model.Token;
 import model.procedure.ConsoleOutput;
 import model.procedure.Game;
 import model.Player;
@@ -11,8 +11,8 @@ public class Trainer extends Game {
 	@Override
 	protected void definePlayers() {
         players = new Player[2];
-        players[0] = new TorbenDerBot(Identifier.PLAYER_1, board, 4);
-        players[1] = new TorbenDerBot(Identifier.PLAYER_2, board, 4);
+        players[0] = new TorbenDerBot(Token.PLAYER_1, board, 4);
+        players[1] = new TorbenDerBot(Token.PLAYER_2, board, 4);
     }
     
     public void train(int intensity) {

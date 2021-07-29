@@ -66,7 +66,7 @@ public class Pattern {
         }
     }
 
-    public int amountOfTimesThisPatternIsOnBoard(Board board, Identifier player) {
+    public int amountOfTimesThisPatternIsOnBoard(Board board, Token player) {
         int amounts = 0;
         for (int xOffs = 0; xOffs <= board.WIDTH - width; xOffs++) {
             for (int yOffs = -1; yOffs <= board.HEIGHT - height; yOffs++) {
@@ -77,21 +77,21 @@ public class Pattern {
         return amounts;
     }
 
-    private boolean searchWithOffset(int xOffset, int yOffset, Board board, Identifier player) {
+    private boolean searchWithOffset(int xOffset, int yOffset, Board board, Token player) {
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 if (y + yOffset < 0) {
                     if (pattern[x][y] != NOT_EMPTY) return false;
                 } else {
                     if (pattern[x][y] != NULL) {
-                        Identifier boardValue = board.get(x + xOffset, y + yOffset).getPlayer();
+                        Token boardValue = board.get(x + xOffset, y + yOffset).getPlayer();
                         int patternValue = pattern[x][y];
                         if (patternValue == ME) {
                             if (boardValue != player) return false;
                         } else if (patternValue == EMPTY) {
-                            if (boardValue != Identifier.EMPTY) return false;
+                            if (boardValue != Token.EMPTY) return false;
                         } else if (patternValue == NOT_EMPTY) {
-                            if (boardValue == Identifier.EMPTY) return false;
+                            if (boardValue == Token.EMPTY) return false;
                         }
                     }
                 }

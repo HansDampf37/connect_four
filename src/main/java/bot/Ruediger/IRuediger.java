@@ -1,30 +1,28 @@
-package bot;
+package bot.Ruediger;
 
-import  model.*;
+import bot.PonderingBot;
+import model.Board;
+import model.Token;
 
-/**
- * Ruediger is analyzing the board. He wants to maximize the amount of rows columns and diagonals that he can use to finish
- * and minimize the amount of rows columns and diagonals that the opponent can use to finish.
- */
-public class RuedigerDerBot extends PonderingBot {
+public abstract class IRuediger extends PonderingBot {
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by this player
      */
-    private int[][] ownPressureMap;
+    int[][] ownThreatMap;
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by the opponent
      */
-    private int[][] opponentPressureMap;
+    int[][] opponentThreatMap;
     /**
      * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
      * to see those predicaments the bot always plays perfectly and wins the game. But there are situations where
      * predicaments aren't recognized by the tree-approach because their usages are too far in the future
-     * for the forecast to see them. The only predicaments not seen by te forecast are the ones where there are two fields
-     * that are pressured 3 times and that are directly on top of each other.
-     * Additionally there mustn't be another field underneath such a constellation that is threatened 3 times by the opponent.
-     * These kind of patterns are easy to find and if there is a column as described this variable contains its index.
+     * for the forecast to see them. The only predicaments not seen by the forecast are the ones where there are two fields
+     * that are threatened 3 times and that are directly on top of each other.
+     * Additionally, there mustn't be another field underneath such a constellation that is threatened 3 times by the opponent.
+     * These kinds of patterns are easy to find and if there is a column as described this variable contains its index.
      */
     private int ownPredicamentInLine = -1;
     /**
@@ -40,22 +38,42 @@ public class RuedigerDerBot extends PonderingBot {
      */
     private int oppPredicamentHeight = -1;
 
-    private RuedigerDerBot(Identifier side, Board board) {
-        super(side, board);
-        ownPressureMap = new int[board.WIDTH][board.HEIGHT];
-        opponentPressureMap = new int[board.WIDTH][board.HEIGHT];
+    IRuediger(Token side, Board board, int forecast) {
+        super(side, board, forecast);
+        ownThreatMap = new int[board.WIDTH][board.HEIGHT];
+        opponentThreatMap = new int[board.WIDTH][board.HEIGHT];
     }
 
-    public RuedigerDerBot(Identifier player, Board board, int forecast) {
-        this(player, board);
-        this.forecast = forecast;
-	}
+    @Override
+    protected int rateState() {
+        int rating;
+        buildPressureMatrix(side);
+        buildPressureMatrix(side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
+        searchForPredicaments();
+        //enhanceMaps();
+        //if this bot created a predicament and the opponent didn't, he won
+        if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
+            rating = Integer.MAX_VALUE - ownPredicamentHeight;
+            //System.out.println("Own predicament\n" + board + "\n" + mapToString());
+        }
+        //if the opponent created a predicament and this bot didn't, he lost
+        else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) {
+            rating = Integer.MIN_VALUE + oppPredicamentHeight;
+            //System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
+        }
+        //if both players created a predicament the player with the fewer moves to use his predicament wins
+        else if (ownPredicamentInLine != -1) rating = ownPredicamentHeight <= oppPredicamentHeight ? Integer.MAX_VALUE - ownPredicamentHeight: Integer.MIN_VALUE + oppPredicamentHeight;
+        else rating = sum(ownThreatMap) - sum(opponentThreatMap);
+        return rating;
+    }
 
-    private void buildPressureMatrix(Identifier player) {
+    protected abstract void enhanceMaps();
+
+    private void buildPressureMatrix(Token player) {
         for (int y = 0; y < board.HEIGHT; y++) {
             for (int x = 0; x < board.WIDTH; x++) {
                 int maximumForThisField = 0;
-                if (board.get(x, y).getPlayer() == Identifier.EMPTY) {
+                if (board.get(x, y).getPlayer() == Token.EMPTY) {
                     int currentValueForField;
                     //horizontally
                     for (int offset = -3; offset <= 0; offset++) {
@@ -66,11 +84,11 @@ public class RuedigerDerBot extends PonderingBot {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = board.get(curX, y).getPlayer();
+                            Token currentPlayer = board.get(curX, y).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
-                            else if (currentPlayer != Identifier.EMPTY) {
+                            else if (currentPlayer != Token.EMPTY) {
                                 currentValueForField = 0;
                                 break;
                             }
@@ -87,11 +105,11 @@ public class RuedigerDerBot extends PonderingBot {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = board.get(curX, curY).getPlayer();
+                            Token currentPlayer = board.get(curX, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
-                            else if (currentPlayer != Identifier.EMPTY) {
+                            else if (currentPlayer != Token.EMPTY) {
                                 currentValueForField = 0;
                                 break;
                             }
@@ -108,11 +126,11 @@ public class RuedigerDerBot extends PonderingBot {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = board.get(curX, curY).getPlayer();
+                            Token currentPlayer = board.get(curX, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
-                            else if (currentPlayer != Identifier.EMPTY) {
+                            else if (currentPlayer != Token.EMPTY) {
                                 currentValueForField = 0;
                                 break;
                             }
@@ -129,11 +147,11 @@ public class RuedigerDerBot extends PonderingBot {
                                 currentValueForField = 0;
                                 break;
                             }
-                            Identifier currentPlayer = board.get(x, curY).getPlayer();
+                            Token currentPlayer = board.get(x, curY).getPlayer();
                             if (currentPlayer == player) {
                                 currentValueForField++;
                             }
-                            else if (currentPlayer != Identifier.EMPTY) {
+                            else if (currentPlayer != Token.EMPTY) {
                                 currentValueForField = 0;
                                 break;
                             }
@@ -141,8 +159,8 @@ public class RuedigerDerBot extends PonderingBot {
                         maximumForThisField = Math.max(currentValueForField, maximumForThisField);
                     }
                 }
-                if (player == side) ownPressureMap[x][y] = maximumForThisField;
-                else opponentPressureMap[x][y] = maximumForThisField;
+                if (player == side) ownThreatMap[x][y] = maximumForThisField;
+                else opponentThreatMap[x][y] = maximumForThisField;
             }
         }
     }
@@ -159,36 +177,14 @@ public class RuedigerDerBot extends PonderingBot {
         return y < 0 || y >= board.HEIGHT;
     }
 
-    private int sum(int[][] mtx) {
+    private int sum(int[][] threatMap) {
         int result = 0;
-        for (int x = 0; x < mtx.length; x++) {
-            for (int y = 0; y < mtx[x].length; y++) {
-                result += mtx[x][y];
+        for (int x = 0; x < threatMap.length; x++) {
+            for (int y = 0; y < threatMap[x].length; y++) {
+                result += Math.pow(threatMap[x][y], 2);
             }
         }
         return result;
-    }
-
-    @Override
-    protected int rateState() {
-        int rating;
-        buildPressureMatrix(side);
-        buildPressureMatrix(side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
-        searchForPredicaments();
-        //if this bot created a predicament and the opponent didn't, he won
-        if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
-            rating = Integer.MAX_VALUE - ownPredicamentHeight;
-            //System.out.println("Own predicament\n" + board + "\n" + mapToString());
-        }
-        //if the opponent created a predicament and this bot didn't, he lost
-        else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) {
-            rating = Integer.MIN_VALUE + oppPredicamentHeight;
-            //System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
-        }
-        //if both players created a predicament the player with the less moves to use his predicament wins
-        else if (ownPredicamentInLine != -1) rating = ownPredicamentHeight <= oppPredicamentHeight ? Integer.MAX_VALUE - ownPredicamentHeight: Integer.MIN_VALUE + oppPredicamentHeight;
-        else rating = sum(ownPressureMap) - sum(opponentPressureMap);
-        return rating;
     }
 
     /**
@@ -205,11 +201,11 @@ public class RuedigerDerBot extends PonderingBot {
             int base = 0;
             for (int y = board.HEIGHT - 1; y >= 0; y--) {
                 if (board.get(x, y).isEmpty()) {
-                    // if the opponent has a threat underneath a predicament it doesn't count since one cant use it
-                    if (opponentPressureMap[x][y] == 3 && board.get(x, y).isEmpty()) ownPredicamentPossible = false;
-                    if (ownPressureMap[x][y] == 3 && board.get(x, y).isEmpty()) oppPredicamentPossible = false;
+                    // if the opponent has a threat underneath a predicament it doesn't count since one can't use it
+                    if (opponentThreatMap[x][y] == 3 && board.get(x, y).isEmpty()) ownPredicamentPossible = false;
+                    if (ownThreatMap[x][y] == 3 && board.get(x, y).isEmpty()) oppPredicamentPossible = false;
                     if (!ownPredicamentPossible && !oppPredicamentPossible) break;
-                    if (ownPredicamentPossible && ownPressureMap[x][y] == 3 && !outOfBoardY(y + 1) && ownPressureMap[x][y + 1] == 3) {
+                    if (ownPredicamentPossible && ownThreatMap[x][y] == 3 && !outOfBoardY(y + 1) && ownThreatMap[x][y + 1] == 3) {
                         //Predicament found
                         ownPredicamentInLine = x;
                         ownPredicamentHeight = y - base;
@@ -217,7 +213,7 @@ public class RuedigerDerBot extends PonderingBot {
                         //System.out.println(mapToString());
                         break;
                     }
-                    if (oppPredicamentPossible && opponentPressureMap[x][y] == 3 && !outOfBoardY(y + 1) && opponentPressureMap[x][y + 1] == 3) {
+                    if (oppPredicamentPossible && opponentThreatMap[x][y] == 3 && !outOfBoardY(y + 1) && opponentThreatMap[x][y + 1] == 3) {
                         //Predicament found
                         opponentPredicamentInLine = x;
                         oppPredicamentHeight = y - base;
@@ -236,7 +232,7 @@ public class RuedigerDerBot extends PonderingBot {
         StringBuilder str = new StringBuilder().append("|");
         for (int y = board.HEIGHT - 1; y >= 0; y--) {
             for (int x = 0; x < board.WIDTH; x++) {
-                str.append(ownPressureMap[x][y]).append(",").append(opponentPressureMap[x][y]).append("|");
+                str.append(ownThreatMap[x][y]).append(",").append(opponentThreatMap[x][y]).append("|");
             }
             if (y != 0) str.append("\n|");
         }
@@ -247,6 +243,6 @@ public class RuedigerDerBot extends PonderingBot {
 
     @Override
     public String getName() {
-        return "Ruediger (" + forecast + ")";
+        return "Ruediger without enhancer (" + getForecast() + ")";
     }
 }

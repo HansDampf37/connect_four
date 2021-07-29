@@ -6,8 +6,8 @@ public class ConsoleOutput {
     public static boolean patternRecognition = false;
     public static boolean treeInitiation = false;
     public static boolean treeTraversal = false;
-    public static boolean gameResult = false;
-    public static boolean printBoard = false;
+    public static boolean gameResult = true;
+    public static boolean printBoard = true;
     public static boolean playerGreetings = false;
 
     public static void setAll(boolean printBoard, boolean botInit, boolean patternInit, boolean treeInit, boolean patternRecog, boolean treeTraversal, boolean gameResult, boolean playerGreetings) {

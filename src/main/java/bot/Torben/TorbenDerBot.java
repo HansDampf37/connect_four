@@ -49,10 +49,6 @@ public class TorbenDerBot extends PonderingBot {
      * the board
      */
     private int[] oppCurrentPatternUsage;
-    /**
-     * how many moves should the bot calculate in advance
-     */
-    private final int forecast;
 
     /**
      * Path to data
@@ -65,11 +61,10 @@ public class TorbenDerBot extends PonderingBot {
      * @param side  Player_1 or Player_2
      * @param board the board
      */
-    public TorbenDerBot(final Identifier side, final Board board, int forecast) {
-        super(side, board);
+    public TorbenDerBot(final Token side, final Board board, int forecast) {
+        super(side, board, forecast);
         log();
         readRatings();
-        this.forecast = forecast;
         ownOverallPatternUsage = new int[checker.getPatternAmount()];
         ownCurrentPatternUsage = new int[checker.getPatternAmount()];
         opOverallPatternUsage = new int[checker.getPatternAmount()];
@@ -145,7 +140,7 @@ public class TorbenDerBot extends PonderingBot {
     private void checkOpponentsCurrentPatternUsage() {
         for (int i = 0; i < checker.getPatternAmount(); i++) {
             oppCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
+                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
         }
     }
 
@@ -169,7 +164,7 @@ public class TorbenDerBot extends PonderingBot {
             System.out.println("Opponent");
         for (int i = 0; i < checker.getPatternAmount(); i++) {
             int occurrence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
+                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
             if (ConsoleOutput.patternRecognition)
                 if (occurrence > 0)
                     System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurrence
@@ -213,7 +208,7 @@ public class TorbenDerBot extends PonderingBot {
         }
         for (int i = 0; i < checker.getPatternAmount(); i++) {
             rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Identifier.PLAYER_1 ? Identifier.PLAYER_2 : Identifier.PLAYER_1);
+                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
         }
         return rating;
     }

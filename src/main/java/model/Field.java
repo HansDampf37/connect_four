@@ -7,15 +7,15 @@ public class Field {
     /**
      * the field's value
      */
-    private Identifier value = Identifier.EMPTY;
+    private Token token = Token.EMPTY;
 
     /**
      * getter for the player
      * 
      * @return the field's value
      */
-    public Identifier getPlayer() {
-        return value;
+    public Token getPlayer() {
+        return token;
     }
 
     /**
@@ -23,14 +23,14 @@ public class Field {
      * 
      * @param player field's new value
      */
-    public void setPlayer(Identifier player) {
-        value = player;
+    public void setPlayer(Token player) {
+        token = player;
     }
 
     /**
      * Returns if field is empty
      */
     public boolean isEmpty() {
-        return value == Identifier.EMPTY;
+        return token == Token.EMPTY;
     }
 }

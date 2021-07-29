@@ -1,1 +1,3 @@
-model/AppTest.class
+model/BoardTest.class
+model/FieldTest.class
+bot/tree/TreeTest.class

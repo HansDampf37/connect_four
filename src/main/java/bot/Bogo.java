@@ -5,7 +5,7 @@ import model.Player;
 
 public class Bogo extends Player {
 
-    public Bogo(Identifier side, Board board) {
+    public Bogo(Token side, Board board) {
         super(side, board);
     }
 

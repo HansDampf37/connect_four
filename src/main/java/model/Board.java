@@ -5,7 +5,7 @@ import java.util.Iterator;
 public class Board implements Iterable<Field> {
     public final int HEIGHT;
     public final int WIDTH;
-    private Field[][] fields;
+    private final Field[][] fields;
 
     public Board(int width, int height) {
         if (width <= 0 || height <= 0) throw new IllegalArgumentException("height and with must be natural numbers");
@@ -15,7 +15,7 @@ public class Board implements Iterable<Field> {
         for (int j = 0; j < HEIGHT; j++) for (int i = 0; i < WIDTH; i++) fields[i][j] = new Field();
     }
 
-    public boolean throwInColumn(int x, Identifier player) {
+    public boolean throwInColumn(int x, Token player) {
         for (int y = 0; y < HEIGHT; y++){
             if (fields[x][y].isEmpty()) {
                 fields[x][y].setPlayer(player);
@@ -28,25 +28,25 @@ public class Board implements Iterable<Field> {
     public void removeOfColumn(int x) {
         for (int y = HEIGHT - 1; y >= 0; y--){
             if (!fields[x][y].isEmpty()) {
-                fields[x][y].setPlayer(Identifier.EMPTY);
+                fields[x][y].setPlayer(Token.EMPTY);
                 return;
             }
         }
     }
 
-    public Identifier getWinner() {
+    public Token getWinner() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                Identifier res = checkFor4RowOnField(x, y);
-                if (res != Identifier.EMPTY) return res;
+                Token res = checkFor4RowOnField(x, y);
+                if (res != Token.EMPTY) return res;
             }
         }
-        return Identifier.EMPTY;
+        return Token.EMPTY;
     }
 
-    private Identifier checkFor4RowOnField(int x, int y) {
-        Identifier playerToCheck = fields[x][y].getPlayer();
-        if (playerToCheck == Identifier.EMPTY) return Identifier.EMPTY;
+    private Token checkFor4RowOnField(int x, int y) {
+        Token playerToCheck = fields[x][y].getPlayer();
+        if (playerToCheck == Token.EMPTY) return Token.EMPTY;
         int amountInRow = 1;
         for (int dx = 1; true; dx++) {
             if (x + dx >= WIDTH) break;
@@ -99,7 +99,7 @@ public class Board implements Iterable<Field> {
         }
         if (amountInRow >= 4) return playerToCheck;
 
-        return Identifier.EMPTY;
+        return Token.EMPTY;
     }
 
     @Override
@@ -107,8 +107,8 @@ public class Board implements Iterable<Field> {
         StringBuilder str = new StringBuilder().append("|");
         for (int y = HEIGHT - 1; y >= 0; y--) {
             for (int x = 0; x < WIDTH; x++) {
-                if (fields[x][y].getPlayer() == Identifier.PLAYER_1) str.append("X|");
-                else if (fields[x][y].getPlayer() == Identifier.PLAYER_2) str.append("O|");
+                if (fields[x][y].getPlayer() == Token.PLAYER_1) str.append("X|");
+                else if (fields[x][y].getPlayer() == Token.PLAYER_2) str.append("O|");
                 else str.append(" |");
             }
             if (y != 0) str.append("\n|");
@@ -120,7 +120,7 @@ public class Board implements Iterable<Field> {
 
 	public boolean stillSpace() {
         int y = HEIGHT - 1;
-        for (int x = 0; x < WIDTH; x++) if (fields[x][y].getPlayer() == Identifier.EMPTY) return true;
+        for (int x = 0; x < WIDTH; x++) if (fields[x][y].getPlayer() == Token.EMPTY) return true;
         return false;
     }
 

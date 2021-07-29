@@ -4,7 +4,7 @@ public abstract class Player {
     /**
      * Player_1 or Player_2
      */
-    protected Identifier side;
+    protected Token side;
     /**
      * the board
      */
@@ -13,7 +13,7 @@ public abstract class Player {
     /**
      * Constructor
      */
-    public Player(Identifier side, Board board) {
+    public Player(Token side, Board board) {
         this.side = side;
         this.board = board;
     }
@@ -27,7 +27,7 @@ public abstract class Player {
 
     public abstract String getName();
 
-    public Identifier getSide() {
+    public Token getSide() {
         return side;
     }
 }
