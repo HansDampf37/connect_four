@@ -63,7 +63,7 @@ public abstract class IRuediger extends PonderingBot {
         }
         //if both players created a predicament the player with the fewer moves to use his predicament wins
         else if (ownPredicamentInLine != -1) rating = ownPredicamentHeight <= oppPredicamentHeight ? Integer.MAX_VALUE - ownPredicamentHeight: Integer.MIN_VALUE + oppPredicamentHeight;
-        else rating = sum(ownThreatMap) - sum(opponentThreatMap);
+        else rating = evaluate(ownThreatMap) - evaluate(opponentThreatMap);
         return rating;
     }
 
@@ -177,11 +177,11 @@ public abstract class IRuediger extends PonderingBot {
         return y < 0 || y >= board.HEIGHT;
     }
 
-    private int sum(int[][] threatMap) {
+    private int evaluate(int[][] threatMap) {
         int result = 0;
         for (int x = 0; x < threatMap.length; x++) {
             for (int y = 0; y < threatMap[x].length; y++) {
-                result += Math.pow(threatMap[x][y], 2);
+                result += Math.pow(threatMap[x][y], 3);
             }
         }
         return result;
@@ -199,7 +199,7 @@ public abstract class IRuediger extends PonderingBot {
             boolean oppPredicamentPossible = true;
             boolean ownPredicamentPossible = true;
             int base = 0;
-            for (int y = board.HEIGHT - 1; y >= 0; y--) {
+            for (int y = 0; y < board.HEIGHT; y++) {
                 if (board.get(x, y).isEmpty()) {
                     // if the opponent has a threat underneath a predicament it doesn't count since one can't use it
                     if (opponentThreatMap[x][y] == 3 && board.get(x, y).isEmpty()) ownPredicamentPossible = false;

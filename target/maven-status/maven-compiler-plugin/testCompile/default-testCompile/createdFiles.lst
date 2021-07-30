@@ -1,3 +1,4 @@
 model/BoardTest.class
-model/FieldTest.class
 bot/tree/TreeTest.class
+model/FieldTest.class
+bot/Ruediger/IRuedigerTest.class
