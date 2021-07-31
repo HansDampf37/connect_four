@@ -1,146 +1,109 @@
-package bot.Torben;
+package bot.Torben
 
-import model.*;
+import model.Board
+import model.Token
+import java.lang.StringBuilder
 
 /**
  * a pattern represents a special situation on the board
  */
-public class Pattern {
-    private static int ME = 1;
-    private static int NULL = 2;
-    private static int EMPTY = 0;
-    private static int NOT_EMPTY = -1;
-    private int[][] pattern;
-    private int width;
-    private int height;
-
-    Pattern(String[] lines) {
-        if (lines == null) throw new IllegalArgumentException("Empty input in pattern constructor");
-        int[][] res = new int[lines[0].length()][lines.length];
-        for (int y = 0; y < lines.length; y++) {
-            String line = lines[y];
-            for (int x = 0; x < line.length(); x++) {
-                char c = line.charAt(x);
-                switch (c) {
-                    case 'x':
-                        res[x][y] = ME;
-                        break;
-                    case ' ':
-                        res[x][y] = EMPTY;
-                        break;
-                    case '-':
-                        res[x][y] = NOT_EMPTY;
-                        break;
-                    case '0':
-                        res[x][y] = NULL;
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-        init(res);
+class Pattern internal constructor(lines: Array<String>?) {
+    private lateinit var pattern: Array<IntArray>
+    private var width = 0
+    private var height = 0
+    private fun init(pattern: Array<IntArray>) {
+        val maxY: Int = pattern[0].size
+        for (x in pattern.indices) require(pattern[x].size == maxY) { "this Pattern is not squared" }
+        this.pattern = pattern
+        width = pattern.size
+        height = pattern[0].size
+        addFloor()
     }
 
-    private void init(int[][] pattern) {
-        int maxY = pattern[0].length;
-        for (int x = 0; x < pattern.length; x++) if (pattern[x].length != maxY) throw new IllegalArgumentException("this Pattern is not squared");
-        this.pattern = pattern;
-        width = pattern.length;
-        height = pattern[0].length;
-        addFloor();
-    }
-
-    private void addFloor() {
-        int[][] copy;
-        for (int x = 0; x < width; x++) {
+    private fun addFloor() {
+        var copy: Array<IntArray>
+        for (x in 0 until width) {
             if (pattern[x][0] == ME || pattern[x][0] == EMPTY) {
-                copy = new int[width][height + 1];
-                for(int xVal = 0; xVal < width; xVal++) {
-                    if (height >= 0) System.arraycopy(pattern[xVal], 0, copy[xVal], 1, height);
+                copy = Array(width) { IntArray(height + 1) }
+                for (xVal in 0 until width) {
+                    if (height >= 0) System.arraycopy(pattern[xVal], 0, copy[xVal], 1, height)
                 }
-                for(int xVal = 0; xVal < width; xVal++) copy[xVal][0] = NOT_EMPTY;
-                height++;
-                pattern = copy;
+                for (xVal in 0 until width) copy[xVal][0] = NOT_EMPTY
+                height++
+                pattern = copy
             }
         }
     }
 
-    public int amountOfTimesThisPatternIsOnBoard(Board board, Token player) {
-        int amounts = 0;
-        for (int xOffs = 0; xOffs <= board.WIDTH - width; xOffs++) {
-            for (int yOffs = -1; yOffs <= board.HEIGHT - height; yOffs++) {
-                if (searchWithOffset(xOffs, yOffs, board, player)) amounts++;
+    fun amountOfTimesThisPatternIsOnBoard(board: Board, player: Token): Int {
+        var amounts = 0
+        for (xOffs in 0..board.WIDTH - width) {
+            for (yOffs in -1..board.HEIGHT - height) {
+                if (searchWithOffset(xOffs, yOffs, board, player)) amounts++
             }
         }
-
-        return amounts;
+        return amounts
     }
 
-    private boolean searchWithOffset(int xOffset, int yOffset, Board board, Token player) {
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
+    private fun searchWithOffset(xOffset: Int, yOffset: Int, board: Board, player: Token): Boolean {
+        for (x in 0 until width) {
+            for (y in 0 until height) {
                 if (y + yOffset < 0) {
-                    if (pattern[x][y] != NOT_EMPTY) return false;
+                    if (pattern[x][y] != NOT_EMPTY) return false
                 } else {
                     if (pattern[x][y] != NULL) {
-                        Token boardValue = board.get(x + xOffset, y + yOffset).getPlayer();
-                        int patternValue = pattern[x][y];
+                        val boardValue = board[x + xOffset, y + yOffset].player
+                        val patternValue = pattern[x][y]
                         if (patternValue == ME) {
-                            if (boardValue != player) return false;
+                            if (boardValue != player) return false
                         } else if (patternValue == EMPTY) {
-                            if (boardValue != Token.EMPTY) return false;
+                            if (boardValue != Token.EMPTY) return false
                         } else if (patternValue == NOT_EMPTY) {
-                            if (boardValue == Token.EMPTY) return false;
+                            if (boardValue == Token.EMPTY) return false
                         }
                     }
                 }
             }
         }
-        return true;
+        return true
     }
 
-    public boolean canContain(Pattern other) {
-        if (width < other.width) return false;
-        if (height < other.height) return false;
-
-        for (int xOffs = 0; xOffs <= width - other.width; xOffs++) {
-            for (int yOffs = 0; yOffs <= height - other.height; yOffs++) {
-                if (searchWithOffset(xOffs, yOffs, other)) return true;
+    fun canContain(other: Pattern): Boolean {
+        if (width < other.width) return false
+        if (height < other.height) return false
+        for (xOffs in 0..width - other.width) {
+            for (yOffs in 0..height - other.height) {
+                if (searchWithOffset(xOffs, yOffs, other)) return true
             }
         }
-        return false;
+        return false
     }
 
-    private boolean searchWithOffset(int xOffset, int yOffset, Pattern otherpattern) {
-        for (int x = 0; x < otherpattern.width; x++) {
-            for (int y = 0; y < otherpattern.height; y++) {
-                int currentVal = pattern[x + xOffset][y + yOffset];
-                if (currentVal == ME) if (!(otherpattern.pattern[x][y] == EMPTY || otherpattern.pattern[x][y] == ME || otherpattern.pattern[x][y] == NULL)) return false;
-                else if (currentVal == EMPTY) if (otherpattern.pattern[x][y] != EMPTY) return false;
-                else if (currentVal == NOT_EMPTY) {}
-                else if (currentVal == NULL) {}
+    private fun searchWithOffset(xOffset: Int, yOffset: Int, otherpattern: Pattern): Boolean {
+        for (x in 0 until otherpattern.width) {
+            for (y in 0 until otherpattern.height) {
+                val currentVal = pattern[x + xOffset][y + yOffset]
+                if (currentVal == ME) if (!(otherpattern.pattern[x][y] == EMPTY || otherpattern.pattern[x][y] == ME || otherpattern.pattern[x][y] == NULL)) return false else if (currentVal == EMPTY) if (otherpattern.pattern[x][y] != EMPTY) return false else if (currentVal == NOT_EMPTY) {
+                } else if (currentVal == NULL) {
+                }
             }
         }
-        return true;
+        return true
     }
 
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder().append("|");
-        for (int y = height - 1; y >= 0; y--) {
-            for (int x = 0; x < width; x++) {
-                if (pattern[x][y] == ME) str.append("X|");
-                else if (pattern[x][y] == NOT_EMPTY) str.append("-|");
-                else if (pattern[x][y] == NULL) str.append("N|");
-                else str.append(" |");
+    override fun toString(): String {
+        val str = StringBuilder().append("|")
+        for (y in height - 1 downTo 0) {
+            for (x in 0 until width) {
+                if (pattern[x][y] == ME) str.append("X|") else if (pattern[x][y] == NOT_EMPTY) str.append("-|") else if (pattern[x][y] == NULL) str.append(
+                    "N|"
+                ) else str.append(" |")
             }
-            if (y != 0) str.append("\n|");
+            if (y != 0) str.append("\n|")
         }
-        return str.toString();
-    }
+        return str.toString()
+    } // public static void main(String[] args) {
 
-    // public static void main(String[] args) {
     //     Board b = new Board();
     //     b.throwInColumn(0, Player.PLAYER_1);
     //     b.throwInColumn(1, Player.PLAYER_1);
@@ -159,4 +122,29 @@ public class Pattern {
     //     System.out.println(p.canContain(p2));
     //     System.out.println(p.amountOfTimesThisPatternOccursOnBoard(b, Player.PLAYER_1));
     // }
+    companion object {
+        private const val ME = 1
+        private const val NULL = 2
+        private const val EMPTY = 0
+        private const val NOT_EMPTY = -1
+    }
+
+    init {
+        requireNotNull(lines) { "Empty input in pattern constructor" }
+        val res = Array(lines[0].length) { IntArray(lines.size) }
+        for (y in lines.indices) {
+            val line = lines[y]
+            for (x in line.indices) {
+                when (line[x]) {
+                    'x' -> res[x][y] = ME
+                    ' ' -> res[x][y] = EMPTY
+                    '-' -> res[x][y] = NOT_EMPTY
+                    '0' -> res[x][y] = NULL
+                    else -> {
+                    }
+                }
+            }
+        }
+        init(res)
+    }
 }

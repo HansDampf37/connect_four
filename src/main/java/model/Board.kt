@@ -1,151 +1,166 @@
-package model;
+package model
 
-import java.util.Iterator;
+import java.lang.StringBuilder
 
-public class Board implements Iterable<Field> {
-    public final int HEIGHT;
-    public final int WIDTH;
-    private final Field[][] fields;
+class Board(val WIDTH: Int = 7, val HEIGHT: Int = 6) : Iterable<Field> {
 
-    public Board(int width, int height) {
-        if (width <= 0 || height <= 0) throw new IllegalArgumentException("height and with must be natural numbers");
-        HEIGHT = height;
-        WIDTH = width;
-        fields = new Field[WIDTH][HEIGHT];
-        for (int j = 0; j < HEIGHT; j++) for (int i = 0; i < WIDTH; i++) fields[i][j] = new Field();
-    }
+    private val fields: Array<Array<Field>>
 
-    public boolean throwInColumn(int x, Token player) {
-        for (int y = 0; y < HEIGHT; y++){
-            if (fields[x][y].isEmpty()) {
-                fields[x][y].setPlayer(player);
-                return true;
+    fun throwInColumn(x: Int, player: Token): Boolean {
+        for (y in 0 until HEIGHT) {
+            if (fields[x][y].isEmpty) {
+                fields[x][y].player = player
+                return true
             }
         }
-        return false;
+        return false
     }
 
-    public void removeOfColumn(int x) {
-        for (int y = HEIGHT - 1; y >= 0; y--){
-            if (!fields[x][y].isEmpty()) {
-                fields[x][y].setPlayer(Token.EMPTY);
-                return;
+    fun removeOfColumn(x: Int) {
+        for (y in HEIGHT - 1 downTo 0) {
+            if (!fields[x][y].isEmpty) {
+                fields[x][y].player = Token.EMPTY
+                return
             }
         }
     }
 
-    public Token getWinner() {
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                Token res = checkFor4RowOnField(x, y);
-                if (res != Token.EMPTY) return res;
+    val winner: Token
+        get() {
+            for (y in 0 until HEIGHT) {
+                for (x in 0 until WIDTH) {
+                    val res = checkFor4RowOnField(x, y)
+                    if (res != Token.EMPTY) return res
+                }
+            }
+            return Token.EMPTY
+        }
+
+    private fun checkFor4RowOnField(x: Int, y: Int): Token {
+        val playerToCheck = fields[x][y].player
+        if (playerToCheck == Token.EMPTY) return Token.EMPTY
+        var amountInRow = 1
+        run {
+            var dx = 1
+            while (true) {
+                if (x + dx >= WIDTH) break
+                if (fields[x + dx][y].player != playerToCheck) break
+                amountInRow++
+                dx++
             }
         }
-        return Token.EMPTY;
-    }
-
-    private Token checkFor4RowOnField(int x, int y) {
-        Token playerToCheck = fields[x][y].getPlayer();
-        if (playerToCheck == Token.EMPTY) return Token.EMPTY;
-        int amountInRow = 1;
-        for (int dx = 1; true; dx++) {
-            if (x + dx >= WIDTH) break;
-            if (fields[x + dx][y].getPlayer() != playerToCheck) break;
-            amountInRow++;
+        var dx = 1
+        while (true) {
+            if (x - dx < 0) break
+            if (fields[x - dx][y].player != playerToCheck) break
+            amountInRow++
+            dx++
         }
-        for (int dx = 1; true; dx++) {
-            if (x - dx < 0) break;
-            if (fields[x - dx][y].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        if (amountInRow >= 4) return playerToCheck;
-
-        amountInRow = 1;
-        for (int dy = 1; true; dy++) {
-            if (y + dy >= HEIGHT) break;
-            if (fields[x][y + dy].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        for (int dy = 1; true; dy++) {
-            if (y - dy < 0) break;
-            if (fields[x][y - dy].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        if (amountInRow >= 4) return playerToCheck;
-
-        amountInRow = 1;
-        for (int d = 1; true; d++) {
-            if (x + d >= WIDTH || y + d >= HEIGHT) break;
-            if (fields[x + d][y + d].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        for (int d = 1; true; d++) {
-            if (x - d < 0 || y - d < 0) break;
-            if (fields[x - d][y - d].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        if (amountInRow >= 4) return playerToCheck;
-
-        amountInRow = 1;
-        for (int d = 1; true; d++) {
-            if (x + d >= WIDTH || y - d < 0) break;
-            if (fields[x + d][y - d].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        for (int d = 1; true; d++) {
-            if (x - d < 0 || y + d >= HEIGHT) break;
-            if (fields[x - d][y + d].getPlayer() != playerToCheck) break;
-            amountInRow++;
-        }
-        if (amountInRow >= 4) return playerToCheck;
-
-        return Token.EMPTY;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder str = new StringBuilder().append("|");
-        for (int y = HEIGHT - 1; y >= 0; y--) {
-            for (int x = 0; x < WIDTH; x++) {
-                if (fields[x][y].getPlayer() == Token.PLAYER_1) str.append("X|");
-                else if (fields[x][y].getPlayer() == Token.PLAYER_2) str.append("O|");
-                else str.append(" |");
+        if (amountInRow >= 4) return playerToCheck
+        amountInRow = 1
+        run {
+            var dy = 1
+            while (true) {
+                if (y + dy >= HEIGHT) break
+                if (fields[x][y + dy].player != playerToCheck) break
+                amountInRow++
+                dy++
             }
-            if (y != 0) str.append("\n|");
         }
-        str.append("\n");
-        for (int x = 0; x < WIDTH; x++) str.append("-").append(x + 1);
-        return str.append("-").toString();
+        var dy = 1
+        while (true) {
+            if (y - dy < 0) break
+            if (fields[x][y - dy].player != playerToCheck) break
+            amountInRow++
+            dy++
+        }
+        if (amountInRow >= 4) return playerToCheck
+        amountInRow = 1
+        run {
+            var d = 1
+            while (true) {
+                if (x + d >= WIDTH || y + d >= HEIGHT) break
+                if (fields[x + d][y + d].player != playerToCheck) break
+                amountInRow++
+                d++
+            }
+        }
+        run {
+            var d = 1
+            while (true) {
+                if (x - d < 0 || y - d < 0) break
+                if (fields[x - d][y - d].player != playerToCheck) break
+                amountInRow++
+                d++
+            }
+        }
+        if (amountInRow >= 4) return playerToCheck
+        amountInRow = 1
+        run {
+            var d = 1
+            while (true) {
+                if (x + d >= WIDTH || y - d < 0) break
+                if (fields[x + d][y - d].player != playerToCheck) break
+                amountInRow++
+                d++
+            }
+        }
+        var d = 1
+        while (true) {
+            if (x - d < 0 || y + d >= HEIGHT) break
+            if (fields[x - d][y + d].player != playerToCheck) break
+            amountInRow++
+            d++
+        }
+        return if (amountInRow >= 4) playerToCheck else Token.EMPTY
     }
 
-	public boolean stillSpace() {
-        int y = HEIGHT - 1;
-        for (int x = 0; x < WIDTH; x++) if (fields[x][y].getPlayer() == Token.EMPTY) return true;
-        return false;
+    override fun toString(): String {
+        val str = StringBuilder().append("|")
+        for (y in HEIGHT - 1 downTo 0) {
+            for (x in 0 until WIDTH) {
+                when (fields[x][y].player) {
+                    Token.PLAYER_1 -> str.append("X|")
+                    Token.PLAYER_2 -> str.append("O|")
+                    else -> str.append(" |")
+                }
+            }
+            if (y != 0) str.append("\n|")
+        }
+        str.append("\n")
+        for (x in 0 until WIDTH) str.append("-").append(x + 1)
+        return str.append("-").toString()
     }
 
-    public Field get(int x, int y) {
-        return fields[x][y];
+    fun stillSpace(): Boolean {
+        val y = HEIGHT - 1
+        for (x in 0 until WIDTH) if (fields[x][y].player == Token.EMPTY) return true
+        return false
     }
 
-    @Override
-    public Iterator<Field> iterator() {
-        return new BoardIterator();
+    operator fun get(x: Int, y: Int): Field {
+        return fields[x][y]
     }
 
-    class BoardIterator implements Iterator<Field> {
-        private int pointer = 0;
+    override fun iterator(): Iterator<Field> {
+        return BoardIterator()
+    }
 
-        @Override
-        public boolean hasNext() {
-            return pointer < HEIGHT * WIDTH;
+    internal inner class BoardIterator : Iterator<Field> {
+        private var pointer = 0
+        override fun hasNext(): Boolean {
+            return pointer < HEIGHT * WIDTH
         }
 
-        @Override
-        public Field next() {
-            Field res = fields[pointer % WIDTH][pointer / WIDTH];
-            pointer++;
-            return res;
+        override fun next(): Field {
+            val res = fields[pointer % WIDTH][pointer / WIDTH]
+            pointer++
+            return res
         }
+    }
+
+    init {
+        require(!(WIDTH <= 0 || HEIGHT <= 0)) { "height and with must be natural numbers" }
+        fields = Array(WIDTH) { Array(HEIGHT) { Field() } }
     }
 }

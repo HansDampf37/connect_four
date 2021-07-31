@@ -1,21 +1,13 @@
-package bot;
+package bot
 
-import model.*;
-import model.Player;
+import model.Board
+import model.Player
+import model.Token
 
-public class Bogo extends Player {
-
-    public Bogo(Token side, Board board) {
-        super(side, board);
+class Bogo(side: Token?, board: Board?) : Player(side, board) {
+    override fun getColumnOfNextMove(): Int {
+        return (Math.random() * board.WIDTH).toInt()
     }
 
-    @Override
-    public int getColumnOfNextMove() {
-        return (int)(Math.random() * board.WIDTH);
-    }
-
-    @Override
-    public String getName() {
-        return "Bogo";
-    }
+    override fun getName(): String = "Bogo"
 }

@@ -27,14 +27,8 @@ abstract class PonderingBot protected constructor(side: Token?, board: Board?, f
         beginner = side
         val states = Tree(forecast, board.WIDTH)
         traverse(forecast, 0, states.root, side)
-        /* new AlphaBetaPruning().run(states);
-        int index = 0;
-        for (int i = 0; i < states.getRoot().size(); i++) {
-            index = states.getRoot().get(i).getValue() > states.getRoot().get(index).getValue() ? i : index;
-        }*/
         AlphaBetaPruning().run(states)
         val result: Int = states.root.filter{child -> !child.invisible}.map { c -> c.value }.indexOf(states.root.maxOf { c -> c.value })
-        //val result = states.root.indexOfNodeWithBestExpectationOfHighValue()
         val rating = states.root.value
         if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
         if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
@@ -85,5 +79,26 @@ abstract class PonderingBot protected constructor(side: Token?, board: Board?, f
 
     init {
         this.forecast = forecast * 2
+    }
+}
+
+class GameState(t: Tree, private val moves: List<Int>): Node(t) {
+    fun possible(board: Board): Boolean {
+        if (moves.any { it >= board.WIDTH || it < 0 }) return false
+        for (i in 0 until board.WIDTH) if (moves.count{it == i} + colHeight(board, i) > board.HEIGHT) return false
+        return true
+    }
+
+    fun possibleOnEmptyBoard(width: Int = 7, height: Int = 6): Boolean {
+        if (moves.any { it >= width || it < 0 }) return false
+        for (i in 0 until width) if (moves.count{it == i} > height) return false
+        return true
+    }
+
+    private fun colHeight(board: Board, col: Int): Int {
+         for (y in 0 until board.HEIGHT) {
+             if (board[col, y].isEmpty) return y
+         }
+        return board.HEIGHT
     }
 }

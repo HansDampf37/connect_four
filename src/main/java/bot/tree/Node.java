@@ -35,7 +35,7 @@ public class Node implements List<Node> {
      * Constructor
      * @param tree containing tree
      */
-    Node(Tree tree) {
+    public Node(Tree tree) {
         this(tree, 0);
     }
 

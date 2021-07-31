@@ -1,62 +1,61 @@
-package model;
+package model
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.Assert
+import org.junit.Before
+import org.junit.Test
 
-import static org.junit.Assert.*;
-
-public class BoardTest {
-    private Board b;
-    private final int height = 2;
-    private final int width = 4;
+class BoardTest {
+    private lateinit var b: Board
+    private val height = 2
+    private val width = 4
 
     @Before
-    public void setUp() {
-        b = new Board(width, height);
+    fun setUp() {
+        b = Board(width, height)
     }
 
     @Test
-    public void testSize() {
-        assertEquals(height, b.HEIGHT);
-        assertEquals(width, b.WIDTH);
+    fun testSize() {
+        Assert.assertEquals(height.toLong(), b.HEIGHT.toLong())
+        Assert.assertEquals(width.toLong(), b.WIDTH.toLong())
     }
 
     @Test
-    public void testInit() {
-        b = new Board(width, height);
-        for (Field f : b) {
-            assertEquals(f.getPlayer(), Token.EMPTY);
+    fun testInit() {
+        b = Board(width, height)
+        for (f in b) {
+            Assert.assertEquals(f.player, Token.EMPTY)
         }
     }
 
     @Test
-    public void testFull() {
-        assertTrue(b.stillSpace());
-        for (Field f : b) f.setPlayer(Token.PLAYER_1);
-        assertFalse(b.stillSpace());
+    fun testFull() {
+        Assert.assertTrue(b.stillSpace())
+        for (f in b) f.player = Token.PLAYER_1
+        Assert.assertFalse(b.stillSpace())
     }
 
     @Test
-    public void testWinner() {
-        for (Field f : b) f.setPlayer(Token.PLAYER_1);
-        assertSame(b.getWinner(), Token.PLAYER_1);
+    fun testWinner() {
+        for (f in b) f.player = Token.PLAYER_1
+        Assert.assertSame(b.winner, Token.PLAYER_1)
     }
 
     @Test
-    public void testNoWinner() {
-        assertSame(b.getWinner(), Token.EMPTY);
+    fun testNoWinner() {
+        Assert.assertSame(b.winner, Token.EMPTY)
     }
 
     @Test
-    public void testThrowInColumn() {
-        for (int y = 0; y < b.HEIGHT; y++) assertTrue(b.throwInColumn(0, Token.PLAYER_1));
-        assertFalse(b.throwInColumn(0, Token.PLAYER_1));
+    fun testThrowInColumn() {
+        for (y in 0 until b.HEIGHT) Assert.assertTrue(b.throwInColumn(0, Token.PLAYER_1))
+        Assert.assertFalse(b.throwInColumn(0, Token.PLAYER_1))
     }
 
     @Test
-    public void testRemoveOfColumn() {
-        for (int y = 0; y < b.HEIGHT; y++) assertTrue(b.throwInColumn(0, Token.PLAYER_1));
-        for (int y = 0; y < b.HEIGHT; y++) b.removeOfColumn(0);
-        assertTrue(b.get(0, 0).isEmpty());
+    fun testRemoveOfColumn() {
+        for (y in 0 until b.HEIGHT) Assert.assertTrue(b.throwInColumn(0, Token.PLAYER_1))
+        for (y in 0 until b.HEIGHT) b.removeOfColumn(0)
+        Assert.assertTrue(b[0, 0].isEmpty)
     }
 }

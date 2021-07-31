@@ -1,30 +1,23 @@
-package model;
+package model
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.BufferedReader
+import java.io.IOException
+import java.io.InputStreamReader
 
-public class HumanPlayer extends Player {
-
-    public HumanPlayer(Token side, Board board) {
-        super(side, board);
-    }
-
-    @Override
-    public int getColumnOfNextMove() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+class HumanPlayer(side: Token?, board: Board?) : Player(side, board) {
+    override fun getColumnOfNextMove(): Int {
+        val br = BufferedReader(InputStreamReader(System.`in`))
         while (true) {
             try {
-                String s = br.readLine();
-                if (s != null && s.matches("[1-" + board.WIDTH + "]")) return Integer.valueOf(s) - 1;
-            } catch (IOException e) {
-                e.printStackTrace();
+                val s = br.readLine()
+                if (s != null && s.matches(Regex("[1-" + board.WIDTH + "]"))) return Integer.valueOf(s) - 1
+            } catch (e: IOException) {
+                e.printStackTrace()
             }
         }
     }
 
-    @Override
-    public String getName() {
-        return "Human";
+    override fun getName(): String {
+        return "Human"
     }
 }
