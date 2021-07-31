@@ -1,14 +1,19 @@
 package bot.tree;
 
 import model.procedure.ConsoleOutput;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.function.Consumer;
+import java.util.function.IntFunction;
+import java.util.function.Predicate;
+import java.util.function.UnaryOperator;
+import java.util.stream.Stream;
 
 /**
  * A node in the {@link Tree tree-graph}
  */
-public class Node {
+public class Node implements List<Node> {
     /**
      * An integer associated with that node
      */
@@ -24,7 +29,7 @@ public class Node {
     /**
      * If a Node represents an illegal state of the game it should be invisible meaning no matter what comparison is happening this node is losing
      */
-    private boolean invisible;
+    public boolean invisible;
 
     /**
      * Constructor
@@ -214,5 +219,166 @@ public class Node {
 
     int getAmountOfChildren() {
         return children.size();
+    }
+
+    @Override
+    public int size() {
+        return children.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return children.isEmpty();
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return children.contains(o);
+    }
+
+    @NotNull
+    @Override
+    public Iterator<Node> iterator() {
+        return children.iterator();
+    }
+
+    @Override
+    public void forEach(Consumer<? super Node> action) {
+        children.forEach(action);
+    }
+
+    @NotNull
+    @Override
+    public Object[] toArray() {
+        return children.toArray();
+    }
+
+    @NotNull
+    @Override
+    public <T> T[] toArray(@NotNull T[] ts) {
+        return children.toArray(ts);
+    }
+
+    @Override
+    public <T> T[] toArray(IntFunction<T[]> generator) {
+        return children.toArray(generator);
+    }
+
+    @Override
+    public boolean add(Node node) {
+        return children.add(node);
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        return children.remove(o);
+    }
+
+    @Override
+    public boolean containsAll(@NotNull Collection<?> collection) {
+        return children.containsAll(collection);
+    }
+
+    @Override
+    public boolean addAll(@NotNull Collection<? extends Node> collection) {
+        return children.addAll(collection);
+    }
+
+    @Override
+    public boolean addAll(int i, @NotNull Collection<? extends Node> collection) {
+        return children.addAll(i, collection);
+    }
+
+    @Override
+    public boolean removeAll(@NotNull Collection<?> collection) {
+        return children.removeAll(collection);
+    }
+
+    @Override
+    public boolean removeIf(Predicate<? super Node> filter) {
+        return children.removeIf(filter);
+    }
+
+    @Override
+    public boolean retainAll(@NotNull Collection<?> collection) {
+        return children.retainAll(collection);
+    }
+
+    @Override
+    public void replaceAll(UnaryOperator<Node> operator) {
+        children.replaceAll(operator);
+    }
+
+    @Override
+    public void sort(Comparator<? super Node> c) {
+        children.sort(c);
+    }
+
+    @Override
+    public void clear() {
+        children.clear();
+    }
+
+    @Override
+    public Node get(int i) {
+        return children.get(i);
+    }
+
+    @Override
+    public Node set(int i, Node node) {
+        return children.set(i, node);
+    }
+
+    @Override
+    public void add(int i, Node node) {
+        children.add(i, node);
+    }
+
+    @Override
+    public Node remove(int i) {
+        return children.remove(i);
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        return children.indexOf(o);
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        return children.lastIndexOf(o);
+    }
+
+    @NotNull
+    @Override
+    public ListIterator<Node> listIterator() {
+        return children.listIterator();
+    }
+
+    @NotNull
+    @Override
+    public ListIterator<Node> listIterator(int i) {
+        return children.listIterator(i);
+    }
+
+    @NotNull
+    @Override
+    public List<Node> subList(int i, int i1) {
+        return children.subList(i, i1);
+    }
+
+    @Override
+    public Spliterator<Node> spliterator() {
+        return children.spliterator();
+    }
+
+    @Override
+    public Stream<Node> stream() {
+        return children.stream();
+    }
+
+    @Override
+    public Stream<Node> parallelStream() {
+        return children.parallelStream();
     }
 }

@@ -5,7 +5,7 @@ public class ConsoleOutput {
     public static boolean patternInitiation = false;
     public static boolean patternRecognition = false;
     public static boolean treeInitiation = false;
-    public static boolean treeTraversal = false;
+    public static boolean treeTraversal = true;
     public static boolean gameResult = true;
     public static boolean printBoard = true;
     public static boolean playerGreetings = false;

@@ -4,37 +4,49 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="Value of numbers in the pressure map grows quadratic instead of linear now">
+    <list default="true" id="33e5219d-b46b-4480-a6f8-850a85c20716" name="Default Changelist" comment="Value of numbers in the pressure map grows cubic. Bugfix predicaments where identified incorrectly">
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_annotations_13_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_1_5_30_M1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_common_1_5_30_M1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk7_1_5_30_M1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_stdlib_jdk8_1_5_30_M1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_jetbrains_kotlin_kotlin_test_1_5_30_M1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/bot/PonderingBot.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/bot/tree/AlphaBetaPruning.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/bot/tree/AlphaBetaPruningTest.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/bot/Ruediger/IRuediger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/Ruediger/IRuediger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/game.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/game.iml" beforeDir="false" afterPath="$PROJECT_DIR$/game.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/PonderingBot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/Torben/TorbenDerBot.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/bot/tree/Node.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/procedure/ConsoleOutput.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/procedure/ConsoleOutput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/App.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/Bogo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Bogo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/PonderingBot.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/Pattern.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/PatternSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Torben/TorbenDerBot.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/Trainer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/Trainer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Node.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree$1.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree$DFS.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree$DFS.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/bot/tree/Tree.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Board$BoardIterator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Board$BoardIterator.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Board.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Board.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Field.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Field.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/HumanPlayer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/model/Identifier.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/Player.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/Player.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/ConsoleOutput.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/DefaultGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/DefaultGame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Display.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Game.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/model/procedure/Tester.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/bot/tree/TreeTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/bot/tree/TreeTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/model/BoardTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/model/BoardTest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/model/FieldTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/model/FieldTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/vierGewinnt-1.0.0.jar" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,6 +60,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Kotlin Class" />
+        <option value="JUnit3 Test Class" />
       </list>
     </option>
   </component>
@@ -82,7 +96,9 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1g17whhxCniSkSRPaD1NZyCvFXJ" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="abbreviatePackageNames" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -93,6 +109,8 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrary" value="JUnit3" />
+    <property name="com.intellij.testIntegration.createTest.CreateTestDialog.defaultLibrarySuperClass.JUnit3" value="junit.framework.TestCase" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -108,6 +126,15 @@
     <property name="project.structure.side.proportion" value="0.2" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="bot" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/java/bot/Torben" />
+    </key>
+    <key name="CreateTestDialog.Recents.Supers">
+      <recent name="junit.framework.TestCase" />
+    </key>
     <key name="ExtractSuperBase.RECENT_KEYS">
       <recent name="bot" />
     </key>
@@ -115,11 +142,8 @@
       <recent name="model" />
       <recent name="" />
     </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="bot" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/main/java/bot/Torben" />
+    <key name="CreateTestDialog.RecentsKey">
+      <recent name="bot.tree" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -135,17 +159,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BoardTest.testRemoveOfColumn" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="AlphaBetaPruningTest.testTestRun" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="game" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="model.*" />
+          <option name="PATTERN" value="bot.tree.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="model" />
-      <option name="MAIN_CLASS_NAME" value="model.BoardTest" />
-      <option name="METHOD_NAME" value="testRemoveOfColumn" />
+      <option name="PACKAGE_NAME" value="bot.tree" />
+      <option name="MAIN_CLASS_NAME" value="bot.tree.AlphaBetaPruningTest" />
+      <option name="METHOD_NAME" value="testTestRun" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -201,10 +225,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.App" />
+        <item itemvalue="JUnit.AlphaBetaPruningTest.testTestRun" />
         <item itemvalue="JUnit.IRuedigerTest.testEval" />
         <item itemvalue="JUnit.TreeTest" />
         <item itemvalue="JUnit.TreeTest.test" />
-        <item itemvalue="JUnit.BoardTest.testRemoveOfColumn" />
       </list>
     </recent_temporary>
   </component>
@@ -229,7 +253,9 @@
       <workItem from="1597270495648" duration="103000" />
       <workItem from="1597736685190" duration="101000" />
       <workItem from="1627589116031" duration="8134000" />
-      <workItem from="1627627394608" duration="1287000" />
+      <workItem from="1627627394608" duration="7051000" />
+      <workItem from="1627725843010" duration="382000" />
+      <workItem from="1627727413609" duration="2232000" />
     </task>
     <task id="LOCAL-00001" summary="version für matze">
       <created>1596034411144</created>
@@ -245,7 +271,14 @@
       <option name="project" value="LOCAL" />
       <updated>1627597224858</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Value of numbers in the pressure map grows cubic. Bugfix predicaments where identified incorrectly">
+      <created>1627628769918</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1627628769918</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -322,9 +355,19 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="version für matze" />
     <MESSAGE value="Value of numbers in the pressure map grows quadratic instead of linear now" />
-    <option name="LAST_COMMIT_MESSAGE" value="Value of numbers in the pressure map grows quadratic instead of linear now" />
+    <MESSAGE value="Value of numbers in the pressure map grows cubic. Bugfix predicaments where identified incorrectly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Value of numbers in the pressure map grows cubic. Bugfix predicaments where identified incorrectly" />
   </component>
   <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="kotlin-line">
+          <url>file://$PROJECT_DIR$/src/main/java/bot/PonderingBot.kt</url>
+          <line>37</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
     <watches-manager>
       <configuration name="JUnit">
         <watch expression="leaves.get(leaves.size() - 1)" language="JAVA" />

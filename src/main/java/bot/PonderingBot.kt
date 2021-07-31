@@ -1,83 +1,89 @@
-package bot;
+package bot
 
-import bot.tree.Node;
-import bot.tree.Tree;
-import model.Board;
-import model.Field;
-import model.Token;
-import model.Player;
+import bot.tree.AlphaBetaPruning
+import bot.tree.Node
+import bot.tree.Tree
+import model.Board
+import model.Player
+import model.Token
 
-public abstract class PonderingBot extends Player {
+abstract class PonderingBot protected constructor(side: Token?, board: Board?, forecast: Int) : Player(side, board) {
     /**
      * The amount of moves this bot plans ahead
      */
-    protected int forecast;
+    var forecast: Int
+        protected set
+
     /**
      * The player that did the first move
      */
-    protected Token beginner = null;
+    @JvmField
+    protected var beginner: Token? = null
 
-    protected PonderingBot(Token side, Board board, int forecast) {
-        super(side, board);
-        this.forecast = forecast * 2;
-    }
-
-    @Override
-    public int getColumnOfNextMove() {
+    override fun getColumnOfNextMove(): Int {
         if (beginner == null) {
-            for (Field f : board) if (!f.isEmpty()) beginner = Token.PLAYER_1 == side ? Token.PLAYER_2 : Token.PLAYER_1;
+            for (f in board) if (!f.isEmpty) beginner = if (Token.PLAYER_1 == side) Token.PLAYER_2 else Token.PLAYER_1
         }
-        beginner = side;
-        Tree states = new Tree(forecast, board.WIDTH);
-        traverse(forecast, 0, states.getRoot(), side);
-        int result = states.getRoot().indexOfNodeWithBestExpectationOfHighValue();
-        int rating = states.getRoot().getValue();
-        if (rating > Integer.MAX_VALUE - 20) System.out.println("Win inevitable");
-        if (rating < Integer.MIN_VALUE + 20) System.out.println("Loss inevitable");
-        System.out.println("Rating after own move: " + rating);
-        return result;
+        beginner = side
+        val states = Tree(forecast, board.WIDTH)
+        traverse(forecast, 0, states.root, side)
+        /* new AlphaBetaPruning().run(states);
+        int index = 0;
+        for (int i = 0; i < states.getRoot().size(); i++) {
+            index = states.getRoot().get(i).getValue() > states.getRoot().get(index).getValue() ? i : index;
+        }*/
+        AlphaBetaPruning().run(states)
+        val result: Int = states.root.filter{child -> !child.invisible}.map { c -> c.value }.indexOf(states.root.maxOf { c -> c.value })
+        //val result = states.root.indexOfNodeWithBestExpectationOfHighValue()
+        val rating = states.root.value
+        if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
+        if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
+        println("Rating after own move: $rating")
+        return result
     }
 
     /**
-     * Recursive method that lets a {@link Tree} represent the game's states. Every
+     * Recursive method that lets a [Tree] represent the game's states. Every
      * leave's value is set to the according state's rating
      *
      * @param forecast    amount of moves the algorithm is planning ahead
      * @param lvl         the current level
      * @param currentNode the current node
      */
-    protected void traverse(int forecast, int lvl, Node currentNode, Token player) {
-        Token winner = board.getWinner();
+    protected fun traverse(forecast: Int, lvl: Int, currentNode: Node, player: Token) {
+        val winner = board.winner
         if (winner != Token.EMPTY) {
-            currentNode.makeLeave();
+            currentNode.makeLeave()
             if (winner == side) {
-                currentNode.setValue(Integer.MAX_VALUE);
+                currentNode.value = Int.MAX_VALUE
             } else {
-                currentNode.setValue(Integer.MIN_VALUE);
+                currentNode.value = Int.MIN_VALUE
             }
         } else if (lvl == forecast) {
-            currentNode.makeLeave();
-            currentNode.setValue(rateState());
+            currentNode.makeLeave()
+            currentNode.value = rateState()
         } else {
-            for (int i = 0; i < board.WIDTH; i++) {
+            for (i in 0 until board.WIDTH) {
                 if (board.throwInColumn(i, player)) {
-                    traverse(forecast, lvl + 1, currentNode.getChild(i),
-                            player == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
-                    board.removeOfColumn(i);
+                    traverse(
+                        forecast, lvl + 1, currentNode.getChild(i),
+                        if (player == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
+                    )
+                    board.removeOfColumn(i)
                 } else {
-                    currentNode.getChild(i).setInvisible();
+                    currentNode.getChild(i).setInvisible()
                 }
             }
         }
-    }
-
-    public int getForecast() {
-        return forecast;
     }
 
     /**
      * evaluates the state of the current board
      * @return high return values are associated with a good rating
      */
-    protected abstract int rateState();
+    protected abstract fun rateState(): Int
+
+    init {
+        this.forecast = forecast * 2
+    }
 }

@@ -1,15 +1,12 @@
-package bot.Torben;
+package bot.Torben
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import model.procedure.ConsoleOutput;
-import bot.PonderingBot;
-import bot.tree.Tree;
-import model.*;
+import model.Board
+import bot.PonderingBot
+import bot.tree.Tree
+import model.Token
+import model.procedure.ConsoleOutput
+import java.io.*
+import java.lang.StringBuilder
 
 /**
  * This Bot analyzes the board and recognizes given patterns (for example 3 in a
@@ -20,178 +17,173 @@ import model.*;
  * get increased. The In/Decrease itself is anti-proportional to the amount of
  * times theses patterns were used.
  */
-public class TorbenDerBot extends PonderingBot {
+class TorbenDerBot(side: Token?, board: Board?, forecast: Int) : PonderingBot(side, board, forecast) {
     /**
      * Array containing ratings for patterns
      */
-    private int[] ratings;
+    private var ratings: IntArray = IntArray(0)
+
     /**
      * Contains a set of hardcoded patterns
      */
-    private final PatternSet checker = new PatternSet();
+    private val checker = PatternSet()
+
     /**
      * Element i represents the amount of times that pattern i has been used in
      * this game
      */
-    private final int[] ownOverallPatternUsage;
+    private val ownOverallPatternUsage: IntArray
+
     /**
      * Element i represents the amount of times that pattern i is currently used on
      * the board
      */
-    private final int[] ownCurrentPatternUsage;
+    private val ownCurrentPatternUsage: IntArray
+
     /**
      * Element i represents the amount of times that pattern i has been used in
      * this game
      */
-    private int[] opOverallPatternUsage;
+    private val opOverallPatternUsage: IntArray
+
     /**
      * Element i represents the amount of times that pattern i is currently used on
      * the board
      */
-    private int[] oppCurrentPatternUsage;
+    private val oppCurrentPatternUsage: IntArray
 
     /**
      * Path to data
      */
-    private final String PATH = "game/src/main/java/bot/data.txt";
-
-    /**
-     * Constructor
-     *
-     * @param side  Player_1 or Player_2
-     * @param board the board
-     */
-    public TorbenDerBot(final Token side, final Board board, int forecast) {
-        super(side, board, forecast);
-        log();
-        readRatings();
-        ownOverallPatternUsage = new int[checker.getPatternAmount()];
-        ownCurrentPatternUsage = new int[checker.getPatternAmount()];
-        opOverallPatternUsage = new int[checker.getPatternAmount()];
-        oppCurrentPatternUsage = new int[checker.getPatternAmount()];
-    }
+    private val PATH = "game/src/main/java/bot/data.txt"
 
     /**
      * prints out overall useless information
      */
-    private void log() {
+    private fun log() {
         if (ConsoleOutput.playerGreetings) {
-            System.out.println(
-                    "--------------------------------------------------------------------------------------------------");
-            System.out.println(
-                    "------------------------------------------TORBEN DER BOT------------------------------------------");
-            System.out.println(
-                    "--------------------------------------------------------------------------------------------------");
-            System.out.println("Actively checking for " + checker.getPatternAmount() + " patterns.");
+            println(
+                "--------------------------------------------------------------------------------------------------"
+            )
+            println(
+                "------------------------------------------TORBEN DER BOT------------------------------------------"
+            )
+            println(
+                "--------------------------------------------------------------------------------------------------"
+            )
+            println("Actively checking for " + checker.patternAmount + " patterns.")
         }
     }
 
-    public int getColumnOfNextMove() {
+    override fun getColumnOfNextMove(): Int {
         // checks which patterns have been used in the opponents last move
-        updateOpponentsOverallPatternUsage();
+        updateOpponentsOverallPatternUsage()
         // checks which patterns he is currently using in order to compare them to later
         // TODO not accurate
-        checkOwnCurrentPatternUsage();
-
+        checkOwnCurrentPatternUsage()
         // builds a tree
-        Tree states = new Tree(forecast, board.WIDTH);
+        val states = Tree(forecast, board.WIDTH)
         // makes the tree represent the games states
-        traverse(forecast, 0, states.getRoot(), side);
+        traverse(forecast, 0, states.root, side)
         // gets the best following state
-        int bestColumn = states.getRoot().indexOfNodeWithBestExpectationOfHighValue();
+        val bestColumn = states.root.indexOfNodeWithBestExpectationOfHighValue()
         // checks which patterns are used in this move
         // checks which patterns the opponent is currently using in order to compare
         // them to later TODO not accurate
-        board.throwInColumn(bestColumn, side);
-        updateOwnOverallPatternUsage();
-        checkOpponentsCurrentPatternUsage();
-        board.removeOfColumn(bestColumn);
-        int rating = states.getRoot().getValue();
-        if (rating > Integer.MAX_VALUE - board.HEIGHT) {
-            adapt(true);
-        } else if (rating < Integer.MIN_VALUE + board.HEIGHT) {
-            adapt(false);
+        board.throwInColumn(bestColumn, side)
+        updateOwnOverallPatternUsage()
+        checkOpponentsCurrentPatternUsage()
+        board.removeOfColumn(bestColumn)
+        val rating = states.root.value
+        if (rating > Int.MAX_VALUE - board.HEIGHT) {
+            adapt(true)
+        } else if (rating < Int.MIN_VALUE + board.HEIGHT) {
+            adapt(false)
         }
-        return bestColumn;
+        return bestColumn
     }
 
-    private void adapt(boolean won) {
+    private fun adapt(won: Boolean) {
         if (won) {
-            for (int i = 0; i < checker.getPatternAmount(); i++) {
-                if (ownOverallPatternUsage[i] != 0)
-                    ratings[i] += (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
-                if (opOverallPatternUsage[i] != 0)
-                    ratings[i] -= (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
+            for (i in 0 until checker.patternAmount) {
+                if (ownOverallPatternUsage[i] != 0) ratings[i] += ownOverallPatternUsage[i] * ownOverallPatternUsage[i]
+                if (opOverallPatternUsage[i] != 0) ratings[i] -= opOverallPatternUsage[i] * opOverallPatternUsage[i]
             }
         } else {
-            for (int i = 0; i < checker.getPatternAmount(); i++) {
-                if (ownOverallPatternUsage[i] != 0)
-                    ratings[i] -= (ownOverallPatternUsage[i] * ownOverallPatternUsage[i]);
-                if (opOverallPatternUsage[i] != 0)
-                    ratings[i] += (opOverallPatternUsage[i] * opOverallPatternUsage[i]);
+            for (i in 0 until checker.patternAmount) {
+                if (ownOverallPatternUsage[i] != 0) ratings[i] -= ownOverallPatternUsage[i] * ownOverallPatternUsage[i]
+                if (opOverallPatternUsage[i] != 0) ratings[i] += opOverallPatternUsage[i] * opOverallPatternUsage[i]
             }
         }
-        writeRatings();
+        writeRatings()
     }
 
     /**
      * checks which patterns are used by the opponent at the moment
      */
-    private void checkOpponentsCurrentPatternUsage() {
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            oppCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
+    private fun checkOpponentsCurrentPatternUsage() {
+        for (i in 0 until checker.patternAmount) {
+            oppCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
+                board,
+                if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
+            )
         }
     }
 
     /**
      * checks which patterns are used by itself at the moment
      */
-    private void checkOwnCurrentPatternUsage() {
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            ownCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side);
+    private fun checkOwnCurrentPatternUsage() {
+        for (i in 0 until checker.patternAmount) {
+            ownCurrentPatternUsage[i] = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
+                board,
+                side
+            )
         }
     }
 
     /**
      * checks if there were new patterns used since the last invocation of
-     * {@link #checkOpponentsCurrentPatternUsage()} and updates
-     * {@link #opOverallPatternUsage}
+     * [.checkOpponentsCurrentPatternUsage] and updates
+     * [.opOverallPatternUsage]
      */
-    private void updateOpponentsOverallPatternUsage() {
-        if (ConsoleOutput.patternRecognition)
-            System.out.println("Opponent");
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            int occurrence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
-            if (ConsoleOutput.patternRecognition)
-                if (occurrence > 0)
-                    System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurrence
-                            + "\n---------------\n---------------");
+    private fun updateOpponentsOverallPatternUsage() {
+        if (ConsoleOutput.patternRecognition) println("Opponent")
+        for (i in 0 until checker.patternAmount) {
+            val occurrence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
+                board,
+                if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
+            )
+            if (ConsoleOutput.patternRecognition) if (occurrence > 0) println(
+                """Pattern: 
+${checker.getPattern(i)}    $occurrence
+---------------
+---------------"""
+            )
             if (occurrence > oppCurrentPatternUsage[i]) {
-                opOverallPatternUsage[i] += occurrence - oppCurrentPatternUsage[i];
+                opOverallPatternUsage[i] += occurrence - oppCurrentPatternUsage[i]
             }
-            ownCurrentPatternUsage[i] = occurrence;
+            ownCurrentPatternUsage[i] = occurrence
         }
     }
 
     /**
      * checks if there were new patterns used since the last invocation of
-     * {@link #checkOwnCurrentPatternUsage()} and updates
-     * {@link #ownOverallPatternUsage}
+     * [.checkOwnCurrentPatternUsage] and updates
+     * [.ownOverallPatternUsage]
      */
-    private void updateOwnOverallPatternUsage() {
-        if (ConsoleOutput.patternRecognition)
-            System.out.println("Torben");
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            int occurence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side);
-            if (ConsoleOutput.patternRecognition)
-                if (occurence > 0)
-                    System.out.println("Pattern: \n" + checker.getPattern(i) + "    " + occurence
-                            + "\n---------------\n---------------");
+    private fun updateOwnOverallPatternUsage() {
+        if (ConsoleOutput.patternRecognition) println("Torben")
+        for (i in 0 until checker.patternAmount) {
+            val occurence = checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side)
+            if (ConsoleOutput.patternRecognition) if (occurence > 0) println(
+                """Pattern: 
+${checker.getPattern(i)}    $occurence
+---------------
+---------------"""
+            )
             if (occurence > ownCurrentPatternUsage[i]) {
-                ownOverallPatternUsage[i] += occurence - ownCurrentPatternUsage[i];
+                ownOverallPatternUsage[i] += occurence - ownCurrentPatternUsage[i]
             }
         }
     }
@@ -201,60 +193,76 @@ public class TorbenDerBot extends PonderingBot {
      *
      * @return rating
      */
-    protected int rateState() {
-        int rating = 0;
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side);
+    override fun rateState(): Int {
+        var rating = 0
+        for (i in 0 until checker.patternAmount) {
+            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side)
         }
-        for (int i = 0; i < checker.getPatternAmount(); i++) {
-            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board,
-                    side == Token.PLAYER_1 ? Token.PLAYER_2 : Token.PLAYER_1);
+        for (i in 0 until checker.patternAmount) {
+            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
+                board,
+                if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
+            )
         }
-        return rating;
+        return rating
     }
 
-    @Override
-    public String getName() {
-        return "Torben";
+    override fun getName(): String {
+        return "Torben"
     }
 
     /**
      * get data input
      */
-    private void readRatings() {
-        InputStream fis;
-        byte[] data = new byte[0];
+    private fun readRatings() {
+        val fis: InputStream
+        var data = ByteArray(0)
         try {
-            fis = new FileInputStream(new File(PATH));
-            data = new byte[fis.available()];
-            fis.read(data);
-            fis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            fis = FileInputStream(File(PATH))
+            data = ByteArray(fis.available())
+            fis.read(data)
+            fis.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
-        String input = new String(data);
-        if (ConsoleOutput.botInitiation) System.out.println(input);
-        final String[] ratingsAr = input.split(",");
-        ratings = new int[checker.getPatternAmount()];
-        ratings[0] = ratingsAr[0].isEmpty() ? 0 : Integer.valueOf(ratingsAr[0]);
-        for (int i = 1; i < ratingsAr.length; i++) {
-            ratings[i] = Integer.valueOf(ratingsAr[i]);
+        val input = String(data)
+        if (ConsoleOutput.botInitiation) println(input)
+        val ratingsAr = input.split(",".toRegex()).toTypedArray()
+        ratings = IntArray(checker.patternAmount)
+        ratings[0] = if (ratingsAr[0].isEmpty()) 0 else Integer.valueOf(ratingsAr[0])
+        for (i in 1 until ratingsAr.size) {
+            ratings[i] = Integer.valueOf(ratingsAr[i])
         }
     }
 
     /**
      * get data output
      */
-    private void writeRatings() {
-        final StringBuilder str = new StringBuilder();
-        for (int i = 0; i < ratings.length - 1; i++) str.append(ratings[i]).append(",");
-        str.append(ratings[ratings.length - 1]);
+    private fun writeRatings() {
+        val str = StringBuilder()
+        for (i in 0 until ratings.size - 1) str.append(ratings[i]).append(",")
+        str.append(ratings[ratings.size - 1])
         try {
-            FileOutputStream out = new FileOutputStream(new File(PATH));
-            out.write(str.toString().getBytes());
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            val out = FileOutputStream(File(PATH))
+            out.write(str.toString().toByteArray())
+            out.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
         }
+    }
+
+    /**
+     * Constructor
+     *
+     * @param side  Player_1 or Player_2
+     * @param board the board
+     */
+    init {
+        log()
+        readRatings()
+        ownOverallPatternUsage = IntArray(checker.patternAmount)
+        ownCurrentPatternUsage = IntArray(checker.patternAmount)
+        opOverallPatternUsage = IntArray(checker.patternAmount)
+        oppCurrentPatternUsage = IntArray(checker.patternAmount)
     }
 }
