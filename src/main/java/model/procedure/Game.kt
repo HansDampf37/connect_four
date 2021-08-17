@@ -44,6 +44,6 @@ class Game(player1: Player, player2: Player) {
 
     private fun reset() {
         board = Board(7, 6)
-        curPlayerInd = (Math.random() * players.size).toInt()
+        curPlayerInd = players.indexOfFirst { it.side == Token.PLAYER_1 }
     }
 }
