@@ -1,4 +1,4 @@
-package bot.Torben
+package bot.ratingfunctions.torben
 
 import model.Board
 import model.Token
@@ -52,7 +52,7 @@ class Pattern internal constructor(lines: Array<String>?) {
                     if (pattern[x][y] != NOT_EMPTY) return false
                 } else {
                     if (pattern[x][y] != NULL) {
-                        val boardValue = board[x + xOffset, y + yOffset].player
+                        val boardValue = board[x + xOffset, y + yOffset]
                         val patternValue = pattern[x][y]
                         if (patternValue == ME) {
                             if (boardValue != player) return false

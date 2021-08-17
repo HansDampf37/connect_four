@@ -1,4 +1,4 @@
-package bot.Torben;
+package bot.ratingfunctions.torben;
 
 import java.util.ArrayList;
 import java.util.List;
