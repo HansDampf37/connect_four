@@ -4,7 +4,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-class HumanPlayer(side: Token?, board: Board?) : Player(side, board) {
+class HumanPlayer : Player() {
     override fun getColumnOfNextMove(): Int {
         val br = BufferedReader(InputStreamReader(System.`in`))
         while (true) {
@@ -17,7 +17,5 @@ class HumanPlayer(side: Token?, board: Board?) : Player(side, board) {
         }
     }
 
-    override fun getName(): String {
-        return "Human"
-    }
+    override val name: String = "Human"
 }

@@ -5,12 +5,9 @@ import model.HumanPlayer;
 import model.Token;
 import model.Player;
 
-public class DefaultGame extends Game {
+public class DefaultGame {
 
-    @Override
-    protected void definePlayers() {
-        players = new Player[2];
-        players[0] = new HumanPlayer(Token.PLAYER_1, board);
-        players[1] = new RuedigerDerBot(Token.PLAYER_2, board, 2);
+    public DefaultGame() {
+        new Game(new HumanPlayer(), new RuedigerDerBot(4)).play();
     }
 }

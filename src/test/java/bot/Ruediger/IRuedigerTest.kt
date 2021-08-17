@@ -1,70 +1,72 @@
-package bot.Ruediger;
+package bot.Ruediger
 
-import model.Board;
-import model.HumanPlayer;
-import model.Token;
-import org.junit.Before;
-import org.junit.Test;
+import model.Board
+import model.HumanPlayer
+import model.Token
+import org.junit.Before
+import org.junit.Test
 
-import java.util.Arrays;
-
-public class IRuedigerTest {
-    private Board b = new Board(7, 6);
-    private IRuediger r = new RuedigerDerBot(Token.PLAYER_2, b, 3);
-    private HumanPlayer h = new HumanPlayer(Token.PLAYER_1, b);
-
+class IRuedigerTest {
+    private val b = Board(7, 6)
+    private val r: IRuediger = RuedigerDerBot(3)
+    private val h = HumanPlayer()
     @Before
-    public void setup() {
-        b.throwInColumn(0, r.getSide());
-        b.throwInColumn(1, r.getSide());
-        b.throwInColumn(3, r.getSide());
-        b.throwInColumn(6, r.getSide());
-        b.throwInColumn(2, h.getSide());
-        b.throwInColumn(5, h.getSide());
+    fun setup() {
+        r.board = b
+        h.board = b
+        r.side = Token.PLAYER_1
+        h.side = Token.PLAYER_2
+
+        b.throwInColumn(0, r.side)
+        b.throwInColumn(1, r.side)
+        b.throwInColumn(3, r.side)
+        b.throwInColumn(6, r.side)
+        b.throwInColumn(2, h.side)
+        b.throwInColumn(5, h.side)
         //
-        b.throwInColumn(0, h.getSide());
-        b.throwInColumn(2, h.getSide());
-        b.throwInColumn(3, h.getSide());
-        b.throwInColumn(5, h.getSide());
-        b.throwInColumn(6, h.getSide());
+        b.throwInColumn(0, h.side)
+        b.throwInColumn(2, h.side)
+        b.throwInColumn(3, h.side)
+        b.throwInColumn(5, h.side)
+        b.throwInColumn(6, h.side)
         //
-        b.throwInColumn(0, r.getSide());
-        b.throwInColumn(2, r.getSide());
-        b.throwInColumn(3, r.getSide());
-        b.throwInColumn(5, h.getSide());
-        b.throwInColumn(6, r.getSide());
+        b.throwInColumn(0, r.side)
+        b.throwInColumn(2, r.side)
+        b.throwInColumn(3, r.side)
+        b.throwInColumn(5, h.side)
+        b.throwInColumn(6, r.side)
         //
-        b.throwInColumn(0, h.getSide());
-        b.throwInColumn(2, r.getSide());
-        b.throwInColumn(3, r.getSide());
-        b.throwInColumn(5, r.getSide());
-        b.throwInColumn(6, h.getSide());
+        b.throwInColumn(0, h.side)
+        b.throwInColumn(2, r.side)
+        b.throwInColumn(3, r.side)
+        b.throwInColumn(5, r.side)
+        b.throwInColumn(6, h.side)
         //
-        b.throwInColumn(0, r.getSide());
-        b.throwInColumn(2, r.getSide());
-        b.throwInColumn(3, h.getSide());
+        b.throwInColumn(0, r.side)
+        b.throwInColumn(2, r.side)
+        b.throwInColumn(3, h.side)
         //
-        b.throwInColumn(0, h.getSide());
-        b.throwInColumn(2, h.getSide());
-        b.throwInColumn(3, r.getSide());
+        b.throwInColumn(0, h.side)
+        b.throwInColumn(2, h.side)
+        b.throwInColumn(3, r.side)
     }
 
     @Test
-    public void testEval() {
-        System.out.println(b.toString());
-        System.out.println(r.rateState());
-        System.out.println(print(r.ownThreatMap));
-        System.out.println(print(r.opponentThreatMap));
+    fun testEval() {
+        println(b)
+        println(r.rateState())
+        println(print(r.ownThreatMap))
+        println(print(r.opponentThreatMap))
     }
 
-    private String print(int[][] map) {
-        StringBuilder str = new StringBuilder().append("|");
-        for (int y = map[0].length - 1; y >= 0; y--) {
-            for (int x = 0; x < map.length; x++) str.append(map[x][y]).append("|");
-            if (y != 0) str.append("\n|");
+    private fun print(map: Array<IntArray>): String {
+        val str = StringBuilder().append("|")
+        for (y in map[0].size - 1 downTo 0) {
+            for (ints in map) str.append(ints[y]).append("|")
+            if (y != 0) str.append("\n|")
         }
-        str.append("\n");
-        for (int x = 0; x < map.length; x++) str.append("-").append(x + 1);
-        return str.append("-").toString();
+        str.append("\n")
+        for (x in map.indices) str.append("-").append(x + 1)
+        return str.append("-").toString()
     }
 }

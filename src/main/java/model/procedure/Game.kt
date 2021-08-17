@@ -5,12 +5,17 @@ import model.Player
 import model.Token
 import java.util.Arrays
 
-abstract class Game(player1: Player, player2: Player) {
-    protected var board = Board(7, 6)
-    protected var players: Array<Player> = arrayOf(player1, player2)
+class Game(player1: Player, player2: Player) {
+    private var board = Board(7, 6)
+    private var players: Array<Player> = arrayOf(player1, player2)
     private var curPlayerInd: Int = (Math.random() * players.size).toInt()
 
-    protected abstract fun definePlayers()
+    init {
+        player1.side = Token.PLAYER_1
+        player2.side = Token.PLAYER_2
+        player1.board = board
+        player2.board = board
+    }
 
     private fun throwInColumn(x: Int) {
         if (board.throwInColumn(x, players[curPlayerInd].side)) {
@@ -24,7 +29,7 @@ abstract class Game(player1: Player, player2: Player) {
         winner = Token.EMPTY
         while (winner === Token.EMPTY) {
             if (ConsoleOutput.printBoard) println(board)
-            throwInColumn(players[curPlayerInd].columnOfNextMove)
+            throwInColumn(players[curPlayerInd].getColumnOfNextMove())
             if (!board.stillSpace()) break
             winner = board.winner
         }
@@ -42,6 +47,5 @@ abstract class Game(player1: Player, player2: Player) {
     private fun reset() {
         board = Board(7, 6)
         curPlayerInd = (Math.random() * players.size).toInt()
-        definePlayers()
     }
 }

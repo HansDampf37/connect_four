@@ -1,10 +1,6 @@
 package bot.Ruediger
 
-import model.Board
-import bot.Ruediger.IRuediger
-import model.Token
-
-class RuedigerDerBot(side: Token, board: Board, forecast: Int) : IRuediger(side, board, forecast) {
+class RuedigerDerBot(forecast: Int) : IRuediger(forecast) {
     override fun enhanceMaps() {
         // only works when board has even height
         if (board.HEIGHT % 2 == 1) return

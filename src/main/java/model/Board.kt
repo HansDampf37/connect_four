@@ -2,9 +2,13 @@ package model
 
 import java.lang.StringBuilder
 
-class Board(val WIDTH: Int = 7, val HEIGHT: Int = 6) : Iterable<Field> {
+class Board private constructor(val WIDTH: Int = 7,
+            val HEIGHT: Int = 6,
+            private val fields: Array<Array<Field>> = Array(WIDTH) { Array(HEIGHT) { Field() } }) : Iterable<Field>, Cloneable {
 
-    private val fields: Array<Array<Field>>
+    constructor(width: Int = 7, height: Int = 6): this(width, height, Array(width) { Array(height) { Field() } })
+
+    constructor(fields: Array<Array<Field>>): this(fields.size, fields[0].size, fields)
 
     fun throwInColumn(x: Int, player: Token): Boolean {
         for (y in 0 until HEIGHT) {
@@ -133,9 +137,13 @@ class Board(val WIDTH: Int = 7, val HEIGHT: Int = 6) : Iterable<Field> {
     }
 
     fun stillSpace(): Boolean {
-        val y = HEIGHT - 1
-        for (x in 0 until WIDTH) if (fields[x][y].player == Token.EMPTY) return true
-        return false
+        return IntRange(0, WIDTH - 1).any { stillSpaceIn(it) }
+        // for (x in 0 until WIDTH) if (stillSpaceIn(x)) return true
+        // return false
+    }
+
+    fun stillSpaceIn(row: Int): Boolean {
+        return fields[row][HEIGHT - 1].player == Token.EMPTY
     }
 
     operator fun get(x: Int, y: Int): Field {
@@ -161,6 +169,9 @@ class Board(val WIDTH: Int = 7, val HEIGHT: Int = 6) : Iterable<Field> {
 
     init {
         require(!(WIDTH <= 0 || HEIGHT <= 0)) { "height and with must be natural numbers" }
-        fields = Array(WIDTH) { Array(HEIGHT) { Field() } }
+    }
+
+    public override fun clone(): Board {
+        return Board(fields = Array(fields.size) { i -> fields[i].clone() })
     }
 }

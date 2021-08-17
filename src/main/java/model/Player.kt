@@ -1,33 +1,22 @@
-package model;
+package model
 
-public abstract class Player {
+abstract class Player {
     /**
      * Player_1 or Player_2
      */
-    protected Token side;
+    lateinit var side: Token
+
     /**
      * the board
      */
-    protected Board board;
-
+    lateinit var board: Board
     /**
-     * Constructor
-     */
-    public Player(Token side, Board board) {
-        this.side = side;
-        this.board = board;
-    }
-    
-    /**
-     * Depending on {@link #board the boards} state, this method returns in which column the next token is going to be.
-     * 
+     * Depending on [the boards][.board] state, this method returns in which column the next token is going to be.
+     *
      * @return the columns index
      */
-    public abstract int getColumnOfNextMove();
+    abstract fun getColumnOfNextMove(): Int
 
-    public abstract String getName();
+    abstract val name: String
 
-    public Token getSide() {
-        return side;
-    }
 }
