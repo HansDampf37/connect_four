@@ -1,6 +1,5 @@
 package bot.tree
 
-import bot.GameState
 import model.Board
 import model.Token
 import java.lang.Thread.sleep

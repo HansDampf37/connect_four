@@ -1,5 +1,6 @@
 package bot
 
+import bot.tree.GameState
 import junit.framework.TestCase
 import model.Board
 import model.Token

@@ -1,6 +1,5 @@
 package bot.tree
 
-import bot.GameState
 import bot.ratingfunctions.RandomRating
 import junit.framework.TestCase
 import model.Board

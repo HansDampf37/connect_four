@@ -1,8 +1,6 @@
 package bot.tree
 
-import bot.GameState
 import model.procedure.ConsoleOutput
-import java.lang.reflect.Constructor
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
 

@@ -1,6 +1,5 @@
 package bot.tree
 
-import bot.GameState
 import bot.RatingFunction
 import model.Board
 import model.Token
