@@ -1,19 +1,22 @@
 package model
 
 import java.lang.StringBuilder
+import model.Token.EMPTY as EMPTY
+import model.Token.PLAYER_1 as PLAYER_1
+import model.Token.PLAYER_2 as PLAYER_2
 
 class Board private constructor(val WIDTH: Int = 7,
             val HEIGHT: Int = 6,
-            private val fields: Array<Array<Field>> = Array(WIDTH) { Array(HEIGHT) { Field() } }) : Iterable<Field>, Cloneable {
+            private val fields: Array<Array<Token>> = Array(WIDTH) { Array(HEIGHT) { EMPTY } }) : Iterable<Token>, Cloneable {
 
-    constructor(width: Int = 7, height: Int = 6): this(width, height, Array(width) { Array(height) { Field() } })
+    constructor(width: Int = 7, height: Int = 6): this(width, height, Array(width) { Array(height) { EMPTY } })
 
-    constructor(fields: Array<Array<Field>>): this(fields.size, fields[0].size, fields)
+    constructor(fields: Array<Array<Token>>): this(fields.size, fields[0].size, fields)
 
     fun throwInColumn(x: Int, player: Token): Boolean {
         for (y in 0 until HEIGHT) {
-            if (fields[x][y].isEmpty) {
-                fields[x][y].player = player
+            if (fields[x][y] == EMPTY) {
+                fields[x][y] = player
                 return true
             }
         }
@@ -22,8 +25,8 @@ class Board private constructor(val WIDTH: Int = 7,
 
     fun removeOfColumn(x: Int) {
         for (y in HEIGHT - 1 downTo 0) {
-            if (!fields[x][y].isEmpty) {
-                fields[x][y].player = Token.EMPTY
+            if (fields[x][y] != EMPTY) {
+                fields[x][y] = EMPTY
                 return
             }
         }
@@ -34,21 +37,21 @@ class Board private constructor(val WIDTH: Int = 7,
             for (y in 0 until HEIGHT) {
                 for (x in 0 until WIDTH) {
                     val res = checkFor4RowOnField(x, y)
-                    if (res != Token.EMPTY) return res
+                    if (res != EMPTY) return res
                 }
             }
-            return Token.EMPTY
+            return EMPTY
         }
 
     private fun checkFor4RowOnField(x: Int, y: Int): Token {
-        val playerToCheck = fields[x][y].player
-        if (playerToCheck == Token.EMPTY) return Token.EMPTY
+        val playerToCheck = fields[x][y]
+        if (playerToCheck == EMPTY) return EMPTY
         var amountInRow = 1
         run {
             var dx = 1
             while (true) {
                 if (x + dx >= WIDTH) break
-                if (fields[x + dx][y].player != playerToCheck) break
+                if (fields[x + dx][y] != playerToCheck) break
                 amountInRow++
                 dx++
             }
@@ -56,7 +59,7 @@ class Board private constructor(val WIDTH: Int = 7,
         var dx = 1
         while (true) {
             if (x - dx < 0) break
-            if (fields[x - dx][y].player != playerToCheck) break
+            if (fields[x - dx][y] != playerToCheck) break
             amountInRow++
             dx++
         }
@@ -66,7 +69,7 @@ class Board private constructor(val WIDTH: Int = 7,
             var dy = 1
             while (true) {
                 if (y + dy >= HEIGHT) break
-                if (fields[x][y + dy].player != playerToCheck) break
+                if (fields[x][y + dy] != playerToCheck) break
                 amountInRow++
                 dy++
             }
@@ -74,7 +77,7 @@ class Board private constructor(val WIDTH: Int = 7,
         var dy = 1
         while (true) {
             if (y - dy < 0) break
-            if (fields[x][y - dy].player != playerToCheck) break
+            if (fields[x][y - dy] != playerToCheck) break
             amountInRow++
             dy++
         }
@@ -84,7 +87,7 @@ class Board private constructor(val WIDTH: Int = 7,
             var d = 1
             while (true) {
                 if (x + d >= WIDTH || y + d >= HEIGHT) break
-                if (fields[x + d][y + d].player != playerToCheck) break
+                if (fields[x + d][y + d] != playerToCheck) break
                 amountInRow++
                 d++
             }
@@ -93,7 +96,7 @@ class Board private constructor(val WIDTH: Int = 7,
             var d = 1
             while (true) {
                 if (x - d < 0 || y - d < 0) break
-                if (fields[x - d][y - d].player != playerToCheck) break
+                if (fields[x - d][y - d] != playerToCheck) break
                 amountInRow++
                 d++
             }
@@ -104,7 +107,7 @@ class Board private constructor(val WIDTH: Int = 7,
             var d = 1
             while (true) {
                 if (x + d >= WIDTH || y - d < 0) break
-                if (fields[x + d][y - d].player != playerToCheck) break
+                if (fields[x + d][y - d] != playerToCheck) break
                 amountInRow++
                 d++
             }
@@ -112,20 +115,20 @@ class Board private constructor(val WIDTH: Int = 7,
         var d = 1
         while (true) {
             if (x - d < 0 || y + d >= HEIGHT) break
-            if (fields[x - d][y + d].player != playerToCheck) break
+            if (fields[x - d][y + d] != playerToCheck) break
             amountInRow++
             d++
         }
-        return if (amountInRow >= 4) playerToCheck else Token.EMPTY
+        return if (amountInRow >= 4) playerToCheck else EMPTY
     }
 
     override fun toString(): String {
         val str = StringBuilder().append("|")
         for (y in HEIGHT - 1 downTo 0) {
             for (x in 0 until WIDTH) {
-                when (fields[x][y].player) {
-                    Token.PLAYER_1 -> str.append("X|")
-                    Token.PLAYER_2 -> str.append("O|")
+                when (fields[x][y]) {
+                    PLAYER_1 -> str.append("X|")
+                    PLAYER_2 -> str.append("O|")
                     else -> str.append(" |")
                 }
             }
@@ -143,24 +146,24 @@ class Board private constructor(val WIDTH: Int = 7,
     }
 
     fun stillSpaceIn(row: Int): Boolean {
-        return fields[row][HEIGHT - 1].player == Token.EMPTY
+        return fields[row][HEIGHT - 1] == EMPTY
     }
 
-    operator fun get(x: Int, y: Int): Field {
+    operator fun get(x: Int, y: Int): Token {
         return fields[x][y]
     }
 
-    override fun iterator(): Iterator<Field> {
+    override fun iterator(): Iterator<Token> {
         return BoardIterator()
     }
 
-    internal inner class BoardIterator : Iterator<Field> {
+    internal inner class BoardIterator : Iterator<Token> {
         private var pointer = 0
         override fun hasNext(): Boolean {
             return pointer < HEIGHT * WIDTH
         }
 
-        override fun next(): Field {
+        override fun next(): Token {
             val res = fields[pointer % WIDTH][pointer / WIDTH]
             pointer++
             return res
