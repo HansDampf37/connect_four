@@ -18,7 +18,12 @@ class Game(player1: Player, player2: Player) {
     private fun throwInColumn(x: Int) {
         if (board.throwInColumn(x, players[curPlayerInd].side)) {
             curPlayerInd = ++curPlayerInd % players.size
+            onMovePlayed(x)
         }
+    }
+
+    private fun onMovePlayed(x: Int) {
+        players.forEach { it.onMovePlayed(x) }
     }
 
     fun play() {

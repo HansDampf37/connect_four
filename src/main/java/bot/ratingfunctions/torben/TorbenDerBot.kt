@@ -1,9 +1,6 @@
-package bot.Torben
+package bot.ratingfunctions.torben
 
-import bot.GameState
-import bot.PonderingBot
-import bot.tree.Node
-import bot.tree.Tree
+import bot.RatingFunction
 import model.Board
 import model.Token
 import model.procedure.ConsoleOutput
@@ -18,7 +15,8 @@ import java.io.*
  * get increased. The In/Decrease itself is anti-proportional to the amount of
  * times these patterns were used.
  */
-class TorbenDerBot(forecast: Int, side: Token, board: Board) : PonderingBot(forecast, side, board) {
+class TorbenDerBot(val side: Token) : RatingFunction {
+
     /**
      * Array containing ratings for patterns
      */
@@ -76,7 +74,7 @@ class TorbenDerBot(forecast: Int, side: Token, board: Board) : PonderingBot(fore
         }
     }
 
-    override fun getColumnOfNextMove(): Int {
+    /*override fun getColumnOfNextMove(): Int {
         // checks which patterns have been used in the opponents last move
         updateOpponentsOverallPatternUsage()
         // checks which patterns he is currently using in order to compare them to later
@@ -107,7 +105,7 @@ class TorbenDerBot(forecast: Int, side: Token, board: Board) : PonderingBot(fore
             adapt(false)
         }
         return bestColumn
-    }
+    }*/
 
     private fun adapt(won: Boolean) {
         if (won) {
@@ -124,7 +122,7 @@ class TorbenDerBot(forecast: Int, side: Token, board: Board) : PonderingBot(fore
         writeRatings()
     }
 
-    /**
+    /*/**
      * checks which patterns are used by the opponent at the moment
      */
     private fun checkOpponentsCurrentPatternUsage() {
@@ -192,28 +190,7 @@ ${checker.getPattern(i)}    $occurence
                 ownOverallPatternUsage[i] += occurence - ownCurrentPatternUsage[i]
             }
         }
-    }
-
-    /**
-     * Rates the current board's state
-     *
-     * @return rating
-     */
-    override fun rate(board: Board): Int {
-        var rating = 0
-        for (i in 0 until checker.patternAmount) {
-            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side)
-        }
-        for (i in 0 until checker.patternAmount) {
-            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
-                board,
-                if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
-            )
-        }
-        return rating
-    }
-
-    override val name: String = "Torben"
+    }*/
 
     /**
      * get data input
@@ -262,5 +239,21 @@ ${checker.getPattern(i)}    $occurence
         ownCurrentPatternUsage = IntArray(checker.patternAmount)
         opOverallPatternUsage = IntArray(checker.patternAmount)
         oppCurrentPatternUsage = IntArray(checker.patternAmount)
+    }
+
+    override fun name(): String = "Torben"
+
+    override fun invoke(board: Board): Int {
+        var rating = 0
+        for (i in 0 until checker.patternAmount) {
+            rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side)
+        }
+        for (i in 0 until checker.patternAmount) {
+            rating -= ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(
+                board,
+                if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1
+            )
+        }
+        return rating
     }
 }

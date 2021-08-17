@@ -29,7 +29,7 @@ class AlphaBetaPruningTest : TestCase() {
     }
 
     fun testSpeed() {
-        val t = Tree(6, 7, Node(), Node::class.java.getConstructor())
+        val t = Tree<Node>(6, 7, Node()) { _: Int, _: Int, _: Node? -> Node() }
         t.leaves.forEach { it.value = Random.nextInt() }
         println("building tree finished!")
         var finished = false
@@ -46,7 +46,7 @@ class AlphaBetaPruningTest : TestCase() {
 
     fun testSameResultAsMinimax() {
         for (i in 0..20) {
-            val t = Tree(listOf(5).random(), listOf(5, 6, 7).random(), Node(), Node::class.java.getConstructor())
+            val t = Tree(listOf(5).random(), listOf(5, 6, 7).random(), Node())  { _: Int, _: Int, _: Node? -> Node() }
             t.leaves.forEach { it.value = Random.nextInt() }
             val indexMini = Minimax.run(t)
             val valueMini = t.root.value

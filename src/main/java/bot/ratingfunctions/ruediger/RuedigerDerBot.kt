@@ -1,14 +1,14 @@
-package bot.Ruediger
+package bot.ratingfunctions.ruediger
 
-import model.Board
 import model.Token
 
-class RuedigerDerBot(forecast: Int, side: Token, board: Board) : IRuediger(forecast, side, board) {
+class RuedigerDerBot(side: Token) : IRuediger(side) {
     override fun enhanceMaps() {
+        val beginner = side
         // only works when board has even height
-        if (board.HEIGHT % 2 == 1) return
-        for (x in 0 until board.WIDTH) {
-            for (y in 0 until board.HEIGHT) {
+        if (height % 2 == 1) return
+        for (x in 0 until width) {
+            for (y in 0 until height) {
                 if (beginner == side) {
                     //this bot should aim for lines 0, 2, 4, 6
                     if (ownThreatMap[x][y] == 3 && y % 2 == 0) ownThreatMap[x][y] = 6

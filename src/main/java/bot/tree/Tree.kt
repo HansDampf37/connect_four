@@ -8,9 +8,6 @@ import java.util.concurrent.LinkedBlockingQueue
 
 /**
  * Utilized to represent a states of a 4-gewinnt-match. Node A is the child of node B <-> it exists a move that you can do in state B that brings you to state A
- *
- * @param depth  amount of levels
- * @param spread amount of children per node
  */
 @Suppress("UNCHECKED_CAST")
 class Tree<T : Node>(var root: T) : Iterable<T> {
@@ -18,7 +15,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     /**
      * All nodes in the tree without children
      */
-    val leaves: MutableList<T> = ArrayList()
+    val leaves: HashSet<T> = HashSet()
 
     val size: Int
         get() {
@@ -98,7 +95,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     fun step(move: Int) {
         val oldRoot: T = root
         root = oldRoot[move] as T
-        for (child in leaves.filter { !root.isParentOf(it) }) leaves.remove(child)
+        leaves.removeAll{ !root.isParentOf(it) }
     }
 
     override fun toString(): String {
@@ -107,10 +104,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
 
     fun leavesToString(): String {
         val str = StringBuilder()
-        for (i in leaves.indices) {
-            str.append(leaves[i].value).append(if (i != leaves.size - 1) ", " else "")
-        }
-        return str.toString()
+        return leaves.joinToString { ", " }
     }
 
     /**

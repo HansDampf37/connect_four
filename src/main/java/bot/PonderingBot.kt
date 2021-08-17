@@ -2,40 +2,59 @@ package bot
 
 import bot.tree.AlphaBetaPruning
 import bot.tree.Node
-import bot.tree.Tree
 import bot.tree.TreeBuilder
 import model.Board
 import model.Player
 import model.Token
 
-abstract class PonderingBot protected constructor(forecast: Int, side: Token, board: Board) : Player(side, board) {
+/**
+ * A rating-function rates a [Board] - - high return values are associated with a good rating
+ */
+interface RatingFunction: (Board) -> Int {
+    fun name(): String
+}
+
+/**
+ * A PonderingBot is a bot that considers future GameStates. When idle he builds a tree out of GameStates. When forced to choose a
+ * move he pauses building the tree. Then he evaluates the GameStates at the tree's nodes using the given [ratingFunction].
+ * He then uses AlphaBeta Pruning or minimax to calculate the best move. After this he updates the trees root to the current
+ * GameState and resumes building the tree.
+ *
+ * @param ratingFunction rates a [Board] - high return values are associated with a good rating
+ */
+class PonderingBot (
+    side: Token,
+    board: Board,
+    private val ratingFunction: RatingFunction
+) : Player(side, board), Runnable {
     /**
-     * The amount of moves this bot plans ahead
+     * The treeBuilder builds the Tree while idle
      */
-    var forecast: Int
-        protected set
+    private var treeBuilder = TreeBuilder(ratingFunction)
 
-    var treeBuilder = TreeBuilder()
+    /**
+     * the tree built by the [treeBuilder]
+     */
+    private val tree get() = treeBuilder.tree
 
-    init {
-        treeBuilder.start()
+    /**
+     * Start building the tree
+     */
+    override fun run() {
+        treeBuilder.run()
     }
 
-    /**
-     * The player that did the first move
-     */
-    protected lateinit var beginner: Token
-
     override fun getColumnOfNextMove(): Int {
-        if (!this::beginner.isInitialized) {
+        /*if (!this::beginner.isInitialized) {
             beginner = if (board.all { it == Token.EMPTY }) side else side.other()
-        }
+        }*/
+        if (tree.root.board.isEmpty) return tree.root.board.WIDTH / 2
         treeBuilder.pause()
-        for (leaf in treeBuilder.tree.leaves) {
-            leaf.value = rate(leaf.board)
-        }
-        val index = AlphaBetaPruning.run(treeBuilder.tree)
-        val rating = treeBuilder.tree.root[index].value
+        //for (leaf in tree.leaves) {
+        //    leaf.value = ratingFunction(leaf.board)
+        //}
+        val index = AlphaBetaPruning.run(tree)
+        val rating = tree.root[index].value
         //if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
         //if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
         println("Rating after own move: $rating")
@@ -43,7 +62,18 @@ abstract class PonderingBot protected constructor(forecast: Int, side: Token, bo
         return index
     }
 
-    /**
+    override fun onMovePlayed(x: Int) {
+        treeBuilder.moveMade(x)
+    }
+
+    override val name: String
+        get() = "Smarty mit Bewertungsfunktion ${ratingFunction.name()}"
+/*/**
+      * The player that did the first move
+      */
+     protected lateinit var beginner: Token*/
+
+    /*/**
      * Recursive method that lets a [Tree] represent the game's states. Every
      * leave's value is set to the according state's rating
      *
@@ -62,7 +92,7 @@ abstract class PonderingBot protected constructor(forecast: Int, side: Token, bo
             }
         } else if (lvl == forecast) {
             tree.makeLeave(currentNode)
-            currentNode.value = rate(currentNode.board)
+            currentNode.value = ratingFunction(currentNode.board)
         } else {
             for (i in 0 until board.WIDTH) {
                 if (board.throwInColumn(i, player)) {
@@ -77,17 +107,13 @@ abstract class PonderingBot protected constructor(forecast: Int, side: Token, bo
                 }
             }
         }
-    }
+    }*/
 
-    /**
+    /*/**
      * evaluates the state of the current board
      * @return high return values are associated with a good rating
      */
-    protected abstract fun rate(board: Board): Int
-
-    init {
-        this.forecast = forecast * 2
-    }
+    protected abstract fun rate(board: Board): Int*/
 }
 
 class GameState(val board: Board = Board(), val nextPlayer: Token) : Node() {

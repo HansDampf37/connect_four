@@ -1,24 +1,27 @@
-package bot.Ruediger
+package bot.ratingfunctions.ruediger
 
-import bot.PonderingBot
+import bot.RatingFunction
 import model.Board
 import model.Token
 import model.Token.EMPTY
 import kotlin.math.max
 import kotlin.math.pow
 
-abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBot(forecast, side, board) {
+open class IRuediger(val side: Token) : RatingFunction {
+
+    override fun name() = "Rüdiger"
+
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by this player
      */
-    var ownThreatMap: Array<IntArray> = Array(board.WIDTH) { IntArray(board.HEIGHT) }
+    lateinit var ownThreatMap: Array<IntArray>
 
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by the opponent
      */
-    var opponentThreatMap: Array<IntArray> = Array(board.WIDTH) { IntArray(board.HEIGHT) }
+    lateinit var opponentThreatMap: Array<IntArray>
 
     /**
      * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
@@ -37,15 +40,32 @@ abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBo
     private var opponentPredicamentInLine = -1
 
     /**
-     * the height of an own predicament if there is one (read [.ownPredicamentInLine])
+     * The width of the Board that is currently evaluated
+     */
+    protected var width: Int = 0
+
+    /**
+     * The height of the Board that is currently evaluated
+     */
+    protected var height: Int = 0
+
+    /**
+     * the height of an own predicament if there is one (@see [.ownPredicamentInLine])
      */
     private var ownPredicamentHeight = -1
 
     /**
-     * the height of an opponent's predicament if there is one (read [.ownPredicamentInLine])
+     * the height of an opponent's predicament if there is one (@see [.ownPredicamentInLine])
      */
     private var oppPredicamentHeight = -1
-    public override fun rate(board: Board): Int {
+
+
+    override fun invoke(board: Board): Int {
+        width = board.WIDTH
+        height = board.HEIGHT
+        ownThreatMap = Array(width) { IntArray(height) }
+        opponentThreatMap = Array(width) { IntArray(height) }
+
         buildPressureMatrix(side, board)
         buildPressureMatrix(side.other(), board)
         searchForPredicaments(board)
@@ -65,7 +85,8 @@ abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBo
         return rating
     }
 
-    protected abstract fun enhanceMaps()
+    protected open fun enhanceMaps() = Unit
+
     private fun buildPressureMatrix(player: Token, board: Board) {
         for (y in 0 until board.HEIGHT) {
             for (x in 0 until board.WIDTH) {
@@ -163,11 +184,11 @@ abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBo
     }
 
     private fun outOfBoardX(x: Int): Boolean {
-        return x < 0 || x >= board.WIDTH
+        return x < 0 || x >= width
     }
 
     private fun outOfBoardY(y: Int): Boolean {
-        return y < 0 || y >= board.HEIGHT
+        return y < 0 || y >= height
     }
 
     private fun evaluate(threatMap: Array<IntArray>): Int {
@@ -223,17 +244,14 @@ abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBo
 
     private fun mapToString(): String {
         val str = StringBuilder().append("|")
-        for (y in board.HEIGHT - 1 downTo 0) {
-            for (x in 0 until board.WIDTH) {
+        for (y in 0 until height) {
+            for (x in 0 until width) {
                 str.append(ownThreatMap[x][y]).append(",").append(opponentThreatMap[x][y]).append("|")
             }
             if (y != 0) str.append("\n|")
         }
         str.append("\n")
-        for (x in 0 until board.WIDTH) str.append("-").append(x + 1)
+        for (x in 0 until width) str.append("-").append(x + 1)
         return str.append("-").toString()
     }
-
-    override val name: String = "Ruediger without enhancer ($forecast)"
-
 }

@@ -1,5 +1,6 @@
-package bot.Ruediger
+package bot.ratingfunctions.ruediger
 
+import bot.PonderingBot
 import model.Board
 import model.HumanPlayer
 import model.Token
@@ -8,7 +9,7 @@ import org.junit.Test
 
 class IRuedigerTest {
     private val b = Board(7, 6)
-    private val r: IRuediger = RuedigerDerBot(3, Token.PLAYER_2, b)
+    private val r = PonderingBot(Token.PLAYER_2, b, RuedigerDerBot(Token.PLAYER_2))
     private val h = HumanPlayer(Token.PLAYER_1, b)
     @Before
     fun setup() {
@@ -54,9 +55,10 @@ class IRuedigerTest {
     @Test
     fun testEval() {
         println(b)
-        println(r.rate(b))
-        println(print(r.ownThreatMap))
-        println(print(r.opponentThreatMap))
+        val ruedigerDerBot = RuedigerDerBot(Token.PLAYER_2)
+        println(ruedigerDerBot.invoke(b))
+        println(print(ruedigerDerBot.ownThreatMap))
+        println(print(ruedigerDerBot.opponentThreatMap))
     }
 
     private fun print(map: Array<IntArray>): String {
