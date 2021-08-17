@@ -7,14 +7,9 @@ class GameState(val board: Board = Board(), val nextPlayer: Token) : Node() {
 
     val finished: Boolean = board.winner != Token.EMPTY
 
-    fun movePossible(move: Int): Boolean {
-        return board.stillSpaceIn(move)
-        // return possible(board, moves.toMutableList().apply { add(move) })
-    }
-
     fun getFutureGameStates(): Array<GameState> {
         if (finished) return arrayOf()
-        return IntRange(0, board.WIDTH - 1).filter { movePossible(it) }.map { move ->
+        return IntRange(0, board.WIDTH - 1).filter { row -> board.stillSpaceIn(row) }.map { move ->
             run {
                 val newBoard = board.clone()
                 newBoard.throwInColumn(move, nextPlayer)
