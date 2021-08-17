@@ -8,8 +8,8 @@ import org.junit.Test
 
 class IRuedigerTest {
     private val b = Board(7, 6)
-    private val r: IRuediger = RuedigerDerBot(3)
-    private val h = HumanPlayer()
+    private val r: IRuediger = RuedigerDerBot(3, Token.PLAYER_2, b)
+    private val h = HumanPlayer(Token.PLAYER_1, b)
     @Before
     fun setup() {
         r.board = b
@@ -54,7 +54,7 @@ class IRuedigerTest {
     @Test
     fun testEval() {
         println(b)
-        println(r.rateState())
+        println(r.rate(b))
         println(print(r.ownThreatMap))
         println(print(r.opponentThreatMap))
     }

@@ -3,23 +3,22 @@ package bot.Ruediger
 import bot.PonderingBot
 import model.Board
 import model.Token
+import model.Token.EMPTY
 import kotlin.math.max
 import kotlin.math.pow
 
-abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(forecast) {
+abstract class IRuediger(forecast: Int, side: Token, board: Board) : PonderingBot(forecast, side, board) {
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by this player
      */
-    @JvmField
-    var ownThreatMap: Array<IntArray>
+    var ownThreatMap: Array<IntArray> = Array(board.WIDTH) { IntArray(board.HEIGHT) }
 
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by the opponent
      */
-    @JvmField
-    var opponentThreatMap: Array<IntArray>
+    var opponentThreatMap: Array<IntArray> = Array(board.WIDTH) { IntArray(board.HEIGHT) }
 
     /**
      * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
@@ -46,10 +45,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
      * the height of an opponent's predicament if there is one (read [.ownPredicamentInLine])
      */
     private var oppPredicamentHeight = -1
-    public override fun rateState(): Int {
-        buildPressureMatrix(side)
-        buildPressureMatrix(if (side == Token.PLAYER_1) Token.PLAYER_2 else Token.PLAYER_1)
-        searchForPredicaments()
+    public override fun rate(board: Board): Int {
+        buildPressureMatrix(side, board)
+        buildPressureMatrix(side.other(), board)
+        searchForPredicaments(board)
         //enhanceMaps();
         //if this bot created a predicament and the opponent didn't, he won
         val rating: Int = if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
@@ -67,11 +66,11 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
     }
 
     protected abstract fun enhanceMaps()
-    private fun buildPressureMatrix(player: Token) {
+    private fun buildPressureMatrix(player: Token, board: Board) {
         for (y in 0 until board.HEIGHT) {
             for (x in 0 until board.WIDTH) {
                 var maximumForThisField = 0
-                if (board[x, y].player == Token.EMPTY) {
+                if (board[x, y] == EMPTY) {
                     var currentValueForField: Int
                     //horizontally
                     for (offset in -3..0) {
@@ -82,10 +81,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
                                 currentValueForField = 0
                                 break
                             }
-                            val currentPlayer = board[curX, y].player
+                            val currentPlayer = board[curX, y]
                             if (currentPlayer == player) {
                                 currentValueForField++
-                            } else if (currentPlayer != Token.EMPTY) {
+                            } else if (currentPlayer != EMPTY) {
                                 currentValueForField = 0
                                 break
                             }
@@ -102,10 +101,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
                                 currentValueForField = 0
                                 break
                             }
-                            val currentPlayer = board[curX, curY].player
+                            val currentPlayer = board[curX, curY]
                             if (currentPlayer == player) {
                                 currentValueForField++
-                            } else if (currentPlayer != Token.EMPTY) {
+                            } else if (currentPlayer != EMPTY) {
                                 currentValueForField = 0
                                 break
                             }
@@ -122,10 +121,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
                                 currentValueForField = 0
                                 break
                             }
-                            val currentPlayer = board[curX, curY].player
+                            val currentPlayer = board[curX, curY]
                             if (currentPlayer == player) {
                                 currentValueForField++
-                            } else if (currentPlayer != Token.EMPTY) {
+                            } else if (currentPlayer != EMPTY) {
                                 currentValueForField = 0
                                 break
                             }
@@ -142,10 +141,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
                                 currentValueForField = 0
                                 break
                             }
-                            val currentPlayer = board[x, curY].player
+                            val currentPlayer = board[x, curY]
                             if (currentPlayer == player) {
                                 currentValueForField++
-                            } else if (currentPlayer != Token.EMPTY) {
+                            } else if (currentPlayer != EMPTY) {
                                 currentValueForField = 0
                                 break
                             }
@@ -184,7 +183,7 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
     /**
      * Searches for a column with predicaments. Read [.ownPredicamentInLine]
      */
-    private fun searchForPredicaments() {
+    private fun searchForPredicaments(board: Board) {
         ownPredicamentHeight = -1
         oppPredicamentHeight = -1
         ownPredicamentInLine = -1
@@ -194,10 +193,10 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
             var ownPredicamentPossible = true
             var base = 0
             for (y in 0 until board.HEIGHT) {
-                if (board[x, y].isEmpty) {
+                if (board[x, y] == EMPTY) {
                     // if the opponent has a threat underneath a predicament it doesn't count since one can't use it
-                    if (opponentThreatMap[x][y] == 3 && board[x, y].isEmpty) ownPredicamentPossible = false
-                    if (ownThreatMap[x][y] == 3 && board[x, y].isEmpty) oppPredicamentPossible = false
+                    if (opponentThreatMap[x][y] == 3 && board[x, y] == EMPTY) ownPredicamentPossible = false
+                    if (ownThreatMap[x][y] == 3 && board[x, y] == EMPTY) oppPredicamentPossible = false
                     if (!ownPredicamentPossible && !oppPredicamentPossible) break
                     if (ownPredicamentPossible && ownThreatMap[x][y] == 3 && !outOfBoardY(y + 1) && ownThreatMap[x][y + 1] == 3) {
                         //Predicament found
@@ -237,8 +236,4 @@ abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(fore
 
     override val name: String = "Ruediger without enhancer ($forecast)"
 
-    init {
-        ownThreatMap = Array(board.WIDTH) { IntArray(board.HEIGHT) }
-        opponentThreatMap = Array(board.WIDTH) { IntArray(board.HEIGHT) }
-    }
 }

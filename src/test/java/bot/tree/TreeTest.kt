@@ -1,15 +1,17 @@
 package bot.tree
 
-import bot.GameState
 import junit.framework.TestCase
-import model.Token
 import kotlin.math.pow
 import kotlin.test.assertTrue
 
-class TreeTest: TestCase() {
+class TreeTest : TestCase() {
     private val spread = 3
     private val depth = 3
-    private val tree: Tree<GameState> = Tree<GameState>(depth, spread, GameState(nextPlayer = Token.PLAYER_1), GameState::class.java.getConstructor())
+    private val tree: Tree<Node> =
+        Tree(
+            depth,
+            spread,
+        ) { _: Int, _: Int, _: Node? -> Node(value = (0..100).random()) }
 
     fun testAddChild() {
         val n = Node()
@@ -63,7 +65,7 @@ class TreeTest: TestCase() {
     fun testLeaves() {
         assertEquals(tree.leaves.size, spread.toFloat().pow(depth).toInt())
         tree.leaves.forEach { assertTrue { tree.root.isParentOf(it) } }
-        val t = Tree<Node>(0, 0)
+        val t = Tree(0, 0) { _: Int, _: Int, _: Node? -> Node(value = (0..100).random()) }
         assertTrue { t.leaves.contains(t.root) }
         assertEquals(1, t.leaves.size)
         t.addChild(t.root, Node())

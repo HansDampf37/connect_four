@@ -6,15 +6,13 @@ import model.Token
 import java.util.Arrays
 
 class Game(player1: Player, player2: Player) {
-    private var board = Board(7, 6)
+    private var board: Board
     private var players: Array<Player> = arrayOf(player1, player2)
     private var curPlayerInd: Int = (Math.random() * players.size).toInt()
 
     init {
-        player1.side = Token.PLAYER_1
-        player2.side = Token.PLAYER_2
-        player1.board = board
-        player2.board = board
+        if (player1.board != player2.board) throw IllegalStateException("Boards must be equal")
+        board = player1.board
     }
 
     private fun throwInColumn(x: Int) {

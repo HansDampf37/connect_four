@@ -1,13 +1,13 @@
 package bot.Torben
 
-import model.Board
+import bot.GameState
 import bot.PonderingBot
 import bot.tree.Node
 import bot.tree.Tree
+import model.Board
 import model.Token
 import model.procedure.ConsoleOutput
 import java.io.*
-import java.lang.StringBuilder
 
 /**
  * This Bot analyzes the board and recognizes given patterns (for example 3 in a
@@ -18,7 +18,7 @@ import java.lang.StringBuilder
  * get increased. The In/Decrease itself is anti-proportional to the amount of
  * times these patterns were used.
  */
-class TorbenDerBot(forecast: Int) : PonderingBot(forecast) {
+class TorbenDerBot(forecast: Int, side: Token, board: Board) : PonderingBot(forecast, side, board) {
     /**
      * Array containing ratings for patterns
      */
@@ -83,7 +83,12 @@ class TorbenDerBot(forecast: Int) : PonderingBot(forecast) {
         // TODO not accurate
         checkOwnCurrentPatternUsage()
         // builds a tree
-        val states = Tree<Node>(forecast, board.WIDTH)
+        // TODO set start player in tree
+        val states = Tree(forecast, board.WIDTH) { _: Int, i: Int, parent: GameState? ->
+            if (parent == null) GameState(Board(), Token.PLAYER_1) else GameState(
+                parent.board.clone().apply { throwInColumn(i, parent.nextPlayer) }, parent.nextPlayer.other()
+            )
+        }
         // makes the tree represent the games states
         traverse(states, forecast, 0, states.root, side)
         // gets the best following state
@@ -194,7 +199,7 @@ ${checker.getPattern(i)}    $occurence
      *
      * @return rating
      */
-    override fun rateState(): Int {
+    override fun rate(board: Board): Int {
         var rating = 0
         for (i in 0 until checker.patternAmount) {
             rating += ratings[i] * checker.getPattern(i).amountOfTimesThisPatternIsOnBoard(board, side)

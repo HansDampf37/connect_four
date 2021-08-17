@@ -34,18 +34,18 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      * @param depth  amount of levels
      * @param spread amount of children per node
      * @param root the root node of the tree
-     * @param nodeConstructor the method to call when instantiating nodes upon building the tree
+     * @param factory the method to call when instantiating nodes upon building the tree (depth, index in child list, parent)
      */
-    constructor(depth: Int, spread: Int, root: T, nodeConstructor: Constructor<T>) : this(root) {
-        addChildNodesToTree(root, spread, depth, 0, nodeConstructor)
+    constructor(depth: Int, spread: Int, root: T, factory: (Int, Int, T?) -> T) : this(root) {
+        addChildNodesToTree(root, spread, depth, 0, factory)
         if (ConsoleOutput.treeInitiation) println(this)
     }
 
     constructor(
         depth: Int,
         spread: Int,
-        nodeConstructor: Constructor<T> = GameState::class.java.constructors.first() as Constructor<T>
-    ) : this(depth, spread, nodeConstructor.newInstance(), nodeConstructor)
+        factory: (Int, Int, T?) -> T
+    ) : this(depth, spread, factory(0, 0, null), factory)
 
     /**
      * Recursive method that builds the tree.
@@ -57,14 +57,13 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      * @param depth   amount of levels
      * @param lvl     current level
     </spread> */
-    private fun addChildNodesToTree(current: T, spread: Int, depth: Int, lvl: Int, constructor: Constructor<T>) {
+    private fun addChildNodesToTree(current: T, spread: Int, depth: Int, lvl: Int, factory: (Int, Int, T?) -> T) {
         if (lvl == depth) {
             addLeaf(current)
-            // leaves.add(current);
         } else {
             for (i in 0 until spread) {
-                addChild(current, constructor.newInstance())
-                addChildNodesToTree(current[i] as T, spread, depth, lvl + 1, constructor)
+                addChild(current, factory(lvl, i, current))
+                addChildNodesToTree(current[i] as T, spread, depth, lvl + 1, factory)
             }
         }
     }

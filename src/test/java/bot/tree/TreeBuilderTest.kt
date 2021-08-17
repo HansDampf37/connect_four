@@ -2,11 +2,17 @@ package bot.tree
 
 import bot.GameState
 import junit.framework.TestCase
+import model.Board
+import model.Token
 import java.lang.Thread.sleep
 
 class TreeBuilderTest : TestCase() {
 
-    private val tb = TreeBuilder()
+    private lateinit var tb: TreeBuilder
+
+    override fun setUp() {
+        tb = TreeBuilder()
+    }
 
     fun testTestRun() {}
 
@@ -19,7 +25,8 @@ class TreeBuilderTest : TestCase() {
     }
 
     fun testPause() {
-        val thread = Thread(tb).apply{ start() }
+        val thread = Thread(tb).apply { start() }
+        tb.start()
         var blocked = true
         Thread {
             run {
@@ -33,7 +40,11 @@ class TreeBuilderTest : TestCase() {
     }
 
     fun testMoveMade() {
-        val t = Tree<GameState>(2, 2)
+        val t = Tree(2, 2) { _: Int, i: Int, parent: GameState? ->
+            if (parent == null) GameState(Board(), Token.PLAYER_1) else GameState(
+                parent.board.clone().apply { throwInColumn(i, parent.nextPlayer) }, parent.nextPlayer.other()
+            )
+        }
         tb.tree = t
         val checkNode = t.root[0]
         assertEquals(7, t.size)

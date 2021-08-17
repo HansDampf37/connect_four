@@ -4,7 +4,7 @@ import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
-class HumanPlayer : Player() {
+class HumanPlayer(side: Token, board: Board) : Player(side, board) {
     override fun getColumnOfNextMove(): Int {
         val br = BufferedReader(InputStreamReader(System.`in`))
         while (true) {
