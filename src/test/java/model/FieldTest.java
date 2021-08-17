@@ -13,9 +13,6 @@ public class FieldTest {
         f = new Field();
     }
 
-    /**
-     * Rigorous Test :-)
-     */
     @Test
     public void testSet() {
         f = new Field();

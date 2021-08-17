@@ -1,18 +1,18 @@
 package bot
 
-import bot.tree.Tree
 import junit.framework.TestCase
 import model.Board
 import model.Token
 
 class GameStateTest : TestCase() {
-    var t = Tree(0,0)
-    var gs: GameState = GameState(t, listOf(1,1,1,1,2,3,4,5,1,1))
+    private var gs: GameState = GameState(Board(), Token.PLAYER_1)
 
     fun testPossible() {
-        val board = Board(7,6)
-        assertTrue(gs.possible(board))
-        board.throwInColumn(1, Token.PLAYER_1)
-        assertFalse(gs.possible(board))
+        (0 until 7).forEach { assertTrue(gs.movePossible(it)) }
+        val board = Board()
+        mutableListOf(1,1,1,1,2,3,4,5,1,1).forEach { board.throwInColumn(it, Token.PLAYER_1) }
+        val gameState = GameState(board, Token.PLAYER_1)
+        assertFalse(gameState.movePossible(1))
+        assertTrue(gameState.finished)
     }
 }

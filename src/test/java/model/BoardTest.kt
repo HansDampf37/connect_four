@@ -3,6 +3,7 @@ package model
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class BoardTest {
     private lateinit var b: Board
@@ -16,8 +17,12 @@ class BoardTest {
 
     @Test
     fun testSize() {
-        Assert.assertEquals(height.toLong(), b.HEIGHT.toLong())
-        Assert.assertEquals(width.toLong(), b.WIDTH.toLong())
+        Assert.assertEquals(height, b.HEIGHT)
+        Assert.assertEquals(width, b.WIDTH)
+
+        val board = Board(Array(2) {Array(3) {Field()} })
+        assertEquals(3, board.HEIGHT)
+        assertEquals(2, board.WIDTH)
     }
 
     @Test
