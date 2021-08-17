@@ -1,6 +1,7 @@
 package bot.tree
 
 import bot.GameState
+import bot.ratingfunctions.RandomRating
 import junit.framework.TestCase
 import model.Board
 import model.Token
@@ -11,22 +12,38 @@ class TreeBuilderTest : TestCase() {
     private lateinit var tb: TreeBuilder
 
     override fun setUp() {
-        tb = TreeBuilder()
+        tb = TreeBuilder(RandomRating(0..100))
     }
 
-    fun testTestRun() {}
+    fun testTree() {
+        val thread = Thread(tb)
+        thread.start()
+        sleep(2000)
+        tb.exit()
+        println("checking tree with ${tb.tree.size} nodes")
+        for (node in tb.tree.filter { !it.isLeaf }) {
+            for (i in node.indices) {
+                node.board.throwInColumn(i, node.nextPlayer)
+                assertEquals((node[i] as GameState).board, node.board)
+                node.board.removeOfColumn(i)
+            }
+        }
+    }
 
     fun testStart() {
+        val dt: Long = 2000
         val size = tb.tree.size
-        Thread(tb).start()
-        tb.start()
-        sleep(2000)
+        val thread = Thread(tb)
+        thread.start()
+        sleep(dt)
+        tb.exit()
         assertTrue(tb.tree.size > size)
+        println("Tree grew from $size to ${tb.tree.size} nodes in $dt milliseconds")
+        thread.join()
     }
 
     fun testPause() {
         val thread = Thread(tb).apply { start() }
-        tb.start()
         var blocked = true
         Thread {
             run {
@@ -36,6 +53,7 @@ class TreeBuilderTest : TestCase() {
         }.start()
         tb.pause()
         blocked = false
+        tb.exit()
         thread.join()
     }
 
@@ -52,4 +70,6 @@ class TreeBuilderTest : TestCase() {
         assertEquals(3, t.size)
         assertEquals(t.root, checkNode)
     }
+
+    fun testTestRun() {}
 }

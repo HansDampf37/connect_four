@@ -23,7 +23,7 @@ class MinimaxTest : TestCase() {
 
     fun testSameResultAsAlphaBeta() {
         for (i in 0..20) {
-            val t = Tree(listOf(4, 5).random(), listOf(2, 3).random(), Node(), Node::class.java.getConstructor())
+            val t = Tree(listOf(4, 5).random(), listOf(2, 3).random(), Node())  { _: Int, _: Int, _: Node? -> Node() }
             t.leaves.forEach{ it.value = IntRange(0, 100).random()}
             val indexMini = Minimax.run(t)
             val valueMini = t.root.value

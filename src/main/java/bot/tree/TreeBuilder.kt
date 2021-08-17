@@ -1,62 +1,69 @@
 package bot.tree
 
 import bot.GameState
+import bot.RatingFunction
+import model.Board
 import model.Token
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class TreeBuilder : Runnable {
-    private var running: Boolean = true
+class TreeBuilder(val ratingFunction: RatingFunction) : Runnable {
+    var tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
+    private var running: Boolean = false
     private var exit: Boolean = false
-    private val lock = ReentrantLock()
-    private val lock2 = ReentrantLock()
-    private val waitingLock: Condition = lock.newCondition()
-    private val waitingConfirmedLock: Condition = lock2.newCondition()
-    var tree: Tree<GameState> = Tree(GameState(nextPlayer = Token.PLAYER_1))
+    private val lock: ReentrantLock = ReentrantLock()
+    private val continueWork: Condition = lock.newCondition()
+    private val workPaused: Condition = lock.newCondition()
 
     override fun run() {
-        start()
+        running = true
+        println("working")
         while (true) {
-            for (leaf in tree.leaves.filter{ !it.finished }) {
-                if (!running) {
-                    lock.withLock {
-                        lock2.withLock { waitingConfirmedLock.signal() }
-                        println("Blocked...")
-                        waitingLock.await()
-                        println("Unblocked...")
+            tree.leaves.forEach { leaf ->
+                if (running) {
+                    val futureStates = leaf.getFutureGameStates()
+                    futureStates.forEach {
+                        tree.addChild(leaf, it)
+                        it.value = ratingFunction(it.board)
                     }
-                    break
+                } else {
+                    lock.withLock {
+                        workPaused.signal()
+                        println("blocking")
+                        continueWork.await()
+                        println("resuming")
+                    }
                 }
-                println("Working...")
-                val futureStates = leaf.getFutureGameStates()
-                futureStates.forEach { tree.addChild(leaf, it) }
-                if (exit) return
+                if (exit) {
+                    println("exiting")
+                    return
+                }
             }
         }
     }
 
-    fun start() {
-        running = true
-        lock.withLock {
-            waitingLock.signal()
-        }
-    }
+fun start() {
+    running = true
+    lock.withLock { continueWork.signal() }
+}
 
-    fun pause() {
-        lock2.withLock {
-            running = false
-            waitingConfirmedLock.await()
-        }
+fun pause() {
+    if (!running) return
+    lock.withLock {
+        running = false
+        workPaused.await()
     }
+}
 
-    fun stop() {
-        exit = true
-    }
+fun exit() {
+    exit = true
+    start()
+}
 
-    fun moveMade(move: Int) {
-        pause()
-        tree.step(move)
-        start()
-    }
+fun moveMade(move: Int) {
+    pause()
+    tree.step(move)
+    start()
+}
 }

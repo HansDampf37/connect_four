@@ -12,6 +12,12 @@ abstract class Player(var side: Token, var board: Board) {
      */
     abstract fun getColumnOfNextMove(): Int
 
+    /**
+     * Gets invoked when one of the two players is choosing a legal column to play
+     * @param x the chosen column
+     */
+    abstract fun onMovePlayed(x: Int)
+
     abstract val name: String
 
 }

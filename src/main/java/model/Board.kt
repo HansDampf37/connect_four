@@ -32,6 +32,8 @@ class Board private constructor(val WIDTH: Int = 7,
         }
     }
 
+    val isEmpty: Boolean get() = all { it == EMPTY }
+
     val winner: Token
         get() {
             for (y in 0 until HEIGHT) {
@@ -147,6 +149,17 @@ class Board private constructor(val WIDTH: Int = 7,
 
     fun stillSpaceIn(row: Int): Boolean {
         return fields[row][HEIGHT - 1] == EMPTY
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (other !is Board) return false
+        if (other.HEIGHT != HEIGHT || other.WIDTH != WIDTH) return false
+        for (x in 0 until WIDTH) {
+            for (y in 0 until HEIGHT) {
+                if (fields[x][y] != other.fields[x][y]) return false
+            }
+        }
+        return true
     }
 
     operator fun get(x: Int, y: Int): Token {

@@ -15,7 +15,7 @@ class AlphaBetaPruning {
             if (node.isLeaf) return node.value
             if (maximisingPlayer) {
                 var maxValue = Integer.MIN_VALUE
-                for (child in node.filter { !it.invisible } as Collection<T>) {
+                for (child in node) {
                     step(child, alpha1, beta1, false)
                     val value = child.value
                     maxValue = max(maxValue, value)
@@ -26,7 +26,7 @@ class AlphaBetaPruning {
                 return node.indexOf(node.first { it.value == maxValue })
             } else {
                 var minValue = Integer.MAX_VALUE
-                for (child in node.filter { !it.invisible } as Collection<T>) {
+                for (child in node) {
                     step(child, alpha1, beta1, true)
                     val value = child.value
                     minValue = min(minValue, value)
