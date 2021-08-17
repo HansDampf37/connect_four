@@ -2,6 +2,7 @@ package bot.Torben
 
 import model.Board
 import bot.PonderingBot
+import bot.tree.Node
 import bot.tree.Tree
 import model.Token
 import model.procedure.ConsoleOutput
@@ -15,9 +16,9 @@ import java.lang.StringBuilder
  * rating. Upon finishing a game the ratings of all patterns that were used by
  * the loser become decreased, and the ones of the patterns used by the winner
  * get increased. The In/Decrease itself is anti-proportional to the amount of
- * times theses patterns were used.
+ * times these patterns were used.
  */
-class TorbenDerBot(side: Token?, board: Board?, forecast: Int) : PonderingBot(side, board, forecast) {
+class TorbenDerBot(forecast: Int) : PonderingBot(forecast) {
     /**
      * Array containing ratings for patterns
      */
@@ -82,9 +83,9 @@ class TorbenDerBot(side: Token?, board: Board?, forecast: Int) : PonderingBot(si
         // TODO not accurate
         checkOwnCurrentPatternUsage()
         // builds a tree
-        val states = Tree(forecast, board.WIDTH)
+        val states = Tree<Node>(forecast, board.WIDTH)
         // makes the tree represent the games states
-        traverse(forecast, 0, states.root, side)
+        traverse(states, forecast, 0, states.root, side)
         // gets the best following state
         val bestColumn = states.root.indexOfNodeWithBestExpectationOfHighValue()
         // checks which patterns are used in this move
@@ -207,9 +208,7 @@ ${checker.getPattern(i)}    $occurence
         return rating
     }
 
-    override fun getName(): String {
-        return "Torben"
-    }
+    override val name: String = "Torben"
 
     /**
      * get data input
@@ -251,12 +250,6 @@ ${checker.getPattern(i)}    $occurence
         }
     }
 
-    /**
-     * Constructor
-     *
-     * @param side  Player_1 or Player_2
-     * @param board the board
-     */
     init {
         log()
         readRatings()

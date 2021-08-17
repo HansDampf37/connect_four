@@ -6,8 +6,7 @@ import model.Token
 import kotlin.math.max
 import kotlin.math.pow
 
-abstract class IRuediger internal constructor(side: Token?, board: Board, forecast: Int) :
-    PonderingBot(side, board, forecast) {
+abstract class IRuediger internal constructor(forecast: Int) : PonderingBot(forecast) {
     /**
      * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
      * in order to win the game and that are already occupied by this player
@@ -236,9 +235,7 @@ abstract class IRuediger internal constructor(side: Token?, board: Board, foreca
         return str.append("-").toString()
     }
 
-    override fun getName(): String {
-        return "Ruediger without enhancer ($forecast)"
-    }
+    override val name: String = "Ruediger without enhancer ($forecast)"
 
     init {
         ownThreatMap = Array(board.WIDTH) { IntArray(board.HEIGHT) }

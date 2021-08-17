@@ -1,12 +1,9 @@
 package bot.Ruediger;
 
-import model.Board;
-import model.Token;
-
 public class RuedigerOhneEnhancer extends IRuediger {
 
-    public RuedigerOhneEnhancer(Token side, Board board, int forecast) {
-        super(side, board, forecast);
+    public RuedigerOhneEnhancer(int forecast) {
+        super(forecast);
     }
 
     @Override
