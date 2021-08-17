@@ -22,8 +22,8 @@ class GameStateTest : TestCase() {
             }
         }
         println(board)
-        assertTrue(board.winner == Token.EMPTY)
         gs = GameState(board, Token.PLAYER_1)
+        assertFalse(gs.finished)
         val futureStates = gs.getFutureGameStates()
         assertEquals(4, futureStates.size)
     }
