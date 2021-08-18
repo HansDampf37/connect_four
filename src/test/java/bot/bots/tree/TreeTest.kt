@@ -38,6 +38,10 @@ class TreeTest : TestCase() {
         assertTrue(t.leaves.size == 1)
     }
 
+    fun testSize() {
+        assertEquals(tree.size, tree.size())
+    }
+
     fun testMakeLeaf() {
         val n = Node()
         val m = Node()
