@@ -19,7 +19,7 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     val isLeaf: Boolean
         get() = children.size == 0
 
-    var parent: Node? = null
+    var parent: Node = this
 
     val amountDescendants: Int
         get() {
@@ -144,13 +144,10 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      * @param other other node
      */
     fun isParentOf(other: Node): Boolean {
-        try {
-            return other.isDescendantOf(this)
-        } catch (e: ParentUnknownException) {
-            for (child in children) if (child == other) return true
-            for (child in children) if (child.isParentOf(other)) return true
-            return false
-        }
+        return other.isDescendantOf(this)
+           // for (child in children) if (child == other) return true
+            //for (child in children) if (child.isParentOf(other)) return true
+            //return false
     }
 
     /**
@@ -159,7 +156,8 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      */
     fun isDescendantOf(other: Node): Boolean {
         if (parent == other) return true
-        return parent?.isDescendantOf(other) ?: throw ParentUnknownException()
+        if (parent == this) return false
+        return parent.isDescendantOf(other)
     }
 
     override fun toString(): String {
@@ -286,6 +284,4 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     override fun parallelStream(): Stream<Node> {
         return children.parallelStream()
     }
-
-    class ParentUnknownException : IllegalStateException()
 }

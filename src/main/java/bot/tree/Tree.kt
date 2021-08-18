@@ -79,7 +79,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     fun removeChild(parent: T, child: T) {
         if (child.isLeaf) leaves.remove(child)
         parent.children.remove(child)
-        child.parent = null
+        child.parent = child
         if (parent.isLeaf) addLeaf(parent)
     }
 
@@ -93,9 +93,8 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     }
 
     fun step(move: Int) {
-        val oldRoot: T = root
-        root = oldRoot[move] as T
-        leaves.removeAll{ !root.isParentOf(it) }
+        root = root[move] as T
+        leaves.removeAll{ !it.isDescendantOf(root) }
     }
 
     override fun toString(): String {
@@ -103,7 +102,6 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     }
 
     fun leavesToString(): String {
-        val str = StringBuilder()
         return leaves.joinToString { ", " }
     }
 
