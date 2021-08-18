@@ -5,13 +5,15 @@ import junit.framework.TestCase
 import model.Board
 import model.Token
 import java.lang.Thread.sleep
+import kotlin.math.abs
 
 class TreeBuilderTest : TestCase() {
 
     private lateinit var tb: TreeBuilder
 
     override fun setUp() {
-        tb = TreeBuilder(RandomRating(0..100))
+        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.Size.Small)
+        tb.tree = Tree(GameState(Board(), Token.PLAYER_1))
     }
 
     fun testTreeCorrectness() {
@@ -20,11 +22,18 @@ class TreeBuilderTest : TestCase() {
         sleep(2000)
         tb.exit()
         println("checking tree with ${tb.tree.size} nodes")
+        for (node in tb.tree) {
+            assertTrue(abs(node.board.count { it == Token.PLAYER_1 } -
+                    node.board.count { it == Token.PLAYER_2 }) <= 1)
+        }
         for (node in tb.tree.filter { !it.isLeaf }) {
-            for (i in node.indices) {
-                node.board.throwInColumn(i, node.nextPlayer)
-                assertEquals((node[i] as GameState).board, node.board)
-                node.board.removeOfColumn(i)
+            for (child in node as Collection<GameState>) {
+                assertTrue(((0 until 7).toList().any {
+                    val token = child.board.removeOfColumn(it)
+                    val result = child.board == node.board
+                    child.board.throwInColumn(it, token)
+                    result
+                }))
             }
         }
     }
@@ -79,8 +88,40 @@ class TreeBuilderTest : TestCase() {
         }
     }
 
+    fun testDeepStep() {
+        val treeBuilder = TreeBuilder(RandomRating(0..100))
+        val thread = Thread(treeBuilder)
+        thread.start()
+        for (i in 0 until treeBuilder.tree.root.board.HEIGHT) {
+            sleep(100)
+            treeBuilder.moveMade(6)
+            println(treeBuilder.tree.root.board)
+        }
+        treeBuilder.exit()
+        assertEquals(6, treeBuilder.tree.root.size)
+        thread.join()
+    }
+
+    fun testTreeVarianceAndDepth() {
+        val treeBuilder = TreeBuilder(RandomRating(0..100))
+        val thread = Thread(treeBuilder)
+        thread.start()
+        var oldDepth = 0f
+        for (i in 0 until 5) {
+            treeBuilder.pause()
+            assertTrue(treeBuilder.tree.meanDepth >= oldDepth)
+            oldDepth = treeBuilder.tree.meanDepth
+            val varianceInDepth = treeBuilder.tree.varianceInDepth
+            assertTrue(varianceInDepth < 0.4)
+            println("success in iteration $i, depth: $oldDepth, variance: $varianceInDepth")
+            treeBuilder.start()
+            sleep(5)
+        }
+    }
+
     fun testMoveMadeInLargeTree() {
         val thread = Thread(tb)
+        tb.tree = Tree(GameState(Board(), Token.PLAYER_1))
         thread.start()
         sleep(5000)
         tb.exit()
@@ -88,11 +129,16 @@ class TreeBuilderTest : TestCase() {
         val root = tb.tree.root
         val newRoot = root[3]
         val size = tb.tree.size
+        println("initializing expectations")
         val sizeToBeRemoved = listOf(0, 1, 2, 4, 5, 6).sumOf { i -> Tree(root = root[i]).size } + 1
-        val toBeKept = HashSet<GameState>(tb.tree.filter { it.isDescendantOf(tb.tree.root[3]) }).apply { add(tb.tree.root[3] as GameState) }
-        val toBePruned = HashSet<GameState>(tb.tree.filter { !it.isDescendantOf(tb.tree.root[3]) }).apply { remove(tb.tree.root[3] as GameState) }
+        val toBeKept =
+            HashSet<GameState>(tb.tree.filter { it.isDescendantOf(tb.tree.root[3]) }).apply { add(tb.tree.root[3] as GameState) }
+        val toBePruned =
+            HashSet<GameState>(tb.tree.filter { !it.isDescendantOf(tb.tree.root[3]) }).apply { remove(tb.tree.root[3] as GameState) }
+        println("Prune")
         tb.moveMade(3)
         assertEquals(newRoot, tb.tree.root)
+        println("Verifying expectations")
         assertTrue(tb.tree.leaves.all { newRoot.isParentOf(it) })
         assertTrue(tb.tree.leaves.all { !root.isParentOf(it) })
         assertEquals(size - sizeToBeRemoved, tb.tree.size)
