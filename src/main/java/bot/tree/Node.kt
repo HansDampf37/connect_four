@@ -3,7 +3,6 @@ package bot.tree
 import model.procedure.ConsoleOutput
 import java.util.*
 import java.util.function.Consumer
-import java.util.function.IntFunction
 import java.util.function.Predicate
 import java.util.function.UnaryOperator
 import java.util.stream.Stream
@@ -11,7 +10,8 @@ import java.util.stream.Stream
 /**
  * A node in the [tree-graph][Tree]
  */
-open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node> = ArrayList(), var value: Int = 0) : MutableList<Node> {
+open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node> = ArrayList(), var value: Int = 0) :
+    MutableList<Node> {
 
     @Deprecated("prune tree instead", ReplaceWith("nothing"))
     private val isVisible: Boolean
@@ -19,9 +19,12 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     val isLeaf: Boolean
         get() = children.size == 0
 
-    val amountDescendants: Int get() {
-        return children.size + children.sumOf { it.amountDescendants }
-    }
+    var parent: Node? = null
+
+    val amountDescendants: Int
+        get() {
+            return children.size + children.sumOf { it.amountDescendants }
+        }
 
     /**
      * If a Node represents an illegal state of the game it should be invisible meaning no matter what comparison is happening this node is losing
@@ -29,23 +32,23 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     @Deprecated("prune tree instead")
     var invisible = false
 
-   /* /**
-     * Adds a child to a tree
-     */
-    fun addChild(child: Node) {
-        if (children.isEmpty()) tree!!.leaves.remove(this)
-        children.add(child)
-        tree!!.addLeave(child)
-    }
+    /* /**
+      * Adds a child to a tree
+      */
+     fun addChild(child: Node) {
+         if (children.isEmpty()) tree!!.leaves.remove(this)
+         children.add(child)
+         tree!!.addLeave(child)
+     }
 
-    /**
-     * removes a child from this nodes children list
-     */
-    fun removeChild(child: Node) {
-        tree!!.leaves.remove(child)
-        children.remove(child)
-        if (children.isEmpty()) tree!!.addLeave(this)
-    }*/
+     /**
+      * removes a child from this nodes children list
+      */
+     fun removeChild(child: Node) {
+         tree!!.leaves.remove(child)
+         children.remove(child)
+         if (children.isEmpty()) tree!!.addLeave(this)
+     }*/
 
     /**
      * sets this nodes value to the minimum value of all it's child's values
@@ -141,9 +144,22 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      * @param other other node
      */
     fun isParentOf(other: Node): Boolean {
-        for (child in children) if (child == other) return true
-        for (child in children) if (child.isParentOf(other)) return true
-        return false
+        try {
+            return other.isDescendantOf(this)
+        } catch (e: ParentUnknownException) {
+            for (child in children) if (child == other) return true
+            for (child in children) if (child.isParentOf(other)) return true
+            return false
+        }
+    }
+
+    /**
+     * returns true if this node is a (grand)*child of the given node
+     * @param other other node
+     */
+    fun isDescendantOf(other: Node): Boolean {
+        if (parent == other) return true
+        return parent?.isDescendantOf(other) ?: throw ParentUnknownException()
     }
 
     override fun toString(): String {
@@ -160,10 +176,6 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         return str.toString()
     }
 
-    fun setInvisible() {
-        invisible = true
-    }
-
     override val size: Int
         get() = children.size
 
@@ -171,7 +183,7 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         return children.isEmpty()
     }
 
-    override operator fun contains(element:Node): Boolean {
+    override operator fun contains(element: Node): Boolean {
         return children.contains(element)
     }
 
@@ -183,15 +195,11 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         children.forEach(action)
     }
 
-    override fun <T> toArray(generator: IntFunction<Array<T>>): Array<T> {
-        return children.toArray(generator)
-    }
-
-    override fun add(element:Node): Boolean {
+    override fun add(element: Node): Boolean {
         return children.add(element)
     }
 
-    override fun remove(element:Node): Boolean {
+    override fun remove(element: Node): Boolean {
         return children.remove(element)
     }
 
@@ -231,27 +239,27 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         children.clear()
     }
 
-    override fun get(index: Int):Node {
+    override fun get(index: Int): Node {
         return children[index]
     }
 
-    override fun set(index: Int, element:Node):Node {
+    override fun set(index: Int, element: Node): Node {
         return children.set(index, element)
     }
 
-    override fun add(index: Int, element:Node) {
+    override fun add(index: Int, element: Node) {
         children.add(index, element)
     }
 
-    override fun removeAt(index: Int):Node {
+    override fun removeAt(index: Int): Node {
         return children.removeAt(index)
     }
 
-    override fun indexOf(element:Node): Int {
+    override fun indexOf(element: Node): Int {
         return children.indexOf(element)
     }
 
-    override fun lastIndexOf(element:Node): Int {
+    override fun lastIndexOf(element: Node): Int {
         return children.lastIndexOf(element)
     }
 
@@ -278,4 +286,6 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     override fun parallelStream(): Stream<Node> {
         return children.parallelStream()
     }
+
+    class ParentUnknownException : IllegalStateException()
 }

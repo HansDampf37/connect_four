@@ -69,6 +69,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     fun addChild(parent: T, child: T) {
         if (parent.isLeaf) leaves.remove(parent)
         parent.children.add(child)
+        child.parent = parent
         addLeaf(child)
     }
 
@@ -78,6 +79,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     fun removeChild(parent: T, child: T) {
         if (child.isLeaf) leaves.remove(child)
         parent.children.remove(child)
+        child.parent = null
         if (parent.isLeaf) addLeaf(parent)
     }
 

@@ -1,6 +1,9 @@
 package bot.tree
 
+import bot.ratingfunctions.RandomRating
+import bot.ratingfunctions.ruediger.RuedigerDerBot
 import junit.framework.TestCase
+import java.lang.Thread.sleep
 import kotlin.math.pow
 import kotlin.test.assertTrue
 
@@ -74,5 +77,35 @@ class TreeTest : TestCase() {
         t.addChild(t.root, Node())
         assertTrue { t.leaves.contains(t.root[1]) }
         assertEquals(2, t.leaves.size)
+    }
+
+    fun testParents() {
+        val tb = TreeBuilder(RandomRating(0..100))
+        val thread = Thread(tb)
+        thread.start()
+        sleep(1000)
+        tb.exit()
+        thread.join()
+        val tree = tb.tree
+        for (node in tree) {
+            for (child in node) {
+                assertEquals(node, child.parent)
+            }
+        }
+    }
+
+    fun testDescendantOf() {
+        val tb = TreeBuilder(RandomRating(0..100))
+        val thread = Thread(tb)
+        thread.start()
+        sleep(1000)
+        tb.exit()
+        thread.join()
+        val tree = tb.tree
+        for (node in tree) {
+            if (node != tree.root) {
+                assertTrue(node.isDescendantOf(tree.root))
+            }
+        }
     }
 }

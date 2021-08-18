@@ -14,7 +14,7 @@ class TreeBuilderTest : TestCase() {
         tb = TreeBuilder(RandomRating(0..100))
     }
 
-    fun testTree() {
+    fun testTreeCorrectness() {
         val thread = Thread(tb)
         thread.start()
         sleep(2000)
@@ -70,5 +70,16 @@ class TreeBuilderTest : TestCase() {
         assertEquals(t.root, checkNode)
     }
 
-    fun testTestRun() {}
+    fun testMoveMadeInLargeTree() {
+        val thread = Thread(tb)
+        thread.start()
+        sleep(300)
+        tb.exit()
+        thread.join()
+        val root = tb.tree.root
+        println("checking tree with ${tb.tree.size} nodes")
+        tb.moveMade(3)
+        assertEquals(root[3], tb.tree.root)
+        assertTrue(tb.tree.leaves.all { root.isParentOf(it) })
+    }
 }
