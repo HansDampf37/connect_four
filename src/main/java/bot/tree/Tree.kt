@@ -93,7 +93,9 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     }
 
     fun step(move: Int) {
-        root = root[move] as T
+        val newRoot = root[move] as T
+        removeChild(root, root[move] as T)
+        root = newRoot
         leaves.removeAll{ !it.isDescendantOf(root) }
     }
 

@@ -57,29 +57,50 @@ class TreeBuilderTest : TestCase() {
     }
 
     fun testMoveMade() {
-        val t = Tree(2, 2) { _: Int, i: Int, parent: GameState? ->
-            if (parent == null) GameState(Board(), Token.PLAYER_1) else GameState(
-                parent.board.clone().apply { throwInColumn(i, parent.nextPlayer) }, parent.nextPlayer.other()
-            )
+        for (i in 0 until 3) {
+            val t = Tree(3, 3) { _: Int, x: Int, parent: GameState? ->
+                if (parent == null) GameState(Board(), Token.PLAYER_1) else GameState(
+                    parent.board.clone().apply { throwInColumn(x, parent.nextPlayer) }, parent.nextPlayer.other()
+                ).apply { value = (0..100).random() }
+            }
+            tb.tree = t
+            println(t)
+            val checkNode = t.root[i]
+            assertEquals(40, t.size)
+            assertEquals(27, t.leaves.size)
+            val pruned = tb.tree.toMutableList()
+            tb.moveMade(i)
+            pruned.removeAll(tb.tree)
+            println(t)
+            assertEquals(13, t.size)
+            assertTrue(pruned.all { !t.root.isParentOf(it) })
+            assertEquals(9, t.leaves.size)
+            assertEquals(t.root, checkNode)
         }
-        tb.tree = t
-        val checkNode = t.root[0]
-        assertEquals(7, t.size)
-        tb.moveMade(0)
-        assertEquals(3, t.size)
-        assertEquals(t.root, checkNode)
     }
 
     fun testMoveMadeInLargeTree() {
         val thread = Thread(tb)
         thread.start()
-        sleep(300)
+        sleep(5000)
         tb.exit()
         thread.join()
         val root = tb.tree.root
-        println("checking tree with ${tb.tree.size} nodes")
+        val newRoot = root[3]
+        val size = tb.tree.size
+        val sizeToBeRemoved = listOf(0, 1, 2, 4, 5, 6).sumOf { i -> Tree(root = root[i]).size } + 1
+        val toBeKept = HashSet<GameState>(tb.tree.filter { it.isDescendantOf(tb.tree.root[3]) }).apply { add(tb.tree.root[3] as GameState) }
+        val toBePruned = HashSet<GameState>(tb.tree.filter { !it.isDescendantOf(tb.tree.root[3]) }).apply { remove(tb.tree.root[3] as GameState) }
         tb.moveMade(3)
-        assertEquals(root[3], tb.tree.root)
-        assertTrue(tb.tree.leaves.all { root.isParentOf(it) })
+        assertEquals(newRoot, tb.tree.root)
+        assertTrue(tb.tree.leaves.all { newRoot.isParentOf(it) })
+        assertTrue(tb.tree.leaves.all { !root.isParentOf(it) })
+        assertEquals(size - sizeToBeRemoved, tb.tree.size)
+        assertEquals(toBeKept.size, tb.tree.size)
+        for (n in tb.tree) {
+            toBeKept.remove(n)
+            assertFalse(toBePruned.contains(n))
+        }
+        assertEquals(0, toBeKept.size)
     }
 }
