@@ -18,6 +18,11 @@ abstract class Player(var side: Token, var board: Board) {
      */
     abstract fun onMovePlayed(x: Int)
 
+    /**
+     * Gets invoked when the game has finished
+     */
+    abstract fun onGameOver()
+
     abstract val name: String
 
 }

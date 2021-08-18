@@ -1,4 +1,4 @@
-package bot
+package bot.bots
 
 import model.Board
 import model.Player
@@ -12,4 +12,6 @@ class Bogo(side: Token, board: Board) : Player(side, board) {
     override val name: String = "Bogo"
 
     override fun onMovePlayed(x: Int) = Unit
+
+    override fun onGameOver() = Unit
 }

@@ -19,5 +19,7 @@ class HumanPlayer(side: Token, board: Board) : Player(side, board) {
 
     override fun onMovePlayed(x: Int) = Unit
 
+    override fun onGameOver() = Unit
+
     override val name: String = "Human"
 }

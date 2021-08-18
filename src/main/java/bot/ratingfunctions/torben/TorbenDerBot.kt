@@ -1,6 +1,6 @@
 package bot.ratingfunctions.torben
 
-import bot.RatingFunction
+import bot.bots.RatingFunction
 import model.Board
 import model.Token
 import model.procedure.ConsoleOutput

@@ -1,6 +1,6 @@
-package bot.tree
+package bot.bots.tree
 
-import bot.RatingFunction
+import bot.bots.RatingFunction
 import model.Board
 import model.Token
 import java.util.concurrent.locks.Condition

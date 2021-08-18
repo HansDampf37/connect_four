@@ -1,6 +1,6 @@
 package bot.ratingfunctions
 
-import bot.RatingFunction
+import bot.bots.RatingFunction
 import model.Board
 
 class RandomRating(val range: IntRange): RatingFunction {

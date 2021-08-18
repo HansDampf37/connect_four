@@ -1,6 +1,6 @@
 package model.procedure;
 
-import bot.PonderingBot;
+import bot.bots.PonderingBot;
 import bot.ratingfunctions.ruediger.IRuediger;
 import bot.ratingfunctions.ruediger.RuedigerDerBot;
 import model.Board;

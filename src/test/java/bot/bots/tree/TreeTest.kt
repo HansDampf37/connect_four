@@ -1,7 +1,6 @@
-package bot.tree
+package bot.bots.tree
 
 import bot.ratingfunctions.RandomRating
-import bot.ratingfunctions.ruediger.RuedigerDerBot
 import junit.framework.TestCase
 import java.lang.Thread.sleep
 import kotlin.math.pow

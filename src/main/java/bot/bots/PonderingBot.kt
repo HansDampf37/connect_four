@@ -1,7 +1,7 @@
-package bot
+package bot.bots
 
-import bot.tree.AlphaBetaPruning
-import bot.tree.TreeBuilder
+import bot.bots.tree.AlphaBetaPruning
+import bot.bots.tree.TreeBuilder
 import model.Board
 import model.Player
 import model.Token
@@ -25,7 +25,7 @@ class PonderingBot (
     side: Token,
     board: Board,
     private val ratingFunction: RatingFunction
-) : Player(side, board), Runnable {
+) : Player(side, board) {
     /**
      * The treeBuilder builds the Tree while idle
      */
@@ -34,13 +34,15 @@ class PonderingBot (
     /**
      * the tree built by the [treeBuilder]
      */
-    private val tree get() = treeBuilder.tree
+    val tree get() = treeBuilder.tree
+
+    private val threadForTreeBuilder: Thread = Thread(treeBuilder)
 
     /**
      * Start building the tree
      */
-    override fun run() {
-        treeBuilder.run()
+    init {
+        threadForTreeBuilder.start()
     }
 
     override fun getColumnOfNextMove(): Int {
@@ -63,6 +65,11 @@ class PonderingBot (
 
     override fun onMovePlayed(x: Int) {
         treeBuilder.moveMade(x)
+    }
+
+    override fun onGameOver() {
+        treeBuilder.exit()
+        threadForTreeBuilder.join()
     }
 
     override val name: String

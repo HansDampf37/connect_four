@@ -1,4 +1,4 @@
-package bot.tree
+package bot.bots.tree
 
 import model.procedure.ConsoleOutput
 import java.util.*

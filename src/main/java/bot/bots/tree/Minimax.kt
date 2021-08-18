@@ -1,4 +1,4 @@
-package bot.tree
+package bot.bots.tree
 
 class Minimax {
     companion object {

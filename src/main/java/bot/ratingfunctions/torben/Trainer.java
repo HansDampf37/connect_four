@@ -1,6 +1,6 @@
-package bot;
+package bot.ratingfunctions.torben;
 
-import bot.ratingfunctions.torben.TorbenDerBot;
+import bot.bots.PonderingBot;
 import model.Board;
 import model.Token;
 import model.procedure.ConsoleOutput;

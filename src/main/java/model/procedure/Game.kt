@@ -36,6 +36,7 @@ class Game(player1: Player, player2: Player) {
             if (!board.stillSpace()) break
             winner = board.winner
         }
+        players.forEach { it.onGameOver() }
         //if (ConsoleOutput.printBoard) System.out.println(board);
         if (ConsoleOutput.gameResult) {
             val finalWinner = winner

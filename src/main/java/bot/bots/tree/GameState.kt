@@ -1,4 +1,4 @@
-package bot.tree
+package bot.bots.tree
 
 import model.Board
 import model.Token

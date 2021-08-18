@@ -1,4 +1,4 @@
-package bot.tree
+package bot.bots.tree
 
 import bot.ratingfunctions.RandomRating
 import junit.framework.TestCase
