@@ -3,6 +3,7 @@ package bot.bots.tree
 import model.procedure.ConsoleOutput
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import kotlin.math.pow
 
 /**
  * Utilized to represent a states of a 4-gewinnt-match. Node A is the child of node B <-> it exists a move that you can do in state B that brings you to state A
@@ -15,10 +16,17 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      */
     val leaves: HashSet<T> = HashSet()
 
-    val size: Int
-        get() {
-            return 1 + root.amountDescendants
-        }
+    /**
+     * Counter that gets updated estimates the tree size. Doesn't keep track of duplicates.
+     */
+    var size: Int = 1
+        private set
+
+    val meanDepth get() = leaves.toList().sumOf { it.generation() }.toFloat() / leaves.size
+
+    val varianceInDepth
+        get() = leaves.toList()
+            .sumOf { (meanDepth - it.generation().toFloat()).pow(2).toDouble() } / leaves.size.toDouble()
 
     init {
         leaves.addAll(this.filter { it.isLeaf })
@@ -64,6 +72,15 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     }
 
     /**
+     * Calculates the tree's size
+     */
+    fun size(): Int {
+        val size = 1 + root.amountDescendants
+        this.size = size
+        return size
+    }
+
+    /**
      * Adds a child to a parent-node in a tree
      */
     fun addChild(parent: T, child: T) {
@@ -71,32 +88,45 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
         parent.children.add(child)
         child.parent = parent
         addLeaf(child)
+        size++
     }
 
     /**
      * removes a child from the given nodes children list
      */
     fun removeChild(parent: T, child: T) {
-        if (child.isLeaf) leaves.remove(child)
-        parent.children.remove(child)
-        child.parent = child
-        if (parent.isLeaf) addLeaf(parent)
+        if (parent.children.remove(child)) {
+            if (child.isLeaf) leaves.remove(child)
+            child.parent = child
+            if (parent.isLeaf) addLeaf(parent)
+            size -= child.amountDescendants + 1
+        } else {
+            throw IllegalArgumentException("Parent is not a direct parent of child")
+        }
     }
 
     /**
      * deletes all children nodes for a given node
      */
     fun makeLeave(node: T) {
+        size -= node.sumOf { it.amountDescendants + 1 }
         leaves.removeAll { node.isParentOf(it) }
         node.children.clear()
         addLeaf(node)
     }
 
+    /**
+     * Sets this trees root node to the former roots [move]th child and prunes the tree's nodes that are not descending from
+     * the new root node.
+     * @param move the index of the new root node
+     */
     fun step(move: Int) {
         val newRoot = root[move] as T
         removeChild(root, root[move] as T)
         root = newRoot
-        leaves.removeAll{ !it.isDescendantOf(root) }
+        leaves.removeAll { !it.isDescendantOf(root) && it != root }
+        if (leaves.isEmpty()) leaves.add(root)
+        size = root.amountDescendants + 1
     }
 
     override fun toString(): String {

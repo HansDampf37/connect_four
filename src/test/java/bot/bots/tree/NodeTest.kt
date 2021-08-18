@@ -41,12 +41,12 @@ class NodeTest : TestCase() {
     }
 
     fun testIsParentOf() {
-        assertTrue(node.isParentOf(node[0]))
-        assertTrue(node.isParentOf(node[1]))
-        assertTrue(node.isParentOf(node[1][0]))
+        assertTrue(node[0].isDescendantOfBruteForce(node))
+        assertTrue(node[1].isDescendantOfBruteForce(node))
+        assertTrue(node[1][0].isDescendantOfBruteForce(node))
 
-        assertFalse(node[0].isParentOf(node))
-        assertFalse(node[1].isParentOf(node))
-        assertFalse(node[1][0].isParentOf(node))
+        assertFalse(node.isDescendantOfBruteForce(node[0]))
+        assertFalse(node.isDescendantOfBruteForce(node[1]))
+        assertFalse(node.isDescendantOfBruteForce(node[1][0]))
     }
 }

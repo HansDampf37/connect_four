@@ -10,12 +10,8 @@ import java.util.stream.Stream
 /**
  * A node in the [tree-graph][Tree]
  */
-open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node> = ArrayList(), var value: Int = 0) :
-    MutableList<Node> {
+open class Node(val children: MutableList<Node> = ArrayList(), var value: Int = 0) : MutableList<Node> {
 
-    @Deprecated("prune tree instead", ReplaceWith("nothing"))
-    private val isVisible: Boolean
-        get() = !invisible
     val isLeaf: Boolean
         get() = children.size == 0
 
@@ -25,12 +21,6 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         get() {
             return children.size + children.sumOf { it.amountDescendants }
         }
-
-    /**
-     * If a Node represents an illegal state of the game it should be invisible meaning no matter what comparison is happening this node is losing
-     */
-    @Deprecated("prune tree instead")
-    var invisible = false
 
     /* /**
       * Adds a child to a tree
@@ -55,7 +45,7 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      */
     private fun setValueToMinimumChild() {
         value = Int.MAX_VALUE
-        for (child in children) if (child.isVisible && child.value < value) value = child.value
+        for (child in children) if (child.value < value) value = child.value
     }
 
     /**
@@ -63,7 +53,7 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      */
     private fun setValueToMaximumChild() {
         value = Int.MIN_VALUE
-        for (child in children) if (child.isVisible && child.value > value) value = child.value
+        for (child in children) if (child.value > value) value = child.value
     }
 
     /**
@@ -103,16 +93,14 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
         var bestValue = Int.MIN_VALUE
         val bestIndices: MutableList<Int> = ArrayList()
         for (i in children.indices) {
-            if (children[i].isVisible) {
-                children[i].passLow()
-                if (ConsoleOutput.treeTraversal) println("Dir: " + i + ", Rating: " + children[i].value)
-                if (children[i].value > bestValue) {
-                    bestValue = children[i].value
-                    bestIndices.clear()
-                    bestIndices.add(i)
-                } else if (children[i].value == bestValue) {
-                    bestIndices.add(i)
-                }
+            children[i].passLow()
+            if (ConsoleOutput.treeTraversal) println("Dir: " + i + ", Rating: " + children[i].value)
+            if (children[i].value > bestValue) {
+                bestValue = children[i].value
+                bestIndices.clear()
+                bestIndices.add(i)
+            } else if (children[i].value == bestValue) {
+                bestIndices.add(i)
             }
         }
         value = bestValue
@@ -145,9 +133,13 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
      */
     fun isParentOf(other: Node): Boolean {
         return other.isDescendantOf(this)
-           // for (child in children) if (child == other) return true
-            //for (child in children) if (child.isParentOf(other)) return true
-            //return false
+    }
+
+    private fun isParentOfBruteForce(other: Node): Boolean {
+        children.forEach { it.parent = this }
+        for (child in children) if (child == other) return true
+        for (child in children) if (child.isParentOfBruteForce(other)) return true
+        return false
     }
 
     /**
@@ -157,6 +149,17 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     fun isDescendantOf(other: Node): Boolean {
         if (parent == other) return true
         if (parent == this) return false
+        return parent.isDescendantOf(other)
+    }
+
+    /**
+     * returns true if this node is a (grand)*child of the given node
+     * if no immediate relationship is found keeps searching. (halts)
+     * @param other other node
+     */
+    fun isDescendantOfBruteForce(other: Node): Boolean {
+        if (parent == other) return true
+        if (parent == this) return other.isParentOfBruteForce(this)
         return parent.isDescendantOf(other)
     }
 
@@ -284,4 +287,6 @@ open class Node(/*var tree: Tree<Node>? = null, */val children: MutableList<Node
     override fun parallelStream(): Stream<Node> {
         return children.parallelStream()
     }
+
+    fun generation(): Int = if (parent == this) 0 else 1 + parent.generation()
 }

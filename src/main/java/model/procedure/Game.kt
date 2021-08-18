@@ -11,8 +11,10 @@ class Game(player1: Player, player2: Player) {
     private var curPlayerInd: Int = (Math.random() * players.size).toInt()
 
     init {
-        if (player1.board != player2.board) throw IllegalStateException("Boards must be equal")
+        if (player1.board != player2.board) throw IllegalArgumentException("Boards must be equal")
+        if (player1.side == player2.side) throw IllegalArgumentException("sides must be different")
         board = player1.board
+        reset()
     }
 
     private fun throwInColumn(x: Int) {
@@ -28,8 +30,7 @@ class Game(player1: Player, player2: Player) {
 
     fun play() {
         println(players[0].name + " vs " + players[1].name)
-        var winner: Token
-        winner = Token.EMPTY
+        var winner: Token = Token.EMPTY
         while (winner === Token.EMPTY) {
             if (ConsoleOutput.printBoard) println(board)
             throwInColumn(players[curPlayerInd].getColumnOfNextMove())
@@ -50,6 +51,7 @@ class Game(player1: Player, player2: Player) {
 
     private fun reset() {
         board = Board(7, 6)
+        players.forEach { it.board = board }
         curPlayerInd = players.indexOfFirst { it.side == Token.PLAYER_1 }
     }
 }

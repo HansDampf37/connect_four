@@ -29,7 +29,7 @@ class PonderingBot (
     /**
      * The treeBuilder builds the Tree while idle
      */
-    private var treeBuilder = TreeBuilder(ratingFunction)
+    private var treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.Size.VeryLarge)
 
     /**
      * the tree built by the [treeBuilder]
@@ -58,7 +58,7 @@ class PonderingBot (
         val rating = tree.root[index].value
         //if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
         //if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
-        println("Rating: $rating")
+        println("Rating: $rating, ${tree.size} nodes")
         treeBuilder.start()
         return index
     }
