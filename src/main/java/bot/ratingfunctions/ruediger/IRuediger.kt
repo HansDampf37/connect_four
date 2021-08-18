@@ -61,6 +61,7 @@ open class IRuediger(val side: Token) : RatingFunction {
 
 
     override fun invoke(board: Board): Int {
+        if (board.winner != EMPTY) return if (board.winner == side) Integer.MAX_VALUE else Integer.MIN_VALUE
         width = board.WIDTH
         height = board.HEIGHT
         ownThreatMap = Array(width) { IntArray(height) }
@@ -72,13 +73,13 @@ open class IRuediger(val side: Token) : RatingFunction {
         //enhanceMaps();
         //if this bot created a predicament and the opponent didn't, he won
         val rating: Int = if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
-            Int.MAX_VALUE - ownPredicamentHeight
+            Int.MAX_VALUE - ownPredicamentHeight - 1
             //System.out.println("Own predicament\n" + board + "\n" + mapToString());
         } else if (ownPredicamentInLine == -1 && opponentPredicamentInLine != -1) {
-            Int.MIN_VALUE + oppPredicamentHeight
+            Int.MIN_VALUE + oppPredicamentHeight + 1
             //System.out.println("Opponent predicament\n" + board + "\n" + mapToString());
         } else if (ownPredicamentInLine != -1) {
-            if (ownPredicamentHeight <= oppPredicamentHeight) Int.MAX_VALUE - ownPredicamentHeight else Int.MIN_VALUE + oppPredicamentHeight
+            if (ownPredicamentHeight <= oppPredicamentHeight) Int.MAX_VALUE - ownPredicamentHeight - 1 else Int.MIN_VALUE + oppPredicamentHeight + 1
         } else {
             evaluate(ownThreatMap) - evaluate(opponentThreatMap)
         }

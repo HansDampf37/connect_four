@@ -1,12 +1,12 @@
 package bot.ratingfunctions.ruediger
 
 import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertTrue
 import model.Board
 import model.HumanPlayer
 import model.Token
 import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.assertNotEquals
 
 class IRuedigerTest {
     private var b = Board(7, 6)
@@ -34,7 +34,7 @@ class IRuedigerTest {
         b.throwInColumn(4, Token.PLAYER_1)
         println(b)
         // because of the predicament this board is rated high
-        assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(b))
+        assertEquals(Integer.MAX_VALUE - 1, RuedigerDerBot(Token.PLAYER_1).invoke(b))
     }
     @Test
     fun testPredicament2() {
@@ -58,7 +58,7 @@ class IRuedigerTest {
         b.throwInColumn(4, Token.PLAYER_1)
         println(b)
         // since the predicament is blocked by thread by player 2 it can't be used
-        assertNotEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(b))
+        assertTrue(RuedigerDerBot(Token.PLAYER_1).invoke(b) < 1000)
     }
 
     @Test
@@ -110,6 +110,26 @@ class IRuedigerTest {
         println(b)
         println(print(ruedigerDerBot.ownThreatMap))
         println(print(ruedigerDerBot.opponentThreatMap))
+    }
+
+    @Test
+    fun testWin() {
+        b.throwInColumn(1, Token.PLAYER_1)
+        b.throwInColumn(2, Token.PLAYER_1)
+        b.throwInColumn(3, Token.PLAYER_1)
+        b.throwInColumn(4, Token.PLAYER_1)
+        b.throwInColumn(5, Token.PLAYER_2)
+        //
+        b.throwInColumn(3, Token.PLAYER_2)
+        b.throwInColumn(4, Token.PLAYER_2)
+        //
+        b.throwInColumn(3, Token.PLAYER_1)
+        b.throwInColumn(4, Token.PLAYER_2)
+        //
+        b.throwInColumn(4, Token.PLAYER_1)
+        println(b)
+        // because of the 4 in a row this board is rated high
+        assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(b))
     }
 
     private fun print(map: Array<IntArray>): String {
