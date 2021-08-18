@@ -24,7 +24,7 @@ class IRuedigerTest {
     fun testEval1() {
 
         val ruedigerDerBot = RuedigerDerBot(Token.PLAYER_2)
-        ruedigerDerBot.invoke(TestUtils.lategame)
+        ruedigerDerBot.invoke(TestUtils.gameProgressed)
         assertEquals(3, ruedigerDerBot.ownThreatMap[1][1])
         assertEquals(3, ruedigerDerBot.ownThreatMap[4][1])
         assertEquals(3, ruedigerDerBot.ownThreatMap[4][3])
@@ -33,9 +33,9 @@ class IRuedigerTest {
         assertEquals(3, ruedigerDerBot.opponentThreatMap[1][3])
         assertEquals(3, ruedigerDerBot.opponentThreatMap[4][3])
         assertEquals(3, ruedigerDerBot.opponentThreatMap[4][4])
-        assertEquals(-94, ruedigerDerBot.invoke(TestUtils.lategame))
-        println(ruedigerDerBot.invoke(TestUtils.lategame))
-        println(TestUtils.lategame)
+        assertEquals(-94, ruedigerDerBot.invoke(TestUtils.gameProgressed))
+        println(ruedigerDerBot.invoke(TestUtils.gameProgressed))
+        println(TestUtils.gameProgressed)
         println(print(ruedigerDerBot.ownThreatMap))
         println(print(ruedigerDerBot.opponentThreatMap))
     }
