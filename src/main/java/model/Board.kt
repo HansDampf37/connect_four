@@ -190,4 +190,8 @@ class Board private constructor(val WIDTH: Int = 7,
     public override fun clone(): Board {
         return Board(fields = Array(fields.size) { i -> fields[i].clone() })
     }
+
+    override fun hashCode(): Int {
+        return fields.contentDeepHashCode()
+    }
 }
