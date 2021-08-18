@@ -23,13 +23,15 @@ class Board private constructor(val WIDTH: Int = 7,
         return false
     }
 
-    fun removeOfColumn(x: Int) {
+    fun removeOfColumn(x: Int): Token {
         for (y in HEIGHT - 1 downTo 0) {
             if (fields[x][y] != EMPTY) {
+                val token = fields[x][y]
                 fields[x][y] = EMPTY
-                return
+                return token
             }
         }
+        return EMPTY
     }
 
     val isEmpty: Boolean get() = all { it == EMPTY }
