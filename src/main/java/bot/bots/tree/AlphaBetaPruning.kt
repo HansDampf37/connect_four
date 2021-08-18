@@ -12,7 +12,7 @@ class AlphaBetaPruning {
         private fun <T : Node> step(node: T, alpha: Int, beta: Int, maximisingPlayer: Boolean): Int {
             var alpha1 = alpha
             var beta1 = beta
-            if (node.isLeaf) return node.value
+            if (node.isLeaf) return 0
             if (maximisingPlayer) {
                 var maxIndex = -1
                 var maxValue = Integer.MIN_VALUE
