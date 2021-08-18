@@ -22,11 +22,24 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
     var size: Int = 1
         private set
 
-    val meanDepth get() = leaves.toList().sumOf { it.generation() }.toFloat() / leaves.size
+    val meanDepth: Float
+        get() {
+            var depthSum = 0
+            for (n in leaves) {
+                depthSum += n.generation()
+            }
+            return depthSum.toFloat() / leaves.size.toFloat()
+        }
 
-    val varianceInDepth
-        get() = leaves.toList()
-            .sumOf { (meanDepth - it.generation().toFloat()).pow(2).toDouble() } / leaves.size.toDouble()
+    val varianceInDepth: Float
+        get() {
+            val mean = meanDepth
+            var mse = 0f
+            for (n in leaves) {
+                mse += (mean - n.generation()).pow(2)
+            }
+            return mse / leaves.size.toFloat()
+        }
 
     init {
         leaves.addAll(this.filter { it.isLeaf })
