@@ -36,14 +36,17 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
         started = true
         running = true
         while (true) {
-            if (decideIfCalculating()) {
-                val leaf = tree.leaves.first()
+            tree.leaves.toList().forEach { leaf ->
                 if (running) {
-                    val futureStates = leaf.getFutureGameStates()
-                    futureStates.forEach {
-                        tree.addChild(leaf, it)
-                        it.value = ratingFunction(it.board)
-                        lock.withLock { readyToStep.signal() }
+                    if (decideIfCalculating()) {
+                        val futureStates = leaf.getFutureGameStates()
+                        futureStates.forEach {
+                            tree.addChild(leaf, it)
+                            it.value = ratingFunction(it.board)
+                            lock.withLock { readyToStep.signal() }
+                        }
+                    } else {
+                        sleep(50)
                     }
                 } else {
                     lock.withLock {
@@ -55,26 +58,23 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
                 }
                 if (exit) {
                     shutdown()
-                    return
+                    return@run
                 }
             }
         }
     }
 
     private fun decideIfCalculating(): Boolean {
+        if (tree.size < 0.9 * targetSize.getSize()) return true
         when {
             tree.size >= targetSize.getSize() -> {
-                sleep(50)
                 return false
             }
+            tree.size >= 0.95 * targetSize.getSize() -> {
+                if (Math.random() > 0.3) sleep(2)
+            }
             tree.size >= 0.9 * targetSize.getSize() -> {
-                sleep(50)
-            }
-            tree.size >= 0.7 * targetSize.getSize() -> {
-                sleep(35)
-            }
-            tree.size >= 0.5 * targetSize.getSize() -> {
-                sleep(5)
+                if (Math.random() > 0.9) sleep(2)
             }
         }
         return true
@@ -113,19 +113,19 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
 
     enum class Size {
         VeryLarge {
-            override fun getSize() = 200000
+            override fun getSize() = 5000000
         },
         Large {
-            override fun getSize() = 100000
+            override fun getSize() = 200000
         },
         Medium {
-            override fun getSize() = 50000
+            override fun getSize() = 100000
         },
         Small {
-            override fun getSize() = 20000
+            override fun getSize() = 50000
         },
         VerySmall {
-            override fun getSize() = 2000
+            override fun getSize() = 10000
         };
 
         abstract fun getSize(): Int
