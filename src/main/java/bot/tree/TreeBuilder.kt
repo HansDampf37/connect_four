@@ -19,7 +19,7 @@ class TreeBuilder(val ratingFunction: RatingFunction) : Runnable {
         running = true
         println("working")
         while (true) {
-            tree.leaves.forEach { leaf ->
+            tree.leaves.toList().forEach { leaf ->
                 if (running) {
                     val futureStates = leaf.getFutureGameStates()
                     futureStates.forEach {

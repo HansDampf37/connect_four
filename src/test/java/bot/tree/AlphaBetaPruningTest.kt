@@ -29,7 +29,7 @@ class AlphaBetaPruningTest : TestCase() {
     }
 
     fun testSpeed() {
-        val t = Tree<Node>(6, 7, Node()) { _: Int, _: Int, _: Node? -> Node() }
+        val t = Tree(6, 7, Node()) { _: Int, _: Int, _: Node? -> Node() }
         t.leaves.forEach { it.value = Random.nextInt() }
         println("building tree finished!")
         var finished = false
@@ -54,6 +54,7 @@ class AlphaBetaPruningTest : TestCase() {
             val valueAlpha = t.root.value
             assertEquals(indexMini, indexAlpha)
             assertEquals(valueMini, valueAlpha)
+            assertTrue("returned index must be in bounds", indexAlpha >= 0 && indexAlpha < t.root.size)
         }
     }
 }

@@ -1,6 +1,6 @@
 package bot.ratingfunctions.ruediger
 
-import bot.TestUtils
+import TestUtils
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import model.Token
@@ -13,6 +13,7 @@ class IRuedigerTest {
         // because of the predicament this board is rated high
         assertEquals(Integer.MAX_VALUE - 1, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.predicament1))
     }
+
     @Test
     fun testPredicament2() {
         println(TestUtils.noPredicament)
@@ -21,8 +22,14 @@ class IRuedigerTest {
     }
 
     @Test
-    fun testEval1() {
+    fun testDraw() {
+        println(TestUtils.gameDraw)
+        //game is draw -> rating should be 0
+        assertEquals(0, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.gameDraw))
+    }
 
+    @Test
+    fun testProgressed() {
         val ruedigerDerBot = RuedigerDerBot(Token.PLAYER_2)
         ruedigerDerBot.invoke(TestUtils.gameProgressed)
         assertEquals(3, ruedigerDerBot.ownThreatMap[1][1])
@@ -47,10 +54,20 @@ class IRuedigerTest {
         assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.wonP1))
         assertEquals(Integer.MIN_VALUE, RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.wonP1))
 
+        println(TestUtils.wonP1_second)
+        // because of the 4 in a row this board is rated high
+        assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.wonP1_second))
+        assertEquals(Integer.MIN_VALUE, RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.wonP1_second))
+
         println(TestUtils.wonP2)
         // because of the 4 in a row this board is rated high
         assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.wonP2))
         assertEquals(Integer.MIN_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.wonP2))
+
+        println(TestUtils.wonP2_lastMove)
+        // because of the 4 in a row this board is rated high
+        assertEquals(Integer.MAX_VALUE, RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.wonP2_lastMove))
+        assertEquals(Integer.MIN_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.wonP2_lastMove))
     }
 
     private fun print(map: Array<IntArray>): String {
