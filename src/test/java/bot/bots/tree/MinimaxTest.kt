@@ -18,7 +18,7 @@ class MinimaxTest : TestCase() {
 
     fun testMinimax() {
         println(Tree(node).toString())
-        assertEquals(1, Minimax.run(Tree(root = node)))
+        assertEquals(1, Minimax.run(Tree(node)))
     }
 
     fun testSameResultAsAlphaBeta() {

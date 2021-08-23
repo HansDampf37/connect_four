@@ -13,7 +13,7 @@ import java.util.stream.Stream
 open class Node(val children: MutableList<Node> = ArrayList(), var value: Int = 0) : MutableList<Node> {
 
     val isLeaf: Boolean
-        get() = children.size == 0
+        get() = children.isEmpty()
 
     var parent: Node = this
 

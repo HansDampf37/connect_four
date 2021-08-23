@@ -70,6 +70,12 @@ class IRuedigerTest {
         assertEquals(Integer.MIN_VALUE, RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.wonP2_lastMove))
     }
 
+    @Test
+    fun testMirroredBoardSameResult() {
+        assertEquals(RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.gameProgressedMirrored), RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.gameProgressed))
+        assertEquals(RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.gameProgressedMirrored), RuedigerDerBot(Token.PLAYER_2).invoke(TestUtils.gameProgressed))
+    }
+
     private fun print(map: Array<IntArray>): String {
         val str = StringBuilder().append("|")
         for (y in map[0].size - 1 downTo 0) {

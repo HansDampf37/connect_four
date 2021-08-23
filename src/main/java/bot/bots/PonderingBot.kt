@@ -59,7 +59,7 @@ class PonderingBot (
         //if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
         //if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
         println("Rating: $rating, ${tree.size} nodes")
-        treeBuilder.start()
+        treeBuilder.resume()
         return index
     }
 

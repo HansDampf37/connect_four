@@ -9,12 +9,23 @@ import kotlin.math.pow
  * Utilized to represent a states of a 4-gewinnt-match. Node A is the child of node B <-> it exists a move that you can do in state B that brings you to state A
  */
 @Suppress("UNCHECKED_CAST")
-class Tree<T : Node>(var root: T) : Iterable<T> {
+class Tree<T : Node>(_root: T) : Iterable<T> {
 
+    var root : T = _root
+    set(value) {
+        field = value
+        leaves = HashSet()
+        this.size = 0
+        for (node in this) {
+            if (node.isLeaf) leaves.add(node)
+            size++
+        }
+    }
     /**
      * All nodes in the tree without children
      */
-    val leaves: HashSet<T> = HashSet()
+    var leaves: HashSet<T> = HashSet()
+    private set
 
     /**
      * Counter that gets updated estimates the tree size. Doesn't keep track of duplicates.
@@ -88,9 +99,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      * Calculates the tree's size
      */
     fun size(): Int {
-        val size = 1 + root.amountDescendants
-        this.size = size
-        return size
+        return 1 + root.amountDescendants
     }
 
     /**
@@ -101,7 +110,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
         parent.children.add(child)
         child.parent = parent
         addLeaf(child)
-        size++
+        size += child.amountDescendants + 1
     }
 
     /**
@@ -122,7 +131,7 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      * deletes all children nodes for a given node
      */
     fun makeLeave(node: T) {
-        size -= node.sumOf { it.amountDescendants + 1 }
+        size -= node.amountDescendants - 1
         leaves.removeAll { node.isParentOf(it) }
         node.children.clear()
         addLeaf(node)
@@ -134,12 +143,12 @@ class Tree<T : Node>(var root: T) : Iterable<T> {
      * @param move the index of the new root node
      */
     fun step(move: Int) {
-        val newRoot = root[move] as T
-        removeChild(root, root[move] as T)
+        val newRoot = root.first { (it as GameState).lastMoveWasColumn == move } as T
+        removeChild(root, newRoot)
         root = newRoot
-        leaves.removeAll { !it.isDescendantOf(root) && it != root }
-        if (leaves.isEmpty()) leaves.add(root)
-        size = root.amountDescendants + 1
+        //leaves.removeAll { !it.isDescendantOf(root) && it != root }
+        //if (leaves.isEmpty()) leaves.add(root)
+        //size = size()
     }
 
     override fun toString(): String {

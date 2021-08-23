@@ -3,7 +3,7 @@ package bot.bots.tree
 import model.Board
 import model.Token
 
-class GameState(val board: Board = Board(), val nextPlayer: Token) : Node() {
+class GameState(val board: Board = Board(), val nextPlayer: Token, val lastMoveWasColumn: Int = -1) : Node() {
 
     val finished: Boolean = board.winner != Token.EMPTY
 
@@ -13,7 +13,7 @@ class GameState(val board: Board = Board(), val nextPlayer: Token) : Node() {
             run {
                 val newBoard = board.clone()
                 newBoard.throwInColumn(move, nextPlayer)
-                GameState(newBoard, nextPlayer.other())
+                GameState(newBoard, nextPlayer.other(), move)
             }
         }.toTypedArray()
     }

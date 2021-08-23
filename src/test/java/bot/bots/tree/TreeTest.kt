@@ -2,6 +2,8 @@ package bot.bots.tree
 
 import bot.ratingfunctions.RandomRating
 import junit.framework.TestCase
+import model.Board
+import model.Token
 import java.lang.Thread.sleep
 import kotlin.math.pow
 import kotlin.test.assertTrue
@@ -38,8 +40,26 @@ class TreeTest : TestCase() {
         assertTrue(t.leaves.size == 1)
     }
 
-    fun testSize() {
-        assertEquals(tree.size, tree.size())
+    fun testSizeFieldAndMethod() {
+        val tree = Tree(GameState(Board(), Token.PLAYER_1))
+        assertEquals(tree.size, 1)
+        assertEquals(tree.size(), 1)
+        var futures = tree.root.getFutureGameStates()
+        futures.forEach { tree.addChild(tree.root, it) }
+        assertEquals(tree.size, 8)
+        assertEquals(tree.size(), 8)
+        for (child in tree.root) {
+            futures = (child as GameState).getFutureGameStates()
+            futures.forEach { tree.addChild(child, it) }
+        }
+        assertEquals(tree.size, 57)
+        assertEquals(tree.size(), 57)
+        tree.step(0)
+        assertEquals(tree.size, 8)
+        assertEquals(tree.size(), 8)
+        tree.step(0)
+        assertEquals(tree.size, 1)
+        assertEquals(tree.size(), 1)
     }
 
     fun testMakeLeaf() {
@@ -89,6 +109,7 @@ class TreeTest : TestCase() {
         sleep(1000)
         tb.exit()
         thread.join()
+        assertTrue(tb.tree.size > 100)
         val tree = tb.tree
         for (node in tree) {
             for (child in node) {
