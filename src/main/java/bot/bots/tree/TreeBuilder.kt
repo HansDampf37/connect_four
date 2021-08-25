@@ -19,25 +19,26 @@ class TreeBuilder(
 
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
     val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
-    val lock: ReentrantLock = ReentrantLock()
-    val isIdle get() = run { lock.withLock { return@run scheduler.expand(tree) } }
+    val expansionLock: ReentrantLock = ReentrantLock()
+    val orderingLock: ReentrantLock = ReentrantLock()
+    val isIdle get() = run { expansionLock.withLock { return@run !scheduler.expand(tree) } }
 
     private var running = true
     private val numThreads = 14
-    private val readyToStep: Condition = lock.newCondition()
+    private val readyToStep: Condition = expansionLock.newCondition()
     private lateinit var thread: Thread
     private val queue: Queue<GameState> = ConcurrentLinkedQueue()
 
     override fun run() {
         queue.clear()
-        tree.leaves.forEach { queue.add(it) }
+        expansionLock.withLock { tree.leaves.forEach { queue.add(it) } }
         while (running) {
             if (queue.isEmpty()) {
                 tree.minimaxRequired = false
                 running = false
                 return
             }
-            lock.withLock {
+            expansionLock.withLock {
                 if (scheduler.expand(tree)) {
                     runBlocking {
                         val burst = Array(minOf(queue.size, numThreads)) { queue.remove() }
@@ -66,8 +67,8 @@ class TreeBuilder(
     }
 
     fun moveMade(move: Int) {
-        lock.withLock { while (!tree.root.any { (it as GameState).lastMoveWasColumn == move }) readyToStep.await() }
-        lock.withLock {
+        expansionLock.withLock {
+            while (!tree.root.any { (it as GameState).lastMoveWasColumn == move }) readyToStep.await()
             tree.step(move)
             queue.clear()
             for (leaf in tree.leaves) queue.add(leaf)

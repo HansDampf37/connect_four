@@ -79,7 +79,7 @@ class AlphaBetaPruningTest : TestCase() {
         field.set(tb, t)
         tb.start()
         sleep(buildTime)
-        val index = tb.lock.withLock { AlphaBetaPruning.run(t) }
+        val index = tb.expansionLock.withLock { AlphaBetaPruning.run(t) }
         tb.exit()
         assertTrue("chose index $index instead of one in $expectedIndices for \n$board \nwhich leads to a evaluation of ${t.root.value}", expectedIndices.contains(index))
         return t.root.value

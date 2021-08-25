@@ -120,7 +120,7 @@ class TreeBuilderTest : TestCase() {
             var oldDepth = -1f
             for (j in 0 until 50) {
                 if (tb.isIdle) break
-                tb.lock.withLock {
+                tb.expansionLock.withLock {
                     assertTrue(
                         "tree is not growing, before: $oldDepth, now: ${tb.tree.meanDepth}",
                         tb.tree.meanDepth >= oldDepth

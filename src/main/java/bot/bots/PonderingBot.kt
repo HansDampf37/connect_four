@@ -50,7 +50,7 @@ class PonderingBot(
     override fun getColumnOfNextMove(): Int {
         if (tree.root.board.isEmpty) return tree.root.board.WIDTH / 2
         var index: Int
-        treeBuilder.lock.withLock {
+        treeBuilder.expansionLock.withLock {
             index = AlphaBetaPruning.run(tree)
             val rating = try {
                 tree.root.first { (it as GameState).lastMoveWasColumn == index }.value
