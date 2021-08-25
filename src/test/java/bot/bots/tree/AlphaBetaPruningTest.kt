@@ -6,6 +6,7 @@ import junit.framework.TestCase
 import model.Board
 import model.Token
 import java.lang.Thread.sleep
+import kotlin.concurrent.withLock
 import kotlin.random.Random
 
 class AlphaBetaPruningTest : TestCase() {
@@ -73,7 +74,7 @@ class AlphaBetaPruningTest : TestCase() {
         buildTreeAndTestMove(TestUtils.createPredicamentForP2, Token.PLAYER_2, 300, Integer.MAX_VALUE, listOf(1))
         buildTreeAndTestMove(TestUtils.createPredicamentForP2, Token.PLAYER_1, 300, listOf(1))
         buildTreeAndTestMove(TestUtils.p1CanFinish, Token.PLAYER_1, 300, Integer.MAX_VALUE, listOf(1))
-        buildTreeAndTestMove(TestUtils.createPredicamentForP1_second, Token.PLAYER_1, 300, Integer.MAX_VALUE - 2, listOf(3))
+        buildTreeAndTestMove(TestUtils.createPredicamentForP1_second, Token.PLAYER_1, 300, Integer.MAX_VALUE - 3, listOf(3))
     }
 
     private fun buildTreeAndTestMove(board: Board, player: Token, buildTime: Long, expectedEvaluation: Int, expectedIndices: List<Int>) {
@@ -89,8 +90,7 @@ class AlphaBetaPruningTest : TestCase() {
         field.set(tb, t)
         tb.start()
         sleep(buildTime)
-        tb.pause()
-        val index = AlphaBetaPruning.run(t)
+        val index = tb.lock.withLock { AlphaBetaPruning.run(t) }
         tb.exit()
         assertTrue("chose index $index instead of one in $expectedIndices for \n$board \nwhich leads to a evaluation of ${t.root.value}", expectedIndices.contains(index))
         return t.root.value

@@ -42,6 +42,11 @@
             <version>RELEASE</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.brudaswen.kotlinx.coroutines</groupId>
+            <artifactId>kotlinx-coroutines-swt</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

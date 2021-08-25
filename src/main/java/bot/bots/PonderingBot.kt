@@ -1,15 +1,17 @@
 package bot.bots
 
 import bot.bots.tree.AlphaBetaPruning
+import bot.bots.tree.GameState
 import bot.bots.tree.TreeBuilder
 import model.Board
 import model.Player
 import model.Token
+import kotlin.concurrent.withLock
 
 /**
  * A rating-function rates a [Board] - - high return values are associated with a good rating
  */
-interface RatingFunction: (Board) -> Int {
+interface RatingFunction : (Board) -> Int {
     fun name(): String
 }
 
@@ -21,7 +23,7 @@ interface RatingFunction: (Board) -> Int {
  *
  * @param ratingFunction rates a [Board] - high return values are associated with a good rating
  */
-class PonderingBot (
+class PonderingBot(
     side: Token,
     board: Board,
     private val ratingFunction: RatingFunction
@@ -46,20 +48,13 @@ class PonderingBot (
     }
 
     override fun getColumnOfNextMove(): Int {
-        /*if (!this::beginner.isInitialized) {
-            beginner = if (board.all { it == Token.EMPTY }) side else side.other()
-        }*/
         if (tree.root.board.isEmpty) return tree.root.board.WIDTH / 2
-        treeBuilder.pause()
-        //for (leaf in tree.leaves) {
-        //    leaf.value = ratingFunction(leaf.board)
-        //}
-        val index = AlphaBetaPruning.run(tree)
-        val rating = tree.root[index].value
-        //if (rating > Int.MAX_VALUE - 20) println("Win inevitable")
-        //if (rating < Int.MIN_VALUE + 20) println("Loss inevitable")
-        println("Rating: $rating, ${tree.size} nodes")
-        treeBuilder.resume()
+        var index: Int
+        treeBuilder.lock.withLock {
+            index = AlphaBetaPruning.run(tree)
+            val rating = (tree.root).first { (it as GameState).lastMoveWasColumn == index }.value
+            println("Rating: $rating, ${tree.size} nodes")
+        }
         return index
     }
 

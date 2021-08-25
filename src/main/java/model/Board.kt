@@ -20,6 +20,7 @@ class Board private constructor(val WIDTH: Int = 7,
                 return true
             }
         }
+        throw IllegalArgumentException("column ${x + 1} is full")
         return false
     }
 

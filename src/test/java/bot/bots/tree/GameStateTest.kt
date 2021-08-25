@@ -5,7 +5,7 @@ import model.Board
 import model.Token
 
 class GameStateTest : TestCase() {
-    private var gs: GameState = GameState(Board(), Token.PLAYER_1)
+    private var gs: GameState = GameState(Board(), Token.PLAYER_1, -1)
 
     fun testFutureGameState() {
         gs = GameState(TestUtils.noPredicament, Token.PLAYER_1)
