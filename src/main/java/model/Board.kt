@@ -21,7 +21,6 @@ class Board private constructor(val WIDTH: Int = 7,
             }
         }
         throw IllegalArgumentException("column ${x + 1} is full")
-        return false
     }
 
     fun removeOfColumn(x: Int): Token {

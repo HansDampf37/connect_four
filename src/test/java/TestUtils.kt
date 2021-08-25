@@ -1,4 +1,7 @@
+import bot.bots.tree.GameState
+import bot.bots.tree.Tree
 import model.Board
+import model.Token
 import model.Token.EMPTY as e
 import model.Token.PLAYER_1 as p1
 import model.Token.PLAYER_2 as p2
@@ -172,5 +175,14 @@ class TestUtils {
                 arrayOf(p2, p1, e, e, e, e)
             )
         )
+
+        fun buildSmallTree(tree: Tree<GameState>) {
+            val node2 = GameState(Board(), Token.PLAYER_2)
+            val node3 = GameState(Board(), Token.PLAYER_2)
+            val node4 = GameState(Board(), Token.PLAYER_1)
+            tree.addChild(tree.root, node2)
+            tree.addChild(tree.root, node3)
+            tree.addChild(node3, node4)
+        }
     }
 }

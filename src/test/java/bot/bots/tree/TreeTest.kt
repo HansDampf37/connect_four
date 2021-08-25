@@ -49,7 +49,7 @@ class TreeTest : TestCase() {
         assertEquals(tree.size, 8)
         assertEquals(tree.size(), 8)
         for (child in tree.root) {
-            futures = (child as GameState).getFutureGameStates()
+            futures = child.getFutureGameStates()
             futures.forEach { tree.addChild(child, it) }
         }
         assertEquals(tree.size, 57)

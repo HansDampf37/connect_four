@@ -3,7 +3,7 @@ package bot.bots.tree
 import model.Board
 import model.Token
 
-class GameState(val board: Board = Board(), val nextPlayer: Token, val lastMoveWasColumn: Int = -1) : Node() {
+open class GameState(val board: Board = Board(), val nextPlayer: Token = Token.PLAYER_1, val lastMoveWasColumn: Int = -1) : Node() {
 
     val finished: Boolean = board.winner != Token.EMPTY
 
@@ -16,6 +16,15 @@ class GameState(val board: Board = Board(), val nextPlayer: Token, val lastMoveW
                 GameState(newBoard, nextPlayer.other(), move)
             }
         }.toTypedArray()
+    }
+
+    override fun get(index: Int): GameState {
+        return super.get(index) as GameState
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun iterator(): MutableIterator<GameState> {
+        return super.iterator() as MutableIterator<GameState>
     }
 
     /* companion object {

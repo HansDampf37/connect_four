@@ -52,11 +52,6 @@ class TorbenDerBot(val side: Token) : RatingFunction {
     private val oppCurrentPatternUsage: IntArray
 
     /**
-     * Path to data
-     */
-    private val PATH = "game/src/main/java/bot/data.txt"
-
-    /**
      * prints out overall useless information
      */
     private fun log() {
@@ -199,7 +194,7 @@ ${checker.getPattern(i)}    $occurence
         val fis: InputStream
         var data = ByteArray(0)
         try {
-            fis = FileInputStream(File(PATH))
+            fis = FileInputStream(File(Companion.PATH))
             data = ByteArray(fis.available())
             fis.read(data)
             fis.close()
@@ -224,7 +219,7 @@ ${checker.getPattern(i)}    $occurence
         for (i in 0 until ratings.size - 1) str.append(ratings[i]).append(",")
         str.append(ratings[ratings.size - 1])
         try {
-            val out = FileOutputStream(File(PATH))
+            val out = FileOutputStream(File(Companion.PATH))
             out.write(str.toString().toByteArray())
             out.close()
         } catch (e: IOException) {
@@ -255,5 +250,12 @@ ${checker.getPattern(i)}    $occurence
             )
         }
         return rating
+    }
+
+    companion object {
+        /**
+         * Path to data
+         */
+        private const val PATH = "game/src/main/java/bot/data.txt"
     }
 }

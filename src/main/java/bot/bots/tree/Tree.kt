@@ -14,8 +14,8 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
     var root : T = _root
     set(value) {
         field = value
-        leaves = HashSet()
         this.size = 0
+        leaves = HashSet()
         for (node in this) {
             if (node.isLeaf) leaves.add(node)
             size++

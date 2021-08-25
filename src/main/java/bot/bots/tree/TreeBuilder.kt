@@ -11,15 +11,18 @@ import kotlin.concurrent.withLock
 import kotlinx.coroutines.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
-class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Size = Size.Medium) : Runnable {
+class TreeBuilder(
+    val ratingFunction: RatingFunction,
+    private val scheduler: Scheduler = SizeScheduler(SizeScheduler.Size.Medium)
+) : Runnable {
 
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
     val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
-    private var running = true
     val lock: ReentrantLock = ReentrantLock()
+
+    private var running = true
     private val readyToStep: Condition = lock.newCondition()
     private lateinit var thread: Thread
-
     private val queue: Queue<GameState> = ConcurrentLinkedQueue()
 
     override fun run() {
@@ -31,7 +34,7 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
                 return
             }
             lock.withLock {
-                if (decideIfCalculating()) {
+                if (scheduler.expand(tree)) {
                     // val burstSize = 10
                     // val nextBurstsLeave = Array(burstSize) {queue.remove()}
                     val leaf = queue.remove()
@@ -47,10 +50,8 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
                         readyToStep.signal()
                     }
                 } else {
-                    // if the scheduler decides, we pause for 50 ms and signal that enough futureStates have been created
-                    if (Math.random() > 0.99) println("Tree full (${tree.size})")
+                    // if the scheduler decides, we signal that enough futureStates have been created
                     lock.withLock { readyToStep.signal() }
-                    sleep(50)
                 }
             }
         }
@@ -66,52 +67,66 @@ class TreeBuilder(val ratingFunction: RatingFunction, private val targetSize: Si
     }
 
     fun start() {
-        GlobalScope.launch {
-            run()
-        }
+        thread = Thread(this)
+        thread.start()
     }
-
-    private fun decideIfCalculating(): Boolean {
-        if (IntRange(0, 6).filter { index -> tree.root.board.stillSpaceIn(index) }
-                .any { index -> !tree.root.any { (it as GameState).lastMoveWasColumn == index } }) return true
-        if (tree.size < 0.9 * targetSize.getSize()) return true
-        when {
-            tree.size >= targetSize.getSize() -> {
-                return false
-            }
-            tree.size >= 0.95 * targetSize.getSize() -> {
-                if (Math.random() > 0.3) sleep(2)
-            }
-            tree.size >= 0.9 * targetSize.getSize() -> {
-                if (Math.random() > 0.9) sleep(2)
-            }
-        }
-        return true
-    }
-
 
     fun exit() {
         running = false
         if (this::thread.isInitialized) thread.join()
     }
 
-    enum class Size {
-        VeryLarge {
-            override fun getSize() = 5000000
-        },
-        Large {
-            override fun getSize() = 200000
-        },
-        Medium {
-            override fun getSize() = 100000
-        },
-        Small {
-            override fun getSize() = 50000
-        },
-        VerySmall {
-            override fun getSize() = 10000
-        };
+    interface Scheduler {
+        /**
+         * returns true if and only if the tree-builder shall continue to expand the [tree]. Depending on the trees properties
+         * this method may use [sleep] to block further execution
+         */
+        fun <T : Node> expand(tree: Tree<T>): Boolean
+    }
 
-        abstract fun getSize(): Int
+    class SizeScheduler(private val targetSize: Size) : Scheduler {
+        override fun <T : Node> expand(tree: Tree<T>): Boolean {
+            // if the root node has un-calculated legal moves always calculate
+            if (IntRange(0, 6).filter { index -> (tree.root as GameState).board.stillSpaceIn(index) }
+                    .any { index -> !tree.root.any { (it as GameState).lastMoveWasColumn == index } }) return true
+            // return depending on size
+            return when {
+                tree.size < 0.9 * targetSize.getSize() -> {
+                    true
+                }
+                tree.size < 0.95 * targetSize.getSize() -> {
+                    if (Math.random() > 0.9) sleep(2)
+                    true
+                }
+                tree.size < targetSize.getSize() -> {
+                    if (Math.random() > 0.3) sleep(2)
+                    true
+                }
+                else -> {
+                    sleep(10)
+                    return false
+                }
+            }
+        }
+
+        enum class Size {
+            VeryLarge {
+                override fun getSize() = 5000000
+            },
+            Large {
+                override fun getSize() = 200000
+            },
+            Medium {
+                override fun getSize() = 100000
+            },
+            Small {
+                override fun getSize() = 50000
+            },
+            VerySmall {
+                override fun getSize() = 10000
+            };
+
+            abstract fun getSize(): Int
+        }
     }
 }

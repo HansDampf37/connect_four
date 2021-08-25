@@ -2,11 +2,11 @@ package bot.bots.tree
 
 class Minimax {
     companion object {
-        fun <T : Node> run(t: Tree<T>): Int {
+        fun <T : GameState> run(t: Tree<T>): Int {
             return step(t.root, true)
         }
 
-        private fun <T : Node> step(current: T, maximize: Boolean): Int {
+        private fun <T : GameState> step(current: T, maximize: Boolean): Int {
             if (current.isLeaf) {
                 return 0
             }

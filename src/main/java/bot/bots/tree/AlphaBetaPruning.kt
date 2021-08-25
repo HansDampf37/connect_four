@@ -5,11 +5,11 @@ import kotlin.math.max
 
 class AlphaBetaPruning {
     companion object {
-        fun <T : Node> run(t: Tree<T>): Int {
+        fun <T : GameState> run(t: Tree<T>): Int {
             return step(t.root, Integer.MIN_VALUE, Integer.MAX_VALUE, true)
         }
 
-        private fun <T : Node> step(node: T, alpha: Int, beta: Int, maximisingPlayer: Boolean): Int {
+        private fun <T : GameState> step(node: T, alpha: Int, beta: Int, maximisingPlayer: Boolean): Int {
             var alpha1 = alpha
             var beta1 = beta
             if (node.isLeaf) return 0
@@ -21,7 +21,7 @@ class AlphaBetaPruning {
                     val value = node[i].value
                     if (value > maxValue) {
                         maxValue = value
-                        maxColumn = (node[i] as GameState).lastMoveWasColumn
+                        maxColumn = node[i].lastMoveWasColumn
                     }
                     alpha1 = max(alpha1, maxValue)
                     if (beta1 <= alpha1) break
@@ -36,7 +36,7 @@ class AlphaBetaPruning {
                     val value = node[i].value
                     if (value < minValue) {
                         minValue = value
-                        minColumn = (node[i] as GameState).lastMoveWasColumn
+                        minColumn = node[i].lastMoveWasColumn
                     }
                     beta1 = min(beta1, value)
                     if (beta1 <= alpha1) break

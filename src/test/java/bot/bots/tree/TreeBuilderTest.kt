@@ -1,7 +1,6 @@
 package bot.bots.tree
 
 import bot.ratingfunctions.RandomRating
-import bot.ratingfunctions.ruediger.RuedigerDerBot
 import junit.framework.TestCase
 import model.Board
 import model.Token
@@ -22,7 +21,7 @@ class TreeBuilderTest : TestCase() {
     }
 
     override fun setUp() {
-        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.Size.Small)
+        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Small))
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, Tree(GameState(Board(), Token.PLAYER_1)))
@@ -44,7 +43,7 @@ class TreeBuilderTest : TestCase() {
                     node.board.count { it == Token.PLAYER_2 }) <= 1)
         }
         for (node in tb.tree.filter { !it.isLeaf }) {
-            for (child in node as Collection<GameState>) {
+            for (child in node) {
                 val token = child.board.removeOfColumn(child.lastMoveWasColumn)
                 assertEquals(child.board, node.board)
                 child.board.throwInColumn(child.lastMoveWasColumn, token)
@@ -116,20 +115,19 @@ class TreeBuilderTest : TestCase() {
 
     fun testTreeVarianceAndDepth() {
         for (i in 0 until 2) {
-            val treeBuilder = TreeBuilder(RandomRating(0..100), TreeBuilder.Size.Large)
-            if (i == 1) treeBuilder.tree.root = GameState(TestUtils.gameProgressed, Token.PLAYER_1)
-            treeBuilder.start()
+            if (i == 1) tb.tree.root = GameState(TestUtils.gameProgressed, Token.PLAYER_1)
+            tb.start()
             var oldDepth = -1f
             for (j in 0 until 50) {
-                treeBuilder.lock.withLock {
+                tb.lock.withLock {
                     assertTrue(
-                        "tree is not growing, before: $oldDepth, now: ${treeBuilder.tree.meanDepth}",
-                        treeBuilder.tree.meanDepth >= oldDepth
+                        "tree is not growing, before: $oldDepth, now: ${tb.tree.meanDepth}",
+                        tb.tree.meanDepth >= oldDepth
                     )
-                    oldDepth = treeBuilder.tree.meanDepth
-                    val varianceInDepth = treeBuilder.tree.varianceInDepth
+                    oldDepth = tb.tree.meanDepth
+                    val varianceInDepth = tb.tree.varianceInDepth
                     //assertTrue("tree is not balanced: $varianceInDepth", varianceInDepth < 0.4)
-                    println("success in iteration $j, depth: $oldDepth, variance: $varianceInDepth, ${treeBuilder.tree.size()} nodes")
+                    println("success in iteration $j, depth: $oldDepth, variance: $varianceInDepth, ${tb.tree.size()} nodes")
                 }
                 sleep(2)
             }
@@ -137,10 +135,6 @@ class TreeBuilderTest : TestCase() {
     }
 
     fun testMoveMadeInLargeTree() {
-        tb = TreeBuilder(RuedigerDerBot(Token.PLAYER_1), TreeBuilder.Size.VerySmall)
-        val field = tb::class.java.getDeclaredField("tree")
-        field.isAccessible = true
-        field.set(tb, Tree(GameState(Board(), Token.PLAYER_1)))
         runTreeBuilder(2000)
         val root = tb.tree.root
         val newRoot = root[3]
@@ -150,13 +144,13 @@ class TreeBuilderTest : TestCase() {
         val toBeKept =
             HashSet<GameState>(tb.tree.filter { it.isDescendantOf(tb.tree.root[3]) }).apply {
                 add(
-                    tb.tree.root[3] as GameState
+                    tb.tree.root[3]
                 )
             }
         val toBePruned =
             HashSet<GameState>(tb.tree.filter { !it.isDescendantOf(tb.tree.root[3]) }).apply {
                 remove(
-                    tb.tree.root[3] as GameState
+                    tb.tree.root[3]
                 )
             }
         println("Prune")

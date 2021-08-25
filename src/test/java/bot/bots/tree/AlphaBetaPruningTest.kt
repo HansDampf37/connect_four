@@ -1,6 +1,7 @@
 package bot.bots.tree
 
 import TestUtils
+import TestUtils.Companion.buildSmallTree
 import bot.ratingfunctions.ruediger.RuedigerDerBot
 import junit.framework.TestCase
 import model.Board
@@ -10,32 +11,20 @@ import kotlin.concurrent.withLock
 import kotlin.random.Random
 
 class AlphaBetaPruningTest : TestCase() {
-    private lateinit var node: Node
+    private lateinit var tree: Tree<GameState>
 
     public override fun setUp() {
         super.setUp()
-        node =
-            Node(
-                mutableListOf(
-                    Node(mutableListOf(), 2),
-                    Node(
-                        mutableListOf(
-                            Node(value = 4)
-                        ),
-                        3
-                    )
-                ),
-                1
-            )
+        tree = Tree(GameState(nextPlayer = Token.PLAYER_1))
+        buildSmallTree(tree)
     }
 
-    fun testAlphaBetaPruning() {
-        val t = Tree(node)
-        assertEquals(1, AlphaBetaPruning.run(t))
+    fun testTrivialTree() {
+        assertEquals(1, AlphaBetaPruning.run(tree))
     }
 
     fun testSpeed() {
-        val t = Tree(6, 7, Node()) { _: Int, _: Int, _: Node? -> Node() }
+        val t = Tree(6, 7, GameState(Board(), Token.PLAYER_1)) { _: Int, _: Int, _: GameState? -> GameState(Board(), Token.PLAYER_1) }
         t.leaves.forEach { it.value = Random.nextInt() }
         println("building tree finished!")
         var finished = false
@@ -52,7 +41,7 @@ class AlphaBetaPruningTest : TestCase() {
 
     fun testSameResultAsMinimax() {
         for (i in 0..20) {
-            val t = Tree(listOf(5).random(), listOf(5, 6, 7).random(), Node())  { _: Int, _: Int, _: Node? -> Node() }
+            val t = Tree(listOf(5).random(), listOf(5, 6, 7).random(), GameState(Board(), Token.PLAYER_1))  { _: Int, _: Int, _: Node? -> GameState(Board(), Token.PLAYER_1) }
             t.leaves.forEach { it.value = Random.nextInt() }
             val indexMini = Minimax.run(t)
             val valueMini = t.root.value
@@ -84,7 +73,7 @@ class AlphaBetaPruningTest : TestCase() {
 
     private fun buildTreeAndTestMove(board: Board, player: Token, buildTime: Long, expectedIndices: List<Int>): Int {
         val t = Tree(GameState(board, player))
-        val tb = TreeBuilder(RuedigerDerBot(player), TreeBuilder.Size.Small)
+        val tb = TreeBuilder(RuedigerDerBot(player), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Small))
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, t)

@@ -31,7 +31,7 @@ class PonderingBot(
     /**
      * The treeBuilder builds the Tree while idle
      */
-    private var treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.Size.VeryLarge)
+    private var treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.VeryLarge))
 
     /**
      * the tree built by the [treeBuilder]
