@@ -21,6 +21,7 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
             size++
         }
     }
+
     /**
      * All nodes in the tree without children
      */
@@ -51,6 +52,12 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
             }
             return mse / leaves.size.toFloat()
         }
+
+    var minimaxRequired = true
+    set(value) {
+        field = value
+        println("AlphaBetaPruning inactive")
+    }
 
     init {
         leaves.addAll(this.filter { it.isLeaf })

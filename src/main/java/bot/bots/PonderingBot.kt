@@ -52,7 +52,15 @@ class PonderingBot(
         var index: Int
         treeBuilder.lock.withLock {
             index = AlphaBetaPruning.run(tree)
-            val rating = (tree.root).first { (it as GameState).lastMoveWasColumn == index }.value
+            val rating = try {
+                tree.root.first { (it as GameState).lastMoveWasColumn == index }.value
+            } catch (e: NoSuchElementException) {
+                e.printStackTrace()
+                println("AlphaBeta suggests move ${index + 1} in position \n${tree.root.board}")
+                println(tree)
+                0
+            }
+            if (rating >= Integer.MAX_VALUE - tree.root.board.HEIGHT) tree.minimaxRequired = false
             println("Rating: $rating, ${tree.size} nodes")
         }
         return index

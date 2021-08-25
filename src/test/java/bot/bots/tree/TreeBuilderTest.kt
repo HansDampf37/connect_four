@@ -21,7 +21,7 @@ class TreeBuilderTest : TestCase() {
     }
 
     override fun setUp() {
-        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Small))
+        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Large))
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, Tree(GameState(Board(), Token.PLAYER_1)))
@@ -119,6 +119,7 @@ class TreeBuilderTest : TestCase() {
             tb.start()
             var oldDepth = -1f
             for (j in 0 until 50) {
+                if (tb.isIdle) break
                 tb.lock.withLock {
                     assertTrue(
                         "tree is not growing, before: $oldDepth, now: ${tb.tree.meanDepth}",

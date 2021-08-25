@@ -43,9 +43,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>de.brudaswen.kotlinx.coroutines</groupId>
-            <artifactId>kotlinx-coroutines-swt</artifactId>
-            <version>1.0.0</version>
+            <groupId>org.jetbrains.kotlinx</groupId>
+            <artifactId>kotlinx-coroutines-core</artifactId>
+            <version>1.5.1</version>
         </dependency>
     </dependencies>
 

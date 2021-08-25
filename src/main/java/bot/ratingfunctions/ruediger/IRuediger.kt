@@ -155,24 +155,24 @@ open class IRuediger(val side: Token) : RatingFunction {
                     }
 
                     //vertically
-                    for (offset in -3..0) {
-                        currentValueForField = 0
-                        for (delta in 0..3) {
-                            val curY = y - offset - delta
-                            if (outOfBoardY(curY)) {
-                                currentValueForField = 0
-                                break
-                            }
-                            val currentPlayer = board[x, curY]
-                            if (currentPlayer == player) {
-                                currentValueForField++
-                            } else if (currentPlayer != EMPTY) {
-                                currentValueForField = 0
-                                break
-                            }
-                        }
-                        maximumForThisField = max(currentValueForField, maximumForThisField)
-                    }
+                    //for (offset in -3..0) {
+                    //    currentValueForField = 0
+                    //    for (delta in 0..3) {
+                    //        val curY = y - offset - delta
+                    //        if (outOfBoardY(curY)) {
+                    //            currentValueForField = 0
+                    //            break
+                    //        }
+                    //      val currentPlayer = board[x, curY]
+                    //        if (currentPlayer == player) {
+                    //            currentValueForField++
+                    //        } else if (currentPlayer != EMPTY) {
+                    //            currentValueForField = 0
+                    //            break
+                    //        }
+                    //    }
+                    //    maximumForThisField = max(currentValueForField, maximumForThisField)
+                    //}
                 }
                 if (player == side) ownThreatMap[x][y] = maximumForThisField else opponentThreatMap[x][y] =
                     maximumForThisField
@@ -196,7 +196,7 @@ open class IRuediger(val side: Token) : RatingFunction {
         var result = 0
         for (x in threatMap.indices) {
             for (y in 0 until threatMap[x].size) {
-                result += threatMap[x][y].toDouble().pow(3.0).toInt()
+                result += threatMap[x][y].toDouble().pow(10.0).toInt()
             }
         }
         return result

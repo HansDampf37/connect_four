@@ -1,15 +1,16 @@
 package bot.bots.tree
 
 import bot.bots.RatingFunction
+import kotlinx.coroutines.*
 import model.Board
 import model.Token
 import java.lang.Thread.sleep
 import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
-import kotlinx.coroutines.*
-import java.util.concurrent.ConcurrentLinkedQueue
+
 
 class TreeBuilder(
     val ratingFunction: RatingFunction,
@@ -19,8 +20,10 @@ class TreeBuilder(
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
     val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
     val lock: ReentrantLock = ReentrantLock()
+    val isIdle get() = run { lock.withLock { return@run scheduler.expand(tree) } }
 
     private var running = true
+    private val numThreads = 14
     private val readyToStep: Condition = lock.newCondition()
     private lateinit var thread: Thread
     private val queue: Queue<GameState> = ConcurrentLinkedQueue()
@@ -30,29 +33,34 @@ class TreeBuilder(
         tree.leaves.forEach { queue.add(it) }
         while (running) {
             if (queue.isEmpty()) {
+                tree.minimaxRequired = false
                 running = false
                 return
             }
             lock.withLock {
                 if (scheduler.expand(tree)) {
-                    // val burstSize = 10
-                    // val nextBurstsLeave = Array(burstSize) {queue.remove()}
-                    val leaf = queue.remove()
-                    // if the scheduler decides, we add up to 7 future states to tree
-                    val futureStates = leaf.getFutureGameStates()
-                    futureStates.forEach { future ->
-                        // each futureState gets added to the tree and evaluated
-                        tree.addChild(leaf, future)
-                        future.value = ratingFunction(future.board)
-                        // enqueue newly created futureStates
-                        queue.add(future)
-                        // signal that new futureState has been created
-                        readyToStep.signal()
+                    runBlocking {
+                        val burst = Array(minOf(queue.size, numThreads)) { queue.remove() }
+                        val futures = ArrayList<Deferred<Any>>()
+                        for (leaf in burst) {
+                            futures.add(async(Dispatchers.IO) {
+                                // if the scheduler decides, we add up to 7 future states to tree
+                                val futureStates = leaf.getFutureGameStates()
+                                futureStates.forEach { future ->
+                                    // each futureState gets added to the tree and evaluated
+                                    tree.addChild(leaf, future)
+                                    future.value = ratingFunction(future.board)
+                                    // enqueue newly created futureStates
+                                    queue.add(future)
+                                    // signal that new futureState has been created
+                                }
+                            })
+                        }
+                        futures.forEach { it.await() }
                     }
-                } else {
-                    // if the scheduler decides, we signal that enough futureStates have been created
-                    lock.withLock { readyToStep.signal() }
                 }
+                // signal that enough futureStates have been created
+                readyToStep.signal()
             }
         }
     }

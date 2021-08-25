@@ -18,7 +18,7 @@ class IRuedigerTest {
     fun testPredicament2() {
         println(TestUtils.noPredicament)
         // since the predicament is blocked by thread by player 2 it can't be used
-        assertTrue(RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.noPredicament) < 1000)
+        assertTrue(RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.noPredicament) < 1000000)
     }
 
     @Test
@@ -40,7 +40,7 @@ class IRuedigerTest {
         assertEquals(3, ruedigerDerBot.opponentThreatMap[1][3])
         assertEquals(3, ruedigerDerBot.opponentThreatMap[4][3])
         assertEquals(3, ruedigerDerBot.opponentThreatMap[4][4])
-        assertEquals(-94, ruedigerDerBot.invoke(TestUtils.gameProgressed))
+        assertEquals(-123218, ruedigerDerBot.invoke(TestUtils.gameProgressed))
         println(ruedigerDerBot.invoke(TestUtils.gameProgressed))
         println(TestUtils.gameProgressed)
         println(print(ruedigerDerBot.ownThreatMap))

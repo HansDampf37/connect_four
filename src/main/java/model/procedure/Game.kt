@@ -1,5 +1,7 @@
 package model.procedure
 
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import model.Board
 import model.Player
 import model.Token
@@ -20,12 +22,10 @@ class Game(player1: Player, player2: Player) {
     private fun throwInColumn(x: Int) {
         if (board.throwInColumn(x, players[curPlayerInd].side)) {
             curPlayerInd = ++curPlayerInd % players.size
-            onMovePlayed(x)
+            runBlocking {
+                launch { players.forEach { it.onMovePlayed(x) } }
+            }
         }
-    }
-
-    private fun onMovePlayed(x: Int) {
-        players.forEach { it.onMovePlayed(x) }
     }
 
     fun play() {

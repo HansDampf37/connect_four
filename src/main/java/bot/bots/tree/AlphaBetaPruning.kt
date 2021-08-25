@@ -7,6 +7,7 @@ import kotlin.math.max
 class AlphaBetaPruning {
     companion object {
         fun <T : GameState> run(t: Tree<T>): Int {
+            if (!t.minimaxRequired) return t.root.value
             return runBlocking {
                 step(
                     t.root, Integer.MIN_VALUE, Integer.MAX_VALUE,
