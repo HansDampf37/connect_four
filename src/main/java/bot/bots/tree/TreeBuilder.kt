@@ -21,10 +21,10 @@ class TreeBuilder(
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
     val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
     val lock: ReentrantLock = ReentrantLock()
-    val add: ReentrantLock = ReentrantLock()
     val isIdle get() = run { lock.withLock { return@run !scheduler.expand(tree) } }
+    private var running = true
 
-    var running = true
+    private val removeFromQueue: ReentrantLock = ReentrantLock()
     private val numThreads = 7
     private val readyToStep: Condition = lock.newCondition()
     private lateinit var thread: Thread
@@ -43,17 +43,21 @@ class TreeBuilder(
                                 repeat(numThreads) {
                                     futures.add(async(Dispatchers.IO) {
                                         repeat(4) {
-                                            if (queue.isNotEmpty()) {
-                                                val leaf = queue.remove()
-                                                // if the scheduler decides, we add up to 7 future states to tree
-                                                val futureStates = leaf.getFutureGameStates()
-                                                futureStates.forEach { newChild ->
-                                                    // each futureState gets added to the tree and evaluated
-                                                    tree.addChild(leaf, newChild)
-                                                    newChild.value = ratingFunction(newChild.board)
-                                                    // enqueue newly created futureStates
-                                                    queue.add(newChild)
+                                            val leaf = removeFromQueue.withLock {
+                                                if (queue.isNotEmpty()) {
+                                                    queue.remove()
+                                                } else {
+                                                    return@async
                                                 }
+                                            }
+                                            // if the scheduler decides, we add up to 7 future states to tree
+                                            val futureStates = leaf.getFutureGameStates()
+                                            futureStates.forEach { newChild ->
+                                                // each futureState gets added to the tree and evaluated
+                                                tree.addChild(leaf, newChild)
+                                                newChild.value = ratingFunction(newChild.board)
+                                                // enqueue newly created futureStates
+                                                queue.add(newChild)
                                             }
                                         }
                                     })
