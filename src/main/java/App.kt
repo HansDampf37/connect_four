@@ -9,8 +9,8 @@ object App {
     @JvmStatic
     fun main(args: Array<String>) {
         val b = Board()
-        val bot = PonderingBot(Token.PLAYER_2, b, RuedigerDerBot(Token.PLAYER_2))
-        val game = Game(HumanPlayer(Token.PLAYER_1, b), bot)
+        val bot = PonderingBot(Token.PLAYER_1, b, RuedigerDerBot(Token.PLAYER_1))
+        val game = Game(HumanPlayer(Token.PLAYER_2, b), bot)
         game.play()
     }
 }
