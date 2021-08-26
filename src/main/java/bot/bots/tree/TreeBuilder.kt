@@ -41,20 +41,22 @@ class TreeBuilder(
                             val futures = ArrayList<Deferred<Any>>()
                             lock.withLock {
                                 repeat(numThreads) {
-                                    if (queue.isNotEmpty()) {
-                                        val leaf = queue.remove()
-                                        futures.add(async(Dispatchers.IO) {
-                                            // if the scheduler decides, we add up to 7 future states to tree
-                                            val futureStates = leaf.getFutureGameStates()
-                                            futureStates.forEach { newChild ->
-                                                // each futureState gets added to the tree and evaluated
-                                                tree.addChild(leaf, newChild)
-                                                newChild.value = ratingFunction(newChild.board)
-                                                // enqueue newly created futureStates
-                                                queue.add(newChild)
+                                    futures.add(async(Dispatchers.IO) {
+                                        repeat(4) {
+                                            if (queue.isNotEmpty()) {
+                                                val leaf = queue.remove()
+                                                // if the scheduler decides, we add up to 7 future states to tree
+                                                val futureStates = leaf.getFutureGameStates()
+                                                futureStates.forEach { newChild ->
+                                                    // each futureState gets added to the tree and evaluated
+                                                    tree.addChild(leaf, newChild)
+                                                    newChild.value = ratingFunction(newChild.board)
+                                                    // enqueue newly created futureStates
+                                                    queue.add(newChild)
+                                                }
                                             }
-                                        })
-                                    }
+                                        }
+                                    })
                                 }
                             }
                             futures.forEach { it.await() }
