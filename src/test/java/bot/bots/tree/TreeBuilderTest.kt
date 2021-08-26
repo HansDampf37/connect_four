@@ -1,6 +1,7 @@
 package bot.bots.tree
 
-import bot.ratingfunctions.RandomRating
+import TestUtils
+import bot.ratingfunctions.ruediger.RuedigerDerBot
 import junit.framework.TestCase
 import model.Board
 import model.Token
@@ -21,7 +22,7 @@ class TreeBuilderTest : TestCase() {
     }
 
     override fun setUp() {
-        tb = TreeBuilder(RandomRating(0..100), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Large))
+        tb = TreeBuilder(RuedigerDerBot(Token.PLAYER_1), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Large))
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, Tree(GameState(Board(), Token.PLAYER_1)))
@@ -49,6 +50,7 @@ class TreeBuilderTest : TestCase() {
                 child.board.throwInColumn(child.lastMoveWasColumn, token)
             }
         }
+        tb.tree.leaves.forEach { assertEquals(RuedigerDerBot(Token.PLAYER_1).invoke(it.board), it.value) }
     }
 
     fun testResumeStopStepOnRepeat() {
