@@ -9,8 +9,9 @@ public class ConsoleOutput {
     public static boolean gameResult = true;
     public static boolean printBoard = true;
     public static boolean playerGreetings = false;
+    public static boolean predicamentSearch = false;
 
-    public static void setAll(boolean printBoard, boolean botInit, boolean patternInit, boolean treeInit, boolean patternRecog, boolean treeTraversal, boolean gameResult, boolean playerGreetings) {
+    public static void setAll(boolean printBoard, boolean botInit, boolean patternInit, boolean treeInit, boolean patternRecog, boolean treeTraversal, boolean gameResult, boolean playerGreetings, boolean predicamentSearch) {
         ConsoleOutput.printBoard = printBoard;
         ConsoleOutput.botInitiation = botInit;
         ConsoleOutput.patternInitiation = patternInit;
@@ -19,5 +20,6 @@ public class ConsoleOutput {
         ConsoleOutput.patternRecognition = patternRecog;
         ConsoleOutput.treeTraversal = treeTraversal;
         ConsoleOutput.playerGreetings = playerGreetings;
+        ConsoleOutput.predicamentSearch = predicamentSearch;
     }
 }

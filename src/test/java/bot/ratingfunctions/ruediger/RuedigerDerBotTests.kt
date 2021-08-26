@@ -4,9 +4,23 @@ import TestUtils
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import model.Token
+import model.procedure.ConsoleOutput
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
 
-class IRuedigerTest {
+class RuedigerDerBotTests {
+
+    @Before
+    fun setup() {
+        ConsoleOutput.predicamentSearch = true
+    }
+
+    @After
+    fun tearDown() {
+        ConsoleOutput.predicamentSearch = false
+    }
+
     @Test
     fun testPredicament1() {
         println(TestUtils.predicament1)
@@ -16,9 +30,17 @@ class IRuedigerTest {
 
     @Test
     fun testPredicament2() {
+        println(TestUtils.createPredicamentForP1)
+        val board = TestUtils.createPredicamentForP1.clone().apply { throwInColumn(2, Token.PLAYER_1) }
+        // because of the predicament this board is rated high
+        assertEquals(Integer.MAX_VALUE - 4, RuedigerDerBot(Token.PLAYER_1).invoke(board))
+    }
+
+    @Test
+    fun testNoPredicament() {
         println(TestUtils.noPredicament)
         // since the predicament is blocked by thread by player 2 it can't be used
-        assertTrue(RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.noPredicament) < 1000000)
+        assertTrue(RuedigerDerBot(Token.PLAYER_1).invoke(TestUtils.noPredicament) < 10000000)
     }
 
     @Test

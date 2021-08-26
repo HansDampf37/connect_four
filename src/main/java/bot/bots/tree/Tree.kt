@@ -3,6 +3,8 @@ package bot.bots.tree
 import model.procedure.ConsoleOutput
 import java.util.*
 import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.withLock
 import kotlin.math.pow
 
 /**
@@ -10,16 +12,15 @@ import kotlin.math.pow
  */
 @Suppress("UNCHECKED_CAST")
 class Tree<T : Node>(_root: T) : Iterable<T> {
+    private val leavesLock = ReentrantLock()
 
     var root : T = _root
     set(value) {
         field = value
-        this.size = 0
-        leaves = HashSet()
-        for (node in this) {
-            if (node.isLeaf) leaves.add(node)
-            size++
+        leavesLock.withLock {
+            leaves = HashSet(leaves.filter { it.isDescendantOf(value) })
         }
+        // this.size = size()
     }
 
     /**
@@ -31,10 +32,10 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
     /**
      * Counter that gets updated estimates the tree size. Doesn't keep track of duplicates.
      */
-    var size: Int = 1
-        private set
+    //var size: Int = 1
+    //    private set
 
-    val meanDepth: Float
+    val avgDepth: Float
         get() {
             var depthSum = 0
             for (n in leaves) {
@@ -45,7 +46,7 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
 
     val varianceInDepth: Float
         get() {
-            val mean = meanDepth
+            val mean = avgDepth
             var mse = 0f
             for (n in leaves) {
                 mse += (mean - n.generation()).pow(2)
@@ -56,7 +57,7 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
     var minimaxRequired = true
     set(value) {
         field = value
-        println("AlphaBetaPruning inactive")
+        if (ConsoleOutput.treeTraversal) println("AlphaBetaPruning inactive")
     }
 
     init {
@@ -113,11 +114,11 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
      * Adds a child to a parent-node in a tree
      */
     fun addChild(parent: T, child: T) {
-        if (parent.isLeaf) leaves.remove(parent)
+        if (parent.isLeaf) leavesLock.withLock { leaves.remove(parent) }
         parent.children.add(child)
         child.parent = parent
         addLeaf(child)
-        size += child.amountDescendants + 1
+        //size += child.amountDescendants + 1
     }
 
     /**
@@ -128,7 +129,7 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
             if (child.isLeaf) leaves.remove(child)
             child.parent = child
             if (parent.isLeaf) addLeaf(parent)
-            size -= child.amountDescendants + 1
+            //size -= child.amountDescendants + 1
         } else {
             throw IllegalArgumentException("Parent is not a direct parent of child")
         }
@@ -138,7 +139,7 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
      * deletes all children nodes for a given node
      */
     fun makeLeave(node: T) {
-        size -= node.amountDescendants - 1
+        //size -= node.amountDescendants - 1
         leaves.removeAll { node.isParentOf(it) }
         node.children.clear()
         addLeaf(node)
@@ -172,12 +173,22 @@ class Tree<T : Node>(_root: T) : Iterable<T> {
      * @param node a node
      */
     private fun addLeaf(node: T) {
-        if (!leaves.contains(node)) {
-            leaves.add(node)
+        leavesLock.withLock {
+            if (!leaves.contains(node)) {
+                leaves.add(node)
+            }
         }
     }
 
     override fun iterator(): Iterator<T> {
+        return DFS()
+    }
+
+    fun bfs(): Iterator<T> {
+        return BFS()
+    }
+
+    fun dfs(): Iterator<T> {
         return DFS()
     }
 

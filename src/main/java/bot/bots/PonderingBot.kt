@@ -6,6 +6,8 @@ import bot.bots.tree.TreeBuilder
 import model.Board
 import model.Player
 import model.Token
+import model.procedure.ConsoleOutput
+import java.lang.Thread.sleep
 import kotlin.concurrent.withLock
 
 /**
@@ -31,7 +33,7 @@ class PonderingBot(
     /**
      * The treeBuilder builds the Tree while idle
      */
-    private var treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.VeryLarge))
+    private var treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.SimpleScheduler(20000))
 
     /**
      * the tree built by the [treeBuilder]
@@ -50,18 +52,18 @@ class PonderingBot(
     override fun getColumnOfNextMove(): Int {
         if (tree.root.board.isEmpty) return tree.root.board.WIDTH / 2
         var index: Int
-        treeBuilder.expansionLock.withLock {
+        // if there is a row that can be thrown into but the tree is not sufficiently calculated wait
+        while (IntRange(0, 6).any {i -> tree.root.board.stillSpaceIn(i) && tree.root.none {c -> (c as GameState).lastMoveWasColumn == i } }) {
+            sleep(10)
+        }
+        treeBuilder.lock.withLock {
             index = AlphaBetaPruning.run(tree)
-            val rating = try {
-                tree.root.first { (it as GameState).lastMoveWasColumn == index }.value
-            } catch (e: NoSuchElementException) {
-                e.printStackTrace()
-                println("AlphaBeta suggests move ${index + 1} in position \n${tree.root.board}")
-                println(tree)
-                0
-            }
+            val rating = tree.root.first { (it as GameState).lastMoveWasColumn == index }.value
             if (rating >= Integer.MAX_VALUE - tree.root.board.HEIGHT) tree.minimaxRequired = false
-            println("Rating: $rating, ${tree.size} nodes")
+            if (ConsoleOutput.treeTraversal) {
+                println("Rating: $rating Boards: ${tree.leaves.size}")
+                println("NextMoves: ${tree.root.joinToString { node -> "[${(node as GameState).lastMoveWasColumn}]: ${node.value}"}}")
+            }
         }
         return index
     }

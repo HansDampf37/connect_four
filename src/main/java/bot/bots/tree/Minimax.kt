@@ -17,7 +17,7 @@ class Minimax {
                 val greaterThan = current[i].value >= current.value
                 if (greaterThan && maximize || !greaterThan && !maximize) {
                     current.value = current[i].value
-                    curIndex = i
+                    curIndex = current[i].lastMoveWasColumn
                 }
             }
             return curIndex

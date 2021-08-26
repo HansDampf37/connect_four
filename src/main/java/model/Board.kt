@@ -20,7 +20,8 @@ class Board private constructor(val WIDTH: Int = 7,
                 return true
             }
         }
-        throw IllegalArgumentException("column ${x + 1} is full")
+        IllegalArgumentException("column ${x + 1} is full").printStackTrace()
+        return false
     }
 
     fun removeOfColumn(x: Int): Token {
@@ -145,8 +146,6 @@ class Board private constructor(val WIDTH: Int = 7,
 
     fun stillSpace(): Boolean {
         return IntRange(0, WIDTH - 1).any { stillSpaceIn(it) }
-        // for (x in 0 until WIDTH) if (stillSpaceIn(x)) return true
-        // return false
     }
 
     fun stillSpaceIn(row: Int): Boolean {

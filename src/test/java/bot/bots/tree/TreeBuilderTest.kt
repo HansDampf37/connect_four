@@ -28,16 +28,16 @@ class TreeBuilderTest : TestCase() {
     }
 
     fun testStartAfterExit() {
-        assertEquals(1, tb.tree.size)
+        assertEquals(1, tb.tree.size())
         runTreeBuilder(10)
-        val size = tb.tree.size
+        val size = tb.tree.size()
         runTreeBuilder(100)
-        assertTrue("after last invocation of exit() the tree-size was $size and now it is ${tb.tree.size}", tb.tree.size > size)
+        assertTrue("after last invocation of exit() the tree-size was $size and now it is ${tb.tree.size()}", tb.tree.size() > size)
     }
 
     fun testTreeCorrectness() {
         runTreeBuilder(2000)
-        println("checking tree with ${tb.tree.size} nodes")
+        println("checking tree with ${tb.tree.size()} nodes")
         for (node in tb.tree) {
             assertTrue(abs(node.board.count { it == Token.PLAYER_1 } -
                     node.board.count { it == Token.PLAYER_2 }) <= 1)
@@ -62,15 +62,15 @@ class TreeBuilderTest : TestCase() {
         }
         tb.exit()
         println(tb.tree)
-        println(tb.tree.size)
+        println(tb.tree.size())
     }
 
     fun testIfGrowing() {
         val dt = 2000L
-        val size = tb.tree.size
+        val size = tb.tree.size()
         runTreeBuilder(dt)
-        assertTrue(tb.tree.size > size)
-        println("Tree grew from $size to ${tb.tree.size} nodes in $dt milliseconds")
+        assertTrue(tb.tree.size() > size)
+        println("Tree grew from $size to ${tb.tree.size()} nodes in $dt milliseconds")
     }
 
     fun testMoveMade() {
@@ -89,13 +89,13 @@ class TreeBuilderTest : TestCase() {
             field.set(tb, t)
             println(t)
             val checkNode = t.root[i]
-            assertEquals(40, t.size)
+            assertEquals(40, t.size())
             assertEquals(27, t.leaves.size)
             val pruned = tb.tree.toMutableList()
             tb.moveMade(i)
             pruned.removeAll(tb.tree)
             println(t)
-            assertEquals(13, t.size)
+            assertEquals(13, t.size())
             assertTrue(pruned.all { !t.root.isParentOf(it) })
             assertEquals(9, t.leaves.size)
             assertEquals(t.root, checkNode)
@@ -120,12 +120,12 @@ class TreeBuilderTest : TestCase() {
             var oldDepth = -1f
             for (j in 0 until 50) {
                 if (tb.isIdle) break
-                tb.expansionLock.withLock {
+                tb.lock.withLock {
                     assertTrue(
-                        "tree is not growing, before: $oldDepth, now: ${tb.tree.meanDepth}",
-                        tb.tree.meanDepth >= oldDepth
+                        "tree is not growing, before: $oldDepth, now: ${tb.tree.avgDepth}",
+                        tb.tree.avgDepth >= oldDepth
                     )
-                    oldDepth = tb.tree.meanDepth
+                    oldDepth = tb.tree.avgDepth
                     val varianceInDepth = tb.tree.varianceInDepth
                     //assertTrue("tree is not balanced: $varianceInDepth", varianceInDepth < 0.4)
                     println("success in iteration $j, depth: $oldDepth, variance: $varianceInDepth, ${tb.tree.size()} nodes")
@@ -139,7 +139,7 @@ class TreeBuilderTest : TestCase() {
         runTreeBuilder(2000)
         val root = tb.tree.root
         val newRoot = root[3]
-        val size = tb.tree.size
+        val size = tb.tree.size()
         println("initializing expectations")
         val sizeToBeRemoved = listOf(0, 1, 2, 4, 5, 6).sumOf { tb.tree.root[it].amountDescendants + 1 } + 1
         val toBeKept =
@@ -160,8 +160,8 @@ class TreeBuilderTest : TestCase() {
         println("Verifying expectations")
         assertTrue(tb.tree.leaves.all { newRoot.isParentOf(it) })
         assertTrue(tb.tree.leaves.all { !root.isParentOf(it) })
-        assertEquals(size - sizeToBeRemoved, tb.tree.size)
-        assertEquals(toBeKept.size, tb.tree.size)
+        assertEquals(size - sizeToBeRemoved, tb.tree.size())
+        assertEquals(toBeKept.size, tb.tree.size())
         for (n in tb.tree) {
             toBeKept.remove(n)
             assertFalse(toBePruned.contains(n))

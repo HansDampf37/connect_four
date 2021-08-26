@@ -128,7 +128,7 @@ class TestUtils {
             )
         )
 
-        val createPredicamentForP1 = Board(
+        val p1CanFinish = Board(
             arrayOf(
                 arrayOf(e, e, e, e, e, e),
                 arrayOf(e, e, e, e, e, e),
@@ -140,7 +140,7 @@ class TestUtils {
             )
         )
 
-        val createPredicamentForP2 = Board(
+        val p2CanFinish = Board(
             arrayOf(
                 arrayOf(p2, p2, p1, e, e, e),
                 arrayOf(p1, e, e, e, e, e),
@@ -152,22 +152,46 @@ class TestUtils {
             )
         )
 
-        val p1CanFinish = Board(
+        val createPredicamentForP1 = Board(
             arrayOf(
-                arrayOf(p1, p2, p1, p2, p1, e),
-                arrayOf(e, e, e, e, e, e),
-                arrayOf(p2, p1, p1, p2, p1, e),
-                arrayOf(p2, p1, p2, p1, p1, e),
-                arrayOf(p1, p2, p2, p2, p1, e),
-                arrayOf(p1, p2, e, e, e, e),
-                arrayOf(p2, p1, e, e, e, e)
+                arrayOf(p1, p2, p1, p2, p1, e, e, e),
+                arrayOf(e, e, e, e, e, e, e, e),
+                arrayOf(p2, p1, p2, p1, p2, e, e, e),
+                arrayOf(p2, p1, p2, p1, p2, p1, p1, e),
+                arrayOf(p1, p2, p1, p1, p1, p2, p1, p1),
+                arrayOf(p1, p2, p1, p2, p1, e, e, e),
+                arrayOf(p2, p1, p2, e, e, e, e, e)
+            )
+        )
+
+        val test = Board(
+            arrayOf(
+                arrayOf(p1, p2, p1, e, e, e, e, e),
+                arrayOf(e, e, e, e, e, e, e, e),
+                arrayOf(p2, p1, p2, p1, p2, p2, e, e),
+                arrayOf(p2, p1, p2, p1, p2, p1, p1, e),
+                arrayOf(p1, p2, p1, p1, p1, p2, p1, p1),
+                arrayOf(p1, p2, p1, p2, p1, e, e, e),
+                arrayOf(p2, p1, p2, e, e, e, e, e)
+            )
+        )
+
+        val createPredicamentForP2_third = Board(
+            arrayOf(
+                arrayOf(p2, p1, p1, p1, p2, e, e, e),
+                arrayOf(e, e, e, e, e, e, e, e),
+                arrayOf(p1, p2, p1, p1, p1, e, e, e),
+                arrayOf(p2, p2, p1, p2, p2, e, e, e),
+                arrayOf(p1, p1, p2, p2, p1, e, e, e),
+                arrayOf(p1, p1, e, e, e, e, e, e),
+                arrayOf(p2, p1, e, e, e, e, e, e)
             )
         )
 
         val createPredicamentForP1_second = Board(
             arrayOf(
                 arrayOf(p1, p2, p1, p2, p1, e),
-                arrayOf(e, e, e, e, e, e),
+                arrayOf(e,  e,  e,  e,  e,  e),
                 arrayOf(p2, p1, p2, p2, p1, e),
                 arrayOf(p2, p1, p2, p1, p1, e),
                 arrayOf(p1, p2, p1, p2, p1, e),
@@ -177,9 +201,9 @@ class TestUtils {
         )
 
         fun buildSmallTree(tree: Tree<GameState>) {
-            val node2 = GameState(Board(), Token.PLAYER_2)
-            val node3 = GameState(Board(), Token.PLAYER_2)
-            val node4 = GameState(Board(), Token.PLAYER_1)
+            val node2 = GameState(Board(), Token.PLAYER_2, lastMoveWasColumn = 0).apply { value = 3 }
+            val node3 = GameState(Board(), Token.PLAYER_2, lastMoveWasColumn = 1).apply { value = 2 }
+            val node4 = GameState(Board(), Token.PLAYER_1, lastMoveWasColumn = 0).apply { value = 4 }
             tree.addChild(tree.root, node2)
             tree.addChild(tree.root, node3)
             tree.addChild(node3, node4)
