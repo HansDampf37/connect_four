@@ -42,23 +42,18 @@ class TreeTest : TestCase() {
 
     fun testSizeFieldAndMethod() {
         val tree = Tree(GameState(Board(), Token.PLAYER_1))
-        assertEquals(tree.size, 1)
         assertEquals(tree.size(), 1)
         var futures = tree.root.getFutureGameStates()
         futures.forEach { tree.addChild(tree.root, it) }
-        assertEquals(tree.size, 8)
         assertEquals(tree.size(), 8)
         for (child in tree.root) {
             futures = child.getFutureGameStates()
             futures.forEach { tree.addChild(child, it) }
         }
-        assertEquals(tree.size, 57)
         assertEquals(tree.size(), 57)
         tree.step(0)
-        assertEquals(tree.size, 8)
         assertEquals(tree.size(), 8)
         tree.step(0)
-        assertEquals(tree.size, 1)
         assertEquals(tree.size(), 1)
     }
 
@@ -85,7 +80,7 @@ class TreeTest : TestCase() {
     }
 
     fun testGetSize() {
-        assertEquals(IntRange(0, depth).sumOf { spread.toFloat().pow(it).toInt() }, tree.size)
+        assertEquals(IntRange(0, depth).sumOf { spread.toFloat().pow(it).toInt() }, tree.size())
     }
 
     fun testLeaves() {
@@ -109,7 +104,7 @@ class TreeTest : TestCase() {
         sleep(1000)
         tb.exit()
         thread.join()
-        assertTrue(tb.tree.size > 100)
+        assertTrue(tb.tree.size() > 100)
         val tree = tb.tree
         for (node in tree) {
             for (child in node) {

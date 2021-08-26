@@ -28,8 +28,8 @@ class Game(player1: Player, player2: Player) {
         }
     }
 
-    fun play() {
-        println(players[0].name + " vs " + players[1].name)
+    fun play(): Token {
+        if (ConsoleOutput.playerGreetings) println(players[0].name + " vs " + players[1].name)
         var winner: Token = Token.EMPTY
         while (winner === Token.EMPTY) {
             if (ConsoleOutput.printBoard) println(board)
@@ -47,6 +47,7 @@ class Game(player1: Player, player2: Player) {
             println(board)
         }
         reset()
+        return winner
     }
 
     private fun reset() {

@@ -8,7 +8,7 @@ import model.procedure.Game;
 
 public class Trainer {
     public void train(int intensity) {
-        ConsoleOutput.setAll(false, false, false, false, false, false, true, false);
+        ConsoleOutput.setAll(false, false, false, false, false, false, true, false, false);
         for (int i = 0; i < intensity; i++) {
             System.out.println(i);
             Board b = new Board(7, 6);
