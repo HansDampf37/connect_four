@@ -20,6 +20,8 @@ class Minimax {
                     curIndex = current[i].lastMoveWasColumn
                 }
             }
+            if (current.value > 0) current.value--
+            else current.value++
             return curIndex
         }
     }

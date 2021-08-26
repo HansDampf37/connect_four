@@ -8,7 +8,7 @@ class AlphaBetaPruning {
     companion object {
         fun <T : GameState> run(t: Tree<T>): Int {
             assert(t.root.size == IntRange(0, t.root.board.WIDTH - 1).filter { t.root.board.stillSpaceIn(it) }.size)
-            if (!t.minimaxRequired) return (t.root.first { it.value == t.root.value } as GameState).lastMoveWasColumn
+            if (!t.minimaxRequired)  (t.root.maxWithOrNull{ o1, o2 -> o1.value - o2.value } as GameState).lastMoveWasColumn
             return runBlocking { firstStep(t) }
         }
 
@@ -37,6 +37,8 @@ class AlphaBetaPruning {
                 }
             }
             tree.root.value = maxValue
+            if (maxValue < 0) tree.root.value++
+            if (maxValue > 0) tree.root.value--
             return maxIndex
         }
 
@@ -67,6 +69,9 @@ class AlphaBetaPruning {
                     if (beta1 <= alpha1) break
                 }
                 node.value = maxValue
+                // let values age
+                if (maxValue < 0) node.value++
+                if (maxValue > 0) node.value--
                 return maxColumn
             } else {
                 var minColumn = -1
@@ -82,6 +87,9 @@ class AlphaBetaPruning {
                     if (beta1 <= alpha1) break
                 }
                 node.value = minValue
+                // let values age
+                if (minValue < 0) node.value++
+                if (minValue > 0) node.value--
                 return minColumn
             }
         }

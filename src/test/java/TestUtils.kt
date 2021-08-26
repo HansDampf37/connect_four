@@ -164,26 +164,26 @@ class TestUtils {
             )
         )
 
-        val test = Board(
+        val createPredicamentForP1_2 = Board(
             arrayOf(
-                arrayOf(p1, p2, p1, e, e, e, e, e),
-                arrayOf(e, e, e, e, e, e, e, e),
-                arrayOf(p2, p1, p2, p1, p2, p2, e, e),
-                arrayOf(p2, p1, p2, p1, p2, p1, p1, e),
-                arrayOf(p1, p2, p1, p1, p1, p2, p1, p1),
-                arrayOf(p1, p2, p1, p2, p1, e, e, e),
-                arrayOf(p2, p1, p2, e, e, e, e, e)
+                arrayOf(e, e, e, e, e, e),
+                arrayOf(p2, p2, e, e, e, e),
+                arrayOf(p2, p1, p1, e, e, e),
+                arrayOf(p1, p1, p1, p2, e, e),
+                arrayOf(e, e, e, e, e, e),
+                arrayOf(e, e, e, e, e, e),
+                arrayOf(e, e, e, e, e, e)
             )
         )
 
-        val createPredicamentForP2_third = Board(
+        val p2CanFinish_2 = Board(
             arrayOf(
                 arrayOf(p2, p1, p1, p1, p2, e, e, e),
                 arrayOf(e, e, e, e, e, e, e, e),
-                arrayOf(p1, p2, p1, p1, p1, e, e, e),
+                arrayOf(p1, p2, p1, p2, p1, e, e, e),
                 arrayOf(p2, p2, p1, p2, p2, e, e, e),
                 arrayOf(p1, p1, p2, p2, p1, e, e, e),
-                arrayOf(p1, p1, e, e, e, e, e, e),
+                arrayOf(p2, p1, e, e, e, e, e, e),
                 arrayOf(p2, p1, e, e, e, e, e, e)
             )
         )

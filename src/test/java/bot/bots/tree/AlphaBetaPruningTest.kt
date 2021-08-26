@@ -55,38 +55,40 @@ class AlphaBetaPruningTest : TestCase() {
     }
 
     fun testProgressedGame() {
-        buildTreeAndTestMove(TestUtils.noPredicament, Token.PLAYER_1, 100, Integer.MAX_VALUE, listOf(2))
-        buildTreeAndTestMove(TestUtils.noPredicament, Token.PLAYER_2, 100, Integer.MAX_VALUE, listOf(2))
+        buildTreeAndTestMove(TestUtils.noPredicament, Token.PLAYER_1, 100, Integer.MAX_VALUE - 1, listOf(2))
+        buildTreeAndTestMove(TestUtils.noPredicament, Token.PLAYER_2, 100, Integer.MAX_VALUE - 1, listOf(2))
     }
 
     fun testPredicament1() {
-        ConsoleOutput.predicamentSearch = true
-        buildTreeAndTestMove(TestUtils.createPredicamentForP2_third, Token.PLAYER_1, 1000, Integer.MAX_VALUE, listOf(3))
-        buildTreeAndTestMove(TestUtils.createPredicamentForP2_third, Token.PLAYER_1, 1000, listOf(3))
-        ConsoleOutput.predicamentSearch = false
+        val board = TestUtils.createPredicamentForP1_2.clone()
+        board.throwInColumn(1, Token.PLAYER_1)
+        println(RuedigerDerBot(Token.PLAYER_1).invoke(board))
+        buildTreeAndTestMove(TestUtils.createPredicamentForP1_2, Token.PLAYER_2, 1000, listOf(1))
+        buildTreeAndTestMove(TestUtils.createPredicamentForP1_2, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 6, listOf(1, 2))
     }
 
     fun testPredicament2() {
-        ConsoleOutput.predicamentSearch = true
-        buildTreeAndTestMove(TestUtils.createPredicamentForP1, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 4, listOf(2))
         buildTreeAndTestMove(TestUtils.createPredicamentForP1, Token.PLAYER_2, 1000, listOf(2))
-        ConsoleOutput.predicamentSearch = false
+        buildTreeAndTestMove(TestUtils.createPredicamentForP1, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 10, listOf(2))
     }
 
     fun testPredicament3() {
-        ConsoleOutput.predicamentSearch = true
-        buildTreeAndTestMove(TestUtils.createPredicamentForP1_second, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 4, listOf(3))
-        ConsoleOutput.predicamentSearch = false
+        buildTreeAndTestMove(TestUtils.createPredicamentForP1_second, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 10, listOf(3))
     }
 
     fun testFinish1() {
-        buildTreeAndTestMove(TestUtils.p1CanFinish, Token.PLAYER_1, 1000, Integer.MAX_VALUE, listOf(1, 4))
         buildTreeAndTestMove(TestUtils.p1CanFinish, Token.PLAYER_2, 1000, listOf(1, 3, 4))
+        buildTreeAndTestMove(TestUtils.p1CanFinish, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 3, listOf(1, 4))
     }
 
     fun testFinish2() {
-        buildTreeAndTestMove(TestUtils.p2CanFinish, Token.PLAYER_2, 1000, Integer.MAX_VALUE, listOf(1))
         buildTreeAndTestMove(TestUtils.p2CanFinish, Token.PLAYER_1, 1000, listOf(1, 2))
+        buildTreeAndTestMove(TestUtils.p2CanFinish, Token.PLAYER_2, 1000, Integer.MAX_VALUE - 3, listOf(1))
+    }
+
+    fun testFinish3() {
+        buildTreeAndTestMove(TestUtils.p2CanFinish_2, Token.PLAYER_1, 1000, listOf(2, 5))
+        buildTreeAndTestMove(TestUtils.p2CanFinish_2, Token.PLAYER_2, 1000, Integer.MAX_VALUE - 3, listOf(2, 5))
     }
 
     private fun buildTreeAndTestMove(board: Board, player: Token, buildTime: Long, expectedEvaluation: Int, expectedIndices: List<Int>) {
