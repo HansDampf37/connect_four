@@ -9,72 +9,67 @@ import kotlin.math.max
 import kotlin.math.pow
 
 open class RuedigerDerBot(private val side: Token) : RatingFunction {
-
     override fun name() = "Rüdiger"
-
-    /**
-     * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
-     * in order to win the game and that are already occupied by this player
-     */
-    lateinit var ownThreatMap: Array<IntArray>
-
-    /**
-     * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
-     * in order to win the game and that are already occupied by the opponent
-     */
-    lateinit var opponentThreatMap: Array<IntArray>
-
-    /**
-     * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
-     * to see those predicaments the bot always plays perfectly and wins the game. But there are situations where
-     * predicaments aren't recognized by the tree-approach because their usages are too far in the future
-     * for the forecast to see them. The only predicaments not seen by the forecast are the ones where there are two fields
-     * that are threatened 3 times and that are directly on top of each other.
-     * Additionally, there mustn't be another field underneath such a constellation that is threatened 3 times by the opponent.
-     * These kinds of patterns are easy to find and if there is a column as described this variable contains its index.
-     */
-    private var ownPredicamentInLine = -1
-
-    /**
-     * See [.ownPredicamentInLine]
-     */
-    private var opponentPredicamentInLine = -1
-
-    /**
-     * The width of the Board that is currently evaluated
-     */
-    private var width: Int = 0
-
-    /**
-     * The height of the Board that is currently evaluated
-     */
-    private var height: Int = 0
-
-    /**
-     * the height of an own predicament if there is one (@see [.ownPredicamentInLine])
-     */
-    private var ownPredicamentHeight = -1
-
-    /**
-     * the height of an opponent's predicament if there is one (@see [.ownPredicamentInLine])
-     */
-    private var oppPredicamentHeight = -1
-
 
     override fun invoke(board: Board): Int {
         if (board.winner != EMPTY) return if (board.winner == side) Integer.MAX_VALUE else Integer.MIN_VALUE
-        width = board.WIDTH
-        height = board.HEIGHT
-        ownPredicamentHeight = -1
-        oppPredicamentHeight = -1
-        ownPredicamentInLine = -1
-        opponentPredicamentInLine = -1
-        ownThreatMap = Array(width) { IntArray(height) }
-        opponentThreatMap = Array(width) { IntArray(height) }
+        /**
+         * The width of the Board that is currently evaluated
+         */
+        val width = board.WIDTH
 
-        buildPressureMatrix(side, board)
-        buildPressureMatrix(side.other(), board)
-        searchForPredicaments(board)
+        /**
+         * The height of the Board that is currently evaluated
+         */
+        val height = board.HEIGHT
+
+        /**
+         * the height of an own predicament if there is one (@see [.ownPredicamentInLine])
+         */
+        val ownPredicamentHeight: Int
+
+        /**
+         * the height of an opponent's predicament if there is one (@see [.ownPredicamentInLine])
+         */
+        val oppPredicamentHeight: Int
+
+        /**
+         * A predicament is a state that always wins the game for one player if played correctly. Assuming the forecast is great enough
+         * to see those predicaments the bot always plays perfectly and wins the game. But there are situations where
+         * predicaments aren't recognized by the tree-approach because their usages are too far in the future
+         * for the forecast to see them. The only predicaments not seen by the forecast are the ones where there are two fields
+         * that are threatened 3 times and that are directly on top of each other.
+         * Additionally, there mustn't be another field underneath such a constellation that is threatened 3 times by the opponent.
+         * These kinds of patterns are easy to find and if there is a column as described this variable contains its index.
+         */
+        val ownPredicamentInLine: Int
+
+        /**
+         * See [.ownPredicamentInLine]
+         */
+        val opponentPredicamentInLine: Int
+
+        /**
+         * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
+         * in order to win the game and that are already occupied by this player
+         */
+        val ownThreatMap: Array<IntArray> = Array(width) { IntArray(height) }
+
+        /**
+         * For each field this matrix contains the maximum amount of fields in a row, column or diagonal that can use this field
+         * in order to win the game and that are already occupied by the opponent
+         */
+        val opponentThreatMap: Array<IntArray> = Array(width) { IntArray(height) }
+
+        buildPressureMatrix(side, board, ownThreatMap, opponentThreatMap, width, height)
+        buildPressureMatrix(side.other(), board, ownThreatMap, opponentThreatMap, width, height)
+        val result = searchForPredicaments(board, ownThreatMap, opponentThreatMap, width, height)
+        val own = result.first
+        val opp = result.second
+        ownPredicamentInLine = own.first
+        ownPredicamentHeight = own.second
+        opponentPredicamentInLine = opp.first
+        oppPredicamentHeight = opp.second
         //if this bot created a predicament and the opponent didn't, he won
         val rating: Int = if (ownPredicamentInLine != -1 && opponentPredicamentInLine == -1) {
             Int.MAX_VALUE - ownPredicamentHeight - 1
@@ -88,7 +83,14 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
         return rating
     }
 
-    private fun buildPressureMatrix(player: Token, board: Board) {
+    private fun buildPressureMatrix(
+        player: Token,
+        board: Board,
+        ownThreatMap: Array<IntArray>,
+        opponentThreatMap: Array<IntArray>,
+        width: Int,
+        height: Int
+    ) {
         for (y in 0 until board.HEIGHT) {
             for (x in 0 until board.WIDTH) {
                 var maximumForThisField = 0
@@ -99,7 +101,7 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
                         currentValueForField = 0
                         for (delta in 0..3) {
                             val curX = x + offset + delta
-                            if (outOfBoardX(curX)) {
+                            if (outOfBoardX(curX, width)) {
                                 currentValueForField = 0
                                 break
                             }
@@ -119,7 +121,7 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
                         for (delta in 0..3) {
                             val curX = x + offset + delta
                             val curY = y + offset + delta
-                            if (outOfBoard(curX, curY)) {
+                            if (outOfBoard(curX, curY, width, height)) {
                                 currentValueForField = 0
                                 break
                             }
@@ -139,7 +141,7 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
                         for (delta in 0..3) {
                             val curX = x - offset - delta
                             val curY = y + offset + delta
-                            if (outOfBoard(curX, curY)) {
+                            if (outOfBoard(curX, curY, width, height)) {
                                 currentValueForField = 0
                                 break
                             }
@@ -180,15 +182,15 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
         }
     }
 
-    private fun outOfBoard(x: Int, y: Int): Boolean {
-        return outOfBoardY(y) || outOfBoardX(x)
+    private fun outOfBoard(x: Int, y: Int, width: Int, height: Int): Boolean {
+        return outOfBoardY(y, height) || outOfBoardX(x, width)
     }
 
-    private fun outOfBoardX(x: Int): Boolean {
+    private fun outOfBoardX(x: Int, width: Int): Boolean {
         return x < 0 || x >= width
     }
 
-    private fun outOfBoardY(y: Int): Boolean {
+    private fun outOfBoardY(y: Int, height: Int): Boolean {
         return y < 0 || y >= height
     }
 
@@ -205,11 +207,11 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
     /**
      * Searches for a column with predicaments. Read [.ownPredicamentInLine]
      */
-    private fun searchForPredicaments(board: Board) {
-        ownPredicamentHeight = -1
-        oppPredicamentHeight = -1
-        ownPredicamentInLine = -1
-        opponentPredicamentInLine = -1
+    private fun searchForPredicaments(board: Board, ownThreatMap: Array<IntArray>, opponentThreatMap: Array<IntArray>, width: Int, height: Int): Pair<Pair<Int, Int>, Pair<Int, Int>> {
+        var ownPredicamentHeight = Integer.MAX_VALUE
+        var oppPredicamentHeight = Integer.MAX_VALUE
+        var ownPredicamentInLine = -1
+        var opponentPredicamentInLine = -1
         for (x in 0 until board.WIDTH) {
             var oppPredicamentPossible = true
             var ownPredicamentPossible = true
@@ -220,27 +222,31 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
                     if (opponentThreatMap[x][y] == 3 && board[x, y] == EMPTY) ownPredicamentPossible = false
                     if (ownThreatMap[x][y] == 3 && board[x, y] == EMPTY) oppPredicamentPossible = false
                     if (!ownPredicamentPossible && !oppPredicamentPossible) break
-                    if (ownPredicamentPossible && ownThreatMap[x][y] == 3 && !outOfBoardY(y + 1) && ownThreatMap[x][y + 1] == 3) {
+                    if (ownPredicamentPossible && ownThreatMap[x][y] == 3 && !outOfBoardY(y + 1, height) && ownThreatMap[x][y + 1] == 3) {
                         //Predicament found
-                        ownPredicamentInLine = x
-                        ownPredicamentHeight = y - base
-                        if (ConsoleOutput.predicamentSearch)  {
-                            println("Found own predicament at $x, $y")
-                            println(board)
-                            println(mapToString())
+                        if (y - base <= ownPredicamentHeight) {
+                            ownPredicamentInLine = x
+                            ownPredicamentHeight = y - base
+                            if (ConsoleOutput.predicamentSearch) {
+                                println("Found own predicament at $x, $y")
+                                println(board)
+                                println(mapToString(width, height, ownThreatMap, opponentThreatMap))
+                            }
+                            break
                         }
-                        break
                     }
-                    if (oppPredicamentPossible && opponentThreatMap[x][y] == 3 && !outOfBoardY(y + 1) && opponentThreatMap[x][y + 1] == 3) {
+                    if (oppPredicamentPossible && opponentThreatMap[x][y] == 3 && !outOfBoardY(y + 1, height) && opponentThreatMap[x][y + 1] == 3) {
                         //Predicament found
-                        opponentPredicamentInLine = x
-                        oppPredicamentHeight = y - base
-                        if (ConsoleOutput.predicamentSearch)  {
-                            println("Found opponent predicament at $x, $y")
-                            println(board)
-                            println(mapToString())
+                        if (y - base < oppPredicamentHeight) {
+                            opponentPredicamentInLine = x
+                            oppPredicamentHeight = y - base
+                            if (ConsoleOutput.predicamentSearch) {
+                                println("Found opponent predicament at $x, $y")
+                                println(board)
+                                println(mapToString(width, height, ownThreatMap, opponentThreatMap))
+                            }
+                            break
                         }
-                        break
                     }
                 } else {
                     base++
@@ -249,9 +255,10 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
         }
 
         if (ConsoleOutput.predicamentSearch) println("No further predicaments were found")
+        return Pair(Pair(ownPredicamentInLine, ownPredicamentHeight), Pair(opponentPredicamentInLine, oppPredicamentHeight))
     }
 
-    private fun mapToString(): String {
+    private fun mapToString(width: Int, height: Int, ownThreatMap: Array<IntArray>, opponentThreatMap: Array<IntArray>): String {
         val str = StringBuilder().append("|")
         for (y in (0 until height).reversed()) {
             for (x in 0 until width) {
