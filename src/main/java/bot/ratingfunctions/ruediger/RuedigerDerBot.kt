@@ -11,6 +11,9 @@ import kotlin.math.pow
 open class RuedigerDerBot(private val side: Token) : RatingFunction {
     override fun name() = "Rüdiger"
 
+    lateinit var cachedLastOwnThreadMap: Array<IntArray>
+    lateinit var cachedLastOppThreadMap: Array<IntArray>
+
     override fun invoke(board: Board): Int {
         if (board.winner != EMPTY) return if (board.winner == side) Integer.MAX_VALUE else Integer.MIN_VALUE
         /**
@@ -80,6 +83,8 @@ open class RuedigerDerBot(private val side: Token) : RatingFunction {
         } else {
             evaluate(ownThreatMap) - evaluate(opponentThreatMap)
         }
+        cachedLastOwnThreadMap = ownThreatMap
+        cachedLastOppThreadMap = opponentThreatMap
         return rating
     }
 
