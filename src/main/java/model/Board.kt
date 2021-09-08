@@ -5,13 +5,15 @@ import model.Token.EMPTY as EMPTY
 import model.Token.PLAYER_1 as PLAYER_1
 import model.Token.PLAYER_2 as PLAYER_2
 
-class Board private constructor(val WIDTH: Int = 7,
-            val HEIGHT: Int = 6,
-            private val fields: Array<Array<Token>> = Array(WIDTH) { Array(HEIGHT) { EMPTY } }) : Iterable<Token>, Cloneable {
+class Board private constructor(
+    val WIDTH: Int = 7,
+    val HEIGHT: Int = 6,
+    val fields: Array<Array<Token>> = Array(WIDTH) { Array(HEIGHT) { EMPTY } }
+) : Iterable<Token>, Cloneable {
 
-    constructor(width: Int = 7, height: Int = 6): this(width, height, Array(width) { Array(height) { EMPTY } })
+    constructor(width: Int = 7, height: Int = 6) : this(width, height, Array(width) { Array(height) { EMPTY } })
 
-    constructor(fields: Array<Array<Token>>): this(fields.size, fields[0].size, fields)
+    constructor(fields: Array<Array<Token>>) : this(fields.size, fields[0].size, fields)
 
     fun throwInColumn(x: Int, player: Token): Boolean {
         for (y in 0 until HEIGHT) {

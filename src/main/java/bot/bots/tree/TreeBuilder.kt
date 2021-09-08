@@ -85,10 +85,12 @@ class TreeBuilder(
     }
 
     fun moveMade(move: Int) {
-        while (tree.root.none { (it as GameState).lastMoveWasColumn == move }) lock.withLock { levelOneCalculated.await() }
+        while (tree.root.size < IntRange(0, 6).filter { tree.root.board.stillSpaceIn(it) }.size) {
+            lock.withLock { levelOneCalculated.await() }
+        }
         lock.withLock {
             tree.leaves.clear()
-            tree.root = tree.root.first {(it as GameState).lastMoveWasColumn == move} as GameState
+            tree.root = tree.root.first { (it as GameState).lastMoveWasColumn == move } as GameState
             tree.root.clear()
             queue.clear()
             queue.add(tree.root)
@@ -197,7 +199,7 @@ class TreeBuilder(
         }
     }
 
-    class SimpleScheduler(private val targetSize: Int = 10000) : Scheduler {
+    class SimpleScheduler(private val targetSize: Int = 30000) : Scheduler {
         override fun <T : Node> expand(tree: Tree<T>): Boolean {
             return tree.leaves.size <= targetSize
         }

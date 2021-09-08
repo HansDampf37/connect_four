@@ -53,9 +53,8 @@ class PonderingBot(
         if (tree.root.board.isEmpty) return tree.root.board.WIDTH / 2
         var index: Int
         // if there is a row that can be thrown into but the tree is not sufficiently calculated wait
-        while (IntRange(0, 6).any {i -> tree.root.board.stillSpaceIn(i) && tree.root.none {c -> (c as GameState).lastMoveWasColumn == i } }) {
+        while (tree.root.size < IntRange(0, 6).filter { tree.root.board.stillSpaceIn(it) }.size) {
             treeBuilder.lock.withLock { treeBuilder.levelOneCalculated.await() }
-            sleep(10)
         }
         treeBuilder.lock.withLock {
             index = AlphaBetaPruning.run(tree)
