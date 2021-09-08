@@ -22,11 +22,11 @@ class TreeBuilder(
     val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
     val lock: ReentrantLock = ReentrantLock()
     val isIdle get() = run { lock.withLock { return@run !scheduler.expand(tree) } }
-    private var running = true
+    val levelOneCalculated: Condition = lock.newCondition()
 
+    private var running = true
     private val removeFromQueue: ReentrantLock = ReentrantLock()
     private val numThreads = 7
-    private val readyToStep: Condition = lock.newCondition()
     private lateinit var thread: Thread
     private val queue: Queue<GameState> = ConcurrentLinkedQueue()
 
@@ -67,7 +67,7 @@ class TreeBuilder(
                         }
                     }
                     // signal that new futureStates have been created
-                    readyToStep.signal()
+                    levelOneCalculated.signal()
                 }
             } catch (e: NoSuchElementException) {
                 e.printStackTrace()
@@ -85,12 +85,19 @@ class TreeBuilder(
     }
 
     fun moveMade(move: Int) {
-        while (tree.root.none { (it as GameState).lastMoveWasColumn == move }) lock.withLock { readyToStep.await() }
+        while (tree.root.none { (it as GameState).lastMoveWasColumn == move }) lock.withLock { levelOneCalculated.await() }
         lock.withLock {
-            tree.step(move)
+            tree.leaves.clear()
+            tree.root = tree.root.first {(it as GameState).lastMoveWasColumn == move} as GameState
+            tree.root.clear()
             queue.clear()
-            for (leaf in tree.leaves) queue.add(leaf)
+            queue.add(tree.root)
         }
+        // lock.withLock {
+        //     tree.step(move)
+        //     queue.clear()
+        //    for (leaf in tree.leaves) queue.add(leaf)
+        //}
     }
 
     fun start() {

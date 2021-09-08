@@ -54,6 +54,7 @@ class PonderingBot(
         var index: Int
         // if there is a row that can be thrown into but the tree is not sufficiently calculated wait
         while (IntRange(0, 6).any {i -> tree.root.board.stillSpaceIn(i) && tree.root.none {c -> (c as GameState).lastMoveWasColumn == i } }) {
+            treeBuilder.lock.withLock { treeBuilder.levelOneCalculated.await() }
             sleep(10)
         }
         treeBuilder.lock.withLock {
