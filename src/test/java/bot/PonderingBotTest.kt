@@ -35,7 +35,7 @@ class PonderingBotTest : TestCase() {
     }
 
     fun testPlay() {
-        Game(bot, dummy, 7, 6).play()
+        Game(bot, dummy, 7, 6, null).play()
     }
 
     fun testWin() {
@@ -43,7 +43,7 @@ class PonderingBotTest : TestCase() {
         var i = 0
         repeat (n) {
             ConsoleOutput.setAll(false, false, false, false, false, false, false, false, false)
-            assertEquals("Ruediger lost against random", bot.side, Game(bot, dummy, 7, 6).play())
+            assertEquals("Ruediger lost against random", bot.side, Game(bot, dummy, 7, 6, null).play())
             println("won ${i++ + 1}/$n")
             setUp()
         }

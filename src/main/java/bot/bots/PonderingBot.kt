@@ -3,6 +3,7 @@ package bot.bots
 import bot.bots.tree.AlphaBetaPruning
 import bot.bots.tree.GameState
 import bot.bots.tree.TreeBuilder
+import bot.ratingfunctions.ruediger.RuedigerDerBot
 import model.Board
 import model.Player
 import model.Token
@@ -27,7 +28,7 @@ interface RatingFunction : (Board) -> Int {
  */
 class PonderingBot(
     side: Token,
-    private val ratingFunction: RatingFunction
+    private val ratingFunction: RatingFunction = RuedigerDerBot(side)
 ) : Player(side) {
     /**
      * The treeBuilder builds the Tree while idle

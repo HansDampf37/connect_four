@@ -12,7 +12,7 @@ public class Trainer {
         for (int i = 0; i < intensity; i++) {
             System.out.println(i);
             Board b = new Board(7, 6);
-            new Game(new PonderingBot(Token.PLAYER_1, new TorbenDerBot(Token.PLAYER_1)), new PonderingBot(Token.PLAYER_2, new TorbenDerBot(Token.PLAYER_2)), 7, 6).play();
+            new Game(new PonderingBot(Token.PLAYER_1, new TorbenDerBot(Token.PLAYER_1)), new PonderingBot(Token.PLAYER_2, new TorbenDerBot(Token.PLAYER_2)), 7, 6, null).play();
         }
     }
 }
