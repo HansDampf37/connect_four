@@ -98,7 +98,7 @@ class TreeTest : TestCase() {
     }
 
     fun testParents() {
-        val tb = TreeBuilder(RandomRating(0..100))
+        val tb = TreeBuilder(RandomRating(0..100), TreeBuilder.SimpleScheduler(), 7, 6)
         val thread = Thread(tb)
         thread.start()
         sleep(1000)
@@ -114,7 +114,7 @@ class TreeTest : TestCase() {
     }
 
     fun testDescendantOf() {
-        val tb = TreeBuilder(RandomRating(0..100))
+        val tb = TreeBuilder(RandomRating(0..100),TreeBuilder.SimpleScheduler(), 7, 6)
         val thread = Thread(tb)
         thread.start()
         sleep(1000)

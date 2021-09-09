@@ -25,7 +25,12 @@ class AlphaBetaPruningTest : TestCase() {
     }
 
     fun testSpeed() {
-        val t = Tree(6, 7, GameState(Board(), Token.PLAYER_1)) { _: Int, _: Int, _: GameState? -> GameState(Board(), Token.PLAYER_1) }
+        val t = Tree(6, 7, GameState(Board(), Token.PLAYER_1)) { _: Int, _: Int, _: GameState? ->
+            GameState(
+                Board(),
+                Token.PLAYER_1
+            )
+        }
         t.leaves.forEach { it.value = Random.nextInt() }
         println("building tree finished!")
         var finished = false
@@ -42,7 +47,11 @@ class AlphaBetaPruningTest : TestCase() {
 
     fun testSameResultAsMinimax() {
         for (i in 0..20) {
-            val t = Tree(listOf(5, 6, 7).random(), listOf(5).random(), GameState(Board(5), Token.PLAYER_1))  { _: Int, x: Int, _: GameState? -> GameState(Board(5), Token.PLAYER_1, x) }
+            val t = Tree(
+                listOf(5, 6, 7).random(),
+                listOf(5).random(),
+                GameState(Board(5), Token.PLAYER_1)
+            ) { _: Int, x: Int, _: GameState? -> GameState(Board(5), Token.PLAYER_1, x) }
             t.leaves.forEach { it.value = Random.nextInt() }
             val indexMini = Minimax.run(t)
             val valueMini = t.root.value
@@ -64,7 +73,13 @@ class AlphaBetaPruningTest : TestCase() {
         board.throwInColumn(1, Token.PLAYER_1)
         println(RuedigerDerBot(Token.PLAYER_1).invoke(board))
         buildTreeAndTestMove(TestUtils.createPredicamentForP1_2, Token.PLAYER_2, 1000, listOf(1))
-        buildTreeAndTestMove(TestUtils.createPredicamentForP1_2, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 6, listOf(1, 2))
+        buildTreeAndTestMove(
+            TestUtils.createPredicamentForP1_2,
+            Token.PLAYER_1,
+            1000,
+            Integer.MAX_VALUE - 6,
+            listOf(1, 2)
+        )
     }
 
     fun testPredicament2() {
@@ -73,7 +88,13 @@ class AlphaBetaPruningTest : TestCase() {
     }
 
     fun testPredicament3() {
-        buildTreeAndTestMove(TestUtils.createPredicamentForP1_second, Token.PLAYER_1, 1000, Integer.MAX_VALUE - 10, listOf(3))
+        buildTreeAndTestMove(
+            TestUtils.createPredicamentForP1_second,
+            Token.PLAYER_1,
+            1000,
+            Integer.MAX_VALUE - 10,
+            listOf(3)
+        )
     }
 
     fun testFinish1() {
@@ -91,14 +112,25 @@ class AlphaBetaPruningTest : TestCase() {
         buildTreeAndTestMove(TestUtils.p2CanFinish_2, Token.PLAYER_2, 1000, Integer.MAX_VALUE - 3, listOf(2, 5))
     }
 
-    private fun buildTreeAndTestMove(board: Board, player: Token, buildTime: Long, expectedEvaluation: Int, expectedIndices: List<Int>) {
+    private fun buildTreeAndTestMove(
+        board: Board,
+        player: Token,
+        buildTime: Long,
+        expectedEvaluation: Int,
+        expectedIndices: List<Int>
+    ) {
         val eval = buildTreeAndTestMove(board, player, buildTime, expectedIndices)
-        assertEquals("$board \nwas evaluated incorrectly:\nexpected $expectedEvaluation,\nactual: $eval", expectedEvaluation, eval)
+        assertEquals(
+            "$board \nwas evaluated incorrectly:\nexpected $expectedEvaluation,\nactual: $eval",
+            expectedEvaluation,
+            eval
+        )
     }
 
     private fun buildTreeAndTestMove(board: Board, player: Token, buildTime: Long, expectedIndices: List<Int>): Int {
         val t = Tree(GameState(board, player))
-        val tb = TreeBuilder(RuedigerDerBot(player), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Small))
+        val tb =
+            TreeBuilder(RuedigerDerBot(player), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Small), 7, 6)
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, t)
@@ -106,7 +138,10 @@ class AlphaBetaPruningTest : TestCase() {
         sleep(buildTime)
         tb.exit()
         val index = AlphaBetaPruning.run(t)
-        assertTrue("chose index $index instead of one in $expectedIndices for \n$board \nwhich leads to a evaluation of ${t.root.value}", expectedIndices.contains(index))
+        assertTrue(
+            "chose index $index instead of one in $expectedIndices for \n$board \nwhich leads to a evaluation of ${t.root.value}",
+            expectedIndices.contains(index)
+        )
         println(board)
         println("correct column for $player: $index")
         return t.root.value

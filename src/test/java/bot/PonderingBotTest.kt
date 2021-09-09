@@ -16,9 +16,9 @@ class PonderingBotTest : TestCase() {
     private lateinit var dummy: Player
 
     override fun setUp() {
-        bot = PonderingBot(Token.PLAYER_2, board, RuedigerDerBot(Token.PLAYER_2))
+        bot = PonderingBot(Token.PLAYER_2, RuedigerDerBot(Token.PLAYER_2))
 
-        dummy = object : Player(Token.PLAYER_1, board) {
+        dummy = object : Player(Token.PLAYER_1) {
             override fun getColumnOfNextMove(): Int {
                 sleep(1000)
                 return (0 until board.WIDTH).filter { board.stillSpaceIn(it) }.random()
@@ -35,7 +35,7 @@ class PonderingBotTest : TestCase() {
     }
 
     fun testPlay() {
-        Game(bot, dummy).play()
+        Game(bot, dummy, 7, 6).play()
     }
 
     fun testWin() {
@@ -43,7 +43,7 @@ class PonderingBotTest : TestCase() {
         var i = 0
         repeat (n) {
             ConsoleOutput.setAll(false, false, false, false, false, false, false, false, false)
-            assertEquals("Ruediger lost against random", bot.side, Game(bot, dummy).play())
+            assertEquals("Ruediger lost against random", bot.side, Game(bot, dummy, 7, 6).play())
             println("won ${i++ + 1}/$n")
             setUp()
         }

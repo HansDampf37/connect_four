@@ -15,18 +15,20 @@ import kotlin.concurrent.withLock
 
 class TreeBuilder(
     val ratingFunction: RatingFunction,
-    private val scheduler: Scheduler = SizeScheduler(SizeScheduler.Size.VerySmall)
+    private val scheduler: Scheduler = SizeScheduler(SizeScheduler.Size.VerySmall),
+    boardWidth: Int,
+    boardHeight: Int
 ) : Runnable {
 
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
-    val tree: Tree<GameState> = Tree(GameState(Board(), nextPlayer = Token.PLAYER_1))
+    val tree: Tree<GameState> = Tree(GameState(Board(boardWidth, boardHeight), nextPlayer = Token.PLAYER_1))
     val lock: ReentrantLock = ReentrantLock()
     val isIdle get() = run { lock.withLock { return@run !scheduler.expand(tree) } }
     val levelOneCalculated: Condition = lock.newCondition()
 
     private var running = true
     private val removeFromQueue: ReentrantLock = ReentrantLock()
-    private val numThreads = 7
+    private val numThreads = tree.root.board.WIDTH
     private lateinit var thread: Thread
     private val queue: Queue<GameState> = ConcurrentLinkedQueue()
 
@@ -88,18 +90,18 @@ class TreeBuilder(
         while (tree.root.size < IntRange(0, 6).filter { tree.root.board.stillSpaceIn(it) }.size) {
             lock.withLock { levelOneCalculated.await() }
         }
-        lock.withLock {
-            tree.leaves.clear()
-            tree.root = tree.root.first { (it as GameState).lastMoveWasColumn == move } as GameState
-            tree.root.clear()
-            queue.clear()
-            queue.add(tree.root)
-        }
         // lock.withLock {
-        //     tree.step(move)
+        //     tree.leaves.clear()
+        //     tree.root = tree.root.first { (it as GameState).lastMoveWasColumn == move } as GameState
+        //     tree.root.clear()
         //     queue.clear()
-        //    for (leaf in tree.leaves) queue.add(leaf)
-        //}
+        //     queue.add(tree.root)
+        // }
+        lock.withLock {
+            tree.step(move)
+            queue.clear()
+            for (leaf in tree.leaves) queue.add(leaf)
+        }
     }
 
     fun start() {

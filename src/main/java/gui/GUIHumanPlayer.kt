@@ -1,9 +1,11 @@
-package model
+package gui
 
+import model.Player
+import model.Token
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class GUIHumanPlayer(side: Token, board: Board): Player(side, board) {
+class GUIHumanPlayer(side: Token) : Player(side) {
     var nextMove: Int = -1
         set(value) {
             field = value

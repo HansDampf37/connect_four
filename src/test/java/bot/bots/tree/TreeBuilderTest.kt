@@ -22,7 +22,12 @@ class TreeBuilderTest : TestCase() {
     }
 
     override fun setUp() {
-        tb = TreeBuilder(RuedigerDerBot(Token.PLAYER_1), TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Large))
+        tb = TreeBuilder(
+            RuedigerDerBot(Token.PLAYER_1),
+            TreeBuilder.SizeScheduler(TreeBuilder.SizeScheduler.Size.Large),
+            7,
+            6
+        )
         val field = tb::class.java.getDeclaredField("tree")
         field.isAccessible = true
         field.set(tb, Tree(GameState(Board(), Token.PLAYER_1)))
@@ -33,7 +38,10 @@ class TreeBuilderTest : TestCase() {
         runTreeBuilder(10)
         val size = tb.tree.size()
         runTreeBuilder(100)
-        assertTrue("after last invocation of exit() the tree-size was $size and now it is ${tb.tree.size()}", tb.tree.size() > size)
+        assertTrue(
+            "after last invocation of exit() the tree-size was $size and now it is ${tb.tree.size()}",
+            tb.tree.size() > size
+        )
     }
 
     fun testTreeCorrectness() {
@@ -84,7 +92,8 @@ class TreeBuilderTest : TestCase() {
                     GameState(
                         parent.board.clone().apply { throwInColumn(x, parent.nextPlayer) },
                         parent.nextPlayer.other(),
-                        x).apply { value = (0..100).random() }
+                        x
+                    ).apply { value = (0..100).random() }
             }
             val field = tb::class.java.getDeclaredField("tree")
             field.isAccessible = true
@@ -106,7 +115,7 @@ class TreeBuilderTest : TestCase() {
 
     fun testDeepStep() {
         tb.start()
-        repeat (tb.tree.root.board.HEIGHT) {
+        repeat(tb.tree.root.board.HEIGHT) {
             tb.moveMade(6)
             println(tb.tree.root.board)
             sleep(100)
