@@ -9,19 +9,19 @@ import model.Player
 import model.Token
 import java.util.*
 
-class Game(player1: Player, player2: Player, val width: Int, val height: Int, private val controller: Controller?) : IGame {
+open class Game(player1: Player, player2: Player, val width: Int, val height: Int, private val controller: Controller?) : IGame {
     var board: Board = Board(width, height)
     val currentPlayer: Player get() = players[curPlayerInd]
     var players: Array<Player> = arrayOf(player1, player2)
     var running = false
-    private var curPlayerInd: Int = (Math.random() * players.size).toInt()
+    protected var curPlayerInd: Int = (Math.random() * players.size).toInt()
 
     init {
         if (player1.side == player2.side) throw IllegalArgumentException("sides must be different")
         reset()
     }
 
-    private fun throwInColumn(x: Int) {
+    protected fun throwInColumn(x: Int) {
         if (board.throwInColumn(x, players[curPlayerInd].side)) {
             curPlayerInd = ++curPlayerInd % players.size
             runBlocking {
@@ -55,10 +55,11 @@ class Game(player1: Player, player2: Player, val width: Int, val height: Int, pr
         return winner
     }
 
-    override fun reset() {
+    final override fun reset() {
         val height = board.HEIGHT
         val width = board.WIDTH
         board = Board(width, height)
+        players.forEach { it.onNewGameStarted(this) }
         players.filterIsInstance<GUIHumanPlayer>().forEach { it.nextMove = -1 }
         curPlayerInd = players.indexOfFirst { it.side == Token.PLAYER_1 }
     }

@@ -15,7 +15,7 @@ import kotlin.concurrent.withLock
 
 class TreeBuilder(
     val ratingFunction: RatingFunction,
-    private val scheduler: Scheduler = SizeScheduler(SizeScheduler.Size.VerySmall),
+    var scheduler: Scheduler = SizeScheduler(SizeScheduler.Size.VerySmall),
     boardWidth: Int,
     boardHeight: Int
 ) : Runnable {
@@ -23,7 +23,7 @@ class TreeBuilder(
     val state: Thread.State get() = if (!this::thread.isInitialized) Thread.State.NEW else thread.state
     val tree: Tree<GameState> = Tree(GameState(Board(boardWidth, boardHeight), nextPlayer = Token.PLAYER_1))
     val lock: ReentrantLock = ReentrantLock()
-    val isIdle get() = run { lock.withLock { return@run !scheduler.expand(tree) } }
+    val isIdle get() = run { lock.withLock { return@run !scheduler.expand(tree) || queue.isEmpty() } }
     val levelOneCalculated: Condition = lock.newCondition()
 
     private var running = true

@@ -33,12 +33,12 @@ class PonderingBot(
     /**
      * The treeBuilder builds the Tree while idle
      */
-    private lateinit var treeBuilder: TreeBuilder
+    lateinit var treeBuilder: TreeBuilder
 
     private lateinit var threadForTreeBuilder: Thread
 
     override fun onNewGameStarted(game: Game) {
-        treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.SimpleScheduler(20000), game.width, game.height)
+        treeBuilder = TreeBuilder(ratingFunction, TreeBuilder.SimpleScheduler(1000000), game.width, game.height)
         threadForTreeBuilder = Thread(treeBuilder)
         threadForTreeBuilder.start()
     }
