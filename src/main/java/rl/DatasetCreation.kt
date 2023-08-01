@@ -1,15 +1,16 @@
 package rl
 
+import Controller
 import bot.bots.PonderingBot
 import bot.bots.tree.TreeBuilder
 import bot.ratingfunctions.ruediger.RuedigerDerBot
 import model.Board
+import model.HumanPlayer
 import model.Token
 import model.procedure.ConsoleOutput
 import model.procedure.Game
 import java.io.File
 import java.lang.Thread.sleep
-import java.awt.Graphics
 import java.awt.image.BufferedImage
 import java.lang.IllegalStateException
 import java.nio.file.Path
@@ -18,14 +19,14 @@ import javax.imageio.ImageIO
 import kotlin.system.exitProcess
 
 class DatasetCreation(boardWidth: Int, boardHeight: Int, val basePath: String, val minimumSize: Int) : Game(
-    PonderingBot(Token.PLAYER_1, RuedigerDerBot(Token.PLAYER_1)),
-    PonderingBot(Token.PLAYER_2, RuedigerDerBot(Token.PLAYER_2)),
-    boardWidth, boardHeight, null
+    HumanPlayer(Token.PLAYER_1),
+    HumanPlayer(Token.PLAYER_2),
+    boardWidth, boardHeight, Controller()
 ) {
 
     init {
-        (players[0] as PonderingBot).treeBuilder.scheduler = TreeBuilder.SimpleScheduler(1000000)
-        (players[1] as PonderingBot).treeBuilder.scheduler = TreeBuilder.SimpleScheduler(1000000)
+        //(players[0] as PonderingBot).treeBuilder.scheduler = TreeBuilder.SimpleScheduler(1000000)
+        //(players[1] as PonderingBot).treeBuilder.scheduler = TreeBuilder.SimpleScheduler(10000)
     }
 
     private var evaluatedPositions = 0
@@ -40,9 +41,7 @@ class DatasetCreation(boardWidth: Int, boardHeight: Int, val basePath: String, v
         )
         var winner: Token = Token.EMPTY
         while (winner == Token.EMPTY && board.stillSpace()) {
-            while (!(currentPlayer as PonderingBot).treeBuilder.isIdle) {
-                sleep(100)
-            }
+            //if (curPlayerInd == 1) while (!(players[1] as PonderingBot).treeBuilder.isIdle) sleep(100)
             val index = players[curPlayerInd].getColumnOfNextMove()
             val image = boardToImage(board)
             val player = when (players[curPlayerInd].side) {
@@ -50,14 +49,13 @@ class DatasetCreation(boardWidth: Int, boardHeight: Int, val basePath: String, v
                 Token.PLAYER_2 -> "white"
                 else -> throw IllegalStateException("Must be someones turn")
             }
-            val newFile = File(Path.of(basePath, player, "$index", "${UUID.randomUUID()}").toUri())
+            val newFile = File(Path.of(basePath, player, "$index", "${UUID.randomUUID()}.png").toUri())
             moves[currentPlayer.side]!!.add(Pair(image, newFile))
-            println(board)
-            println("Label $index")
             throwInColumn(index)
+            println(board)
             winner = board.winner
         }
-        for (pair in moves[winner]!!) {
+        for (pair in moves[winner] ?: moves[Token.PLAYER_1]!!.apply{ this.addAll(moves[Token.PLAYER_2]!!)}) {
             pair.second.parentFile.mkdirs()
             ImageIO.write(pair.first, "png", pair.second)
             evaluatedPositions++
@@ -111,7 +109,7 @@ fun main() {
     val samples = 1200
     val startTime = System.currentTimeMillis()
     ConsoleOutput.setAll(false, false, false, false, false, false, false, false, false)
-    DatasetCreation(7, 6, basePath = "/home/adrian/Schreibtisch/connect4dataset", minimumSize = samples).create()
+    DatasetCreation(7, 6, basePath = "src/main/python/connect4dataset", minimumSize = samples).create()
     val endTime = System.currentTimeMillis()
     val elapsedTimeMillis = endTime - startTime
     println("Created $samples samples elapsed: ${elapsedTimeMillis / 1000} seconds")
