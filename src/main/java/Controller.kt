@@ -1,15 +1,16 @@
 import bot.bots.PonderingBot
 import gui.GUIHumanPlayer
 import gui.Gui
+import model.HumanPlayer
 import model.Token
 import model.procedure.Game
 
 class Controller {
     companion object {
-        val INIT_P1 = GUIHumanPlayer(Token.PLAYER_1)
+        val INIT_P1 = PonderingBot(Token.PLAYER_1)
         val INIT_P2 = PonderingBot(Token.PLAYER_2)
-        const val INIT_WIDTH = 11
-        const val INIT_HEIGHT = 8
+        const val INIT_WIDTH = 7
+        const val INIT_HEIGHT = 6
     }
 
     private lateinit var game: Game
@@ -23,8 +24,14 @@ class Controller {
         val height = if (!::gui.isInitialized || gui.heightSelected == -1) INIT_HEIGHT else gui.heightSelected
         game = Game(p1, p2, width, height, this)
         if (!this::gui.isInitialized) gui = Gui(this)
-        gameThread = Thread { game.play() }
+        gameThread = Thread {
+            repeat (1000) {
+                game.play()
+                game.reset()
+            }
+        }
         gameThread.start()
+        gameThread.join()
     }
 
     fun stopCurrentGame() {
