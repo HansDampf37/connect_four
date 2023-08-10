@@ -133,5 +133,8 @@ fun main() {
     //val elapsedTimeMillis = endTime - startTime
     //println("Created $samples samples elapsed: ${elapsedTimeMillis / 1000} seconds")
     //exitProcess(0)
-    DatasetCreation.savePosition(Board().apply { throwInColumn(2, Token.PLAYER_1) }, 4, Token.PLAYER_2, "/home/adrian/Schreibtisch/test")
+    DatasetCreation.savePosition(Board().apply { throwInColumn(0, Token.PLAYER_1) }, 0, Token.PLAYER_2, "src/main/python/test")
+    DatasetCreation.savePosition(Board().apply { throwInColumn(1, Token.PLAYER_1) }, 1, Token.PLAYER_2, "src/main/python/test")
+    DatasetCreation.savePosition(Board().apply { throwInColumn(2, Token.PLAYER_1) }, 2, Token.PLAYER_2, "src/main/python/test")
+    DatasetCreation.savePosition(Board().apply { throwInColumn(3, Token.PLAYER_1) }, 3, Token.PLAYER_2, "src/main/python/test")
 }
