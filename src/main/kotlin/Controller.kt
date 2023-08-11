@@ -1,4 +1,5 @@
 import bot.bots.PonderingBot
+import bot.bots.Ricardo
 import gui.GUIHumanPlayer
 import gui.Gui
 import model.HumanPlayer
@@ -7,8 +8,8 @@ import model.procedure.Game
 
 class Controller {
     companion object {
-        val INIT_P1 = PonderingBot(Token.PLAYER_1)
-        val INIT_P2 = PonderingBot(Token.PLAYER_2)
+        val INIT_P1 = Ricardo(Token.PLAYER_1)
+        val INIT_P2 = GUIHumanPlayer(Token.PLAYER_2)
         const val INIT_WIDTH = 7
         const val INIT_HEIGHT = 6
     }
@@ -25,7 +26,7 @@ class Controller {
         game = Game(p1, p2, width, height, this)
         if (!this::gui.isInitialized) gui = Gui(this)
         gameThread = Thread {
-            repeat (1000) {
+            repeat(1000) {
                 game.play()
                 game.reset()
             }

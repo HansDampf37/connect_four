@@ -64,10 +64,13 @@ open class Game(
             if (Arrays.stream(players).noneMatch { p: Player -> p.side == finalWinner }) println("Its a draw")
             println(board)
         }
-        if (winner != Token.EMPTY) movesPlayed[winner]!!.forEach { DatasetCreation.savePosition(it.first, it.second, winner, "src/main/python/c4set") }
+        if (winner != Token.EMPTY) {
+            movesPlayed[winner]!!.forEach { DatasetCreation.savePosition(it.first, it.second, winner, "src/main/python/c4set") }
+            DatasetCreation.savePosition( movesPlayed[winner]!!.last().first, movesPlayed[winner]!!.last().second, winner, "src/main/python/winningMoves")
+        }
         else {
-            movesPlayed[Token.PLAYER_1]!!.forEach { DatasetCreation.savePosition(it.first, it.second, Token.PLAYER_1, "src/main/python/connect4") }
-            movesPlayed[Token.PLAYER_2]!!.forEach { DatasetCreation.savePosition(it.first, it.second, Token.PLAYER_2, "src/main/python/connect4") }
+            movesPlayed[Token.PLAYER_1]!!.forEach { DatasetCreation.savePosition(it.first, it.second, Token.PLAYER_1, "src/main/python/c4set") }
+            movesPlayed[Token.PLAYER_2]!!.forEach { DatasetCreation.savePosition(it.first, it.second, Token.PLAYER_2, "src/main/python/c4set") }
         }
         running = false
         return winner
